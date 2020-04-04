@@ -1,0 +1,9 @@
+{ "leavetype"  :
+            
+                [ 
+                    { "LEAVE" : "PL" ,"COLOR" :  "RED" },
+                    { "LEAVE" : "UL" ,"COLOR" :  "RED" }
+                ]
+
+        
+}

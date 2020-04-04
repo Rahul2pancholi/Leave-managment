@@ -1,0 +1,374 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- ****************ADDING RIGHT CLICK CONTEXT******************** -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+  <!-- ******************************************************** -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+  <script>
+    $(function () {
+      $("#tbody_1").sortable();
+      $("#tbody_1").disableSelection();
+    });
+  </script>
+  <style>
+    .div1 {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      background: black;
+    }
+
+    .textarea1 {
+      background: aqua;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+
+    .div2 {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      width: 5px;
+      right: 0;
+      height: 5px;
+      background: red;
+    }
+
+    .commentdiv {
+      position: fixed;
+      display: none;
+      width: fit-content;
+      height: fit-content;
+      background-color: crimson;
+    }
+
+    .custom-cm {
+      background-color: #ffffff;
+      border: 1px solid #cccccc;
+      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+      display: none;
+      padding: 10px 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200px;
+    }
+
+    .custom-cm__item {
+      cursor: pointer;
+      padding: 8px 15px;
+    }
+
+    .custom-cm__item:hover {
+      background-color: #f8f8f8;
+    }
+
+    .custom-cm__divider {
+      border-bottom: 1px solid #eeeeee;
+      margin: 10px 0;
+    }
+
+
+    /* toggle css  */
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #8bc34a;
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    /* toggle css ends  */
+
+    .table-wrapper {
+      overflow-x: scroll;
+    }
+
+    .sat,
+    .sun {
+      background-color: #17a2b8;
+    }
+
+    .eName,
+    #team_name {
+      background-color: #dbd951;
+    }
+
+    .click_select {
+      border: 2px solid #5292f7 !important;
+    }
+
+    .poolSelect {
+      border: 2px solid rgba(230, 177, 116, 0.3);
+      background-color: rgba(230, 177, 116, 0.3);
+    }
+
+    .umeric:hover {
+      cursor: pointer;
+      border: 2px solid #5292f7;
+      background: lightgray;
+      box-shadow: inset -1px 0 0 #bababa;
+    }
+
+    .table td {
+      vertical-align: middle !important;
+    }
+
+    .hoverWrapper:hover #hoverShow1 {
+      display: block;
+    }
+
+    .hoverWrapper #hoverShow1 {
+      display: none;
+      position: absolute;
+      background-color: #ff0000;
+      width: 250px;
+      height: 250px;
+      left: 200px;
+      top: 100px;
+    }
+
+
+    .divclass {
+      position: absolute;
+      background: aqua;
+      display: none;
+    }
+
+    .divparent:hover .divclass {
+      display: block;
+    }
+
+    .divparent {
+      z-index: 1;
+
+    }
+  </style>
+
+
+  <!-- <link href="table.css" rel="stylesheet"> -->
+
+</head>
+
+<body class="container">
+  <!-- select employee and add leave  -->
+
+  <div class="form-inline ">
+
+    <div class="col form-group">
+      <select id="emp_nm" class="custom-select empCal">
+        <option value="0">select emp</option>
+      </select>
+    </div>
+    <div class="form-group co l">
+      <input type="date" name="start" id="start" class="col form-control inputCal">
+    </div>
+    <div class="form-group col">
+      <input type="date" name="end" id="end" class="col form-control inputCal">
+    </div>
+    <div class="col form-group">
+      <button onclick="leaveApply()" class="col btn btn-primary buttonCal">apply leave</button>
+    </div>
+  </div>
+  <!-- Add employee and team -->
+  <div class="form-inline my-3">
+    <div class="form-group">
+      <input class="form-control" placeholder="Add Employee Name" type="text" id="addEmp">
+    </div>
+    <div class="form-group mx-sm-3">
+      <input class="form-control" placeholder="Add Team name" type="text" id="addEmpTeam">
+    </div>
+    <div class="form-group">
+      <button onclick="addEmployee()" class="btn btn-primary ademp">Add employee</button>
+    </div>
+    <div class="form-group mx-sm-3">
+      <!-- save button ; add script to change class from 
+      btn-danger to btn-success -->
+      <button onclick="Save()" class="btn btn-danger ademp">Save</button>
+    </div>
+  </div>
+  <!-- data save not save toggle -->
+  <div class="form-group">
+    <label class="switch ">
+      <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
+      <span class="slider round"></span>
+    </label>
+    <div class="form-group">
+      <button onclick="" class="btn btn-primary ademp">Add Comment</button>
+    </div>
+  </div>
+
+  <!-- <input type="checkbox" id="myCheck" name="Selection on :" onclick="mySelection()">
+ 
+  <div id="isChanged">YES</div> -->
+
+
+  <!-- 
+  <form class="was-validated">
+    <div class="custom-control custom-checkbox mb-3">
+      <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+      <label class="custom-control-label" for="customControlValidation1"></label>
+      <div class="invalid-feedback">Data Not Saved</div>
+      <div class="valid-feedback">Data Saved</div>
+    </div>
+  </form> -->
+
+  <!-- button stack -->
+  <div class="form-group">
+    <button onclick="reload()" class="btn btn-warning reload">Reset</button>
+    <a class="btn btn-primary" href="/report/report.html">Generate report</a>
+    <button onclick="reject()" class="btn btn-danger reject_Leave">Reject Leave</button>
+    <button onclick="createSCV()" class="btn btn-info createSCV">export to CSV</button>
+    <button onclick="sortTable()" class="btn btn-info sortTable">Sort Table</button>
+    
+    <button onclick="Delete()" class="btn btn-danger sortTable">Delete Employee</button>
+  </div>
+
+  <div id="hoverShow1" style="width: 25%;" class="my-3 divparent" tabindex="0" id="FL_main_table_div">abc
+    <div class="divclass">
+      <button onclick="addFl()">add</button>
+      <button onclick="deleteFl()">remove</button>
+
+      <table style="margin-bottom: 0px;width: fit-content" class="table table-sm table-bordered legend_table "
+        id="FL_legend_tab1">
+        <thead class="thead-dark table_head" id="legend_thead1">
+          <tr id="FL_ROW">
+            <td>FLOATING_DATE</td>
+            <td>FLOATING</td>
+          </tr>
+        </thead>
+        <tbody id="FL_TBODY"></tbody>
+
+      </table>
+    </div>
+  </div>
+
+  <div style="width: 25%;" class="my-3 divparent" tabindex="0" id="main_table_div">xyz
+    <table style="margin-bottom: 0px;width: fit-content" class="table table-sm table-bordered legend_table divclass"
+      id="legend_tab1">
+      <thead class="thead-dark table_head" id="legend_thead1">
+        <tr id="LH_ROW">
+          <td>LEAVE_COLOR</td>
+          <td>LEAVE_TYPE</td>
+        </tr>
+      </thead>
+      <tbody id="LH_TBODY"></tbody>
+
+    </table>
+  </div>
+
+
+
+  <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
+    title="Type in a name">
+
+
+  <div class="table-wrapper my-3" tabindex="0" id="div-1">
+    <table style="margin-bottom: 0px;" class="table  table-sm table-bordered main_table" id="tab1">
+      <thead class="thead-dark table_head" id="thead1"></thead>
+      <tbody id="tbody_1"></tbody>
+    </table>
+    <div class="commentdiv" id="cmtID">
+
+      <label>Rahul Pancholi ( 2020-02-22 )</label><br>
+      <textarea id="lastname" class="docos-input-textarea" autocomplete="input-area" x-webkit-speech="" speech=""
+        role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr" style="height: 76px;"></textarea>
+      <br>
+      <input type="submit" value="Submit" onclick="formdata()" />
+      <input type="button" value="Cancle" onclick=" " /><br>
+
+    </div>
+
+ 
+
+    
+    </div>
+    <div id="dialog">
+      <select id="emp_nm" class="custom-select empCal">
+        <option value="0">select emp</option>
+        <option value="1">Rahul</option>
+        <option value="2">Rajat Chawla</option>
+        <option value="3">Aaa</option>
+        <option value="4">Aa</option>
+      </select>
+      <select id="emp_nm" class="custom-select empCal">
+        <option value="0">select emp</option>
+        <option value="1">Rahul</option>
+        <option value="2">Rajat Chawla</option>
+        <option value="3">Aaa</option>
+        <option value="4">Aa</option>
+      </select>
+      </div>
+      <img src="./img/Capture.PNG" alt="Smiley face" >
+    <script>$( "#dialog" ).dialog()</script>
+    <script type="text/javascript" src="./javascript/table_script.js"></script>
+
+</body>
+
+</html>
