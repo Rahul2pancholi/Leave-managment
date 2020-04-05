@@ -4,16 +4,20 @@ var path = require("path");
 var app = express();
 const fs = require("fs");
 var project="CB";
-var year="2019";
+var year="2020";
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const publicDirectoryPath = path.join(__dirname, "../public");
+const jsonFilePath = path.join(__dirname, `../public/database/test_${project}_${year}.json`);
+const jsonLeaveColor = path.join(__dirname , "../public/database/leave_color.json");
+const json_FloatLeave= path.join(__dirname , "../public/database/floating_leave.json");
+const viewsPath =  path.join(__dirname, "../public/views");
 
 const port = process.env.PORT || 3000;
 app.set('view engine', 'hbs')
+app.set('views',viewsPath)
 app.use(bodyParser.json());
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-const publicDirectoryPath = path.join(__dirname, "/public");
-const jsonFilePath = path.join(__dirname, `/public/database/test_${project}_${year}.json`);
 
-console.log(jsonFilePath);
+console.log(publicDirectoryPath);
 app.use(express.static(publicDirectoryPath))
 app.get('/listUsers', function (req, res) {
     fs.readFile(jsonFilePath, 'utf8', function (err, data) {
@@ -43,23 +47,23 @@ app.post('/commentIMAGE',urlencodedParser, (req, res) => {
 
 })
 app.get('./leave_color.json', (req, res) => {
-    res.sendFile(__dirname + "/" + "public/database/leave_color.json");
+    res.sendFile(jsonLeaveColor);
     console.log("called")
 
 })
 
 app.get('/FLOATING_FILE', (req, res) => {
-    res.sendFile(__dirname + "/" + "public/database/floating_leave.json");
+    res.sendFile(json_FloatLeave);
     console.log("called")
 
 })
 
 
-app.get('/public/database/floating_leave.json', (req, res) => {
-    res.sendFile(__dirname + "/" + "public/database/floating_leave.json");
-    console.log("called")
+// app.get('/public/database/floating_leave.json', (req, res) => {
+//     res.sendFile(__dirname + "/" + "public/database/floating_leave.json");
+//     console.log("called")
 
-})
+// })
 
 
 app.get('/report/report.html', (req, res) => {
