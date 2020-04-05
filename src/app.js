@@ -46,7 +46,7 @@ app.post('/commentIMAGE',urlencodedParser, (req, res) => {
     console.log(req.body)
 
 })
-app.get('./leave_color.json', (req, res) => {
+app.get('/LEAVE_COLOR', (req, res) => {
     res.sendFile(jsonLeaveColor);
     console.log("called")
 

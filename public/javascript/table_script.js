@@ -350,7 +350,15 @@ function createInitRow() {
     let table = document.getElementById("tab1");
     let row = thead.insertRow();
     let head, text;
-    let rownum = 0, colnum = 0;
+    let rownum = 0, colnum = 1;
+
+    head = document.createElement("th");
+    // text = document.createTextNode("Team_Name");
+    // head.append(text)
+    head.setAttribute("id", `checkbox`);
+    // head.setAttribute("class", `pool`);
+    row.appendChild(head);
+    // row.setAttribute("class", ` Team_Name`)
 
     head = document.createElement("th");
     text = document.createTextNode("Team_Name");
@@ -818,9 +826,9 @@ function addDataToRow() {
     //console.log(tempJson);
     let employeeName;
 
-    let rowindex = 0;
-    let b = 0;
-    let thindex = 1;
+    let rowindex = 1;
+    let b = 1;
+    let thindex = 2;
     /*****************ADDING extram column in starting ****************** */
     rowindex += 1;
     b += 1;
@@ -950,9 +958,15 @@ function createTableRow(parent_element, name, index, pool) {
     row.setAttribute("id", `row_${index + 1}`);
 
 
+     var cell = row.insertCell();
+     let checkBox = document.createElement("input");
+     checkBox.setAttribute("type","checkbox");
+     checkBox.setAttribute("id","main_chkbox_"+index);
+     cell.appendChild(checkBox);
+    row.appendChild(cell); 
 
 
-    let cell = row.insertCell();
+    var cell = row.insertCell();
     text = document.createTextNode(pool);
     cell.setAttribute("id", `team_name`);
     cell.setAttribute("class", `pool ${pool}`);
@@ -1519,7 +1533,7 @@ function createLegend() {
 
     let xhttp = new XMLHttpRequest();
 
-    xhttp.open("GET", '/leave_color.json', true);
+    xhttp.open("GET", '/LEAVE_COLOR', true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send();
     xhttp.onload = function () {
@@ -1595,7 +1609,10 @@ function createFloatingTab() {
 
                     t_row = lBody.insertRow();
                     t_cell = t_row.insertCell();
-                    
+                    let checkBox = document.createElement("input");
+                    checkBox.setAttribute("type","checkbox");
+                    checkBox.setAttribute("id","chkbox"+ind);
+                    t_cell.appendChild(checkBox);
                     t_cell = t_row.insertCell();
                     t_cell.innerHTML = val;
                     t_cell = t_row.insertCell();

@@ -304,6 +304,7 @@
         id="FL_legend_tab1">
         <thead class="thead-dark table_head" id="legend_thead1">
           <tr id="FL_ROW">
+            <td>&nbsp;</td>
             <td>FLOATING_DATE</td>
             <td>FLOATING</td>
           </tr>
@@ -357,25 +358,27 @@
     <div id="dialog">
       <select id="emp_nm" class="custom-select empCal">
         <option value="0">select emp</option>
-        <option value="1">Rahul</option>
-        <option value="2">Rajat Chawla</option>
-        <option value="3">Aaa</option>
-        <option value="4">Aa</option>
+        <option value="1">2019</option>
+        <option value="2" selected >2020</option>
+     
       </select>
       <select id="emp_nm" class="custom-select empCal">
-        <option value="0">select emp</option>
-        <option value="1">{{name}}</option>
-        <option value="2">Rajat Chawla</option>
-        <option value="3">Aaa</option>
-        <option value="4">Aa</option>
+        <option value="1" selected >CB</option>
+        <option value="2">NPD</option>
+       
       </select>
+      <button type="submit" onclick="submit()">Submit</button>
       </div>
     
     <script>$( "#dialog" ).dialog()
         $( "#startdatepicker" ).datepicker();
      $( "#enddatepicker" ).datepicker();
+    
     </script>
-    <script type="text/javascript" src="./javascript/table_script.js"></script>
+    <script type="text/javascript" src="./javascript/table_script.js">
+    
+    </script>
+
 
 </body>
 
