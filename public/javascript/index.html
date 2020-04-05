@@ -227,10 +227,14 @@
       </select>
     </div>
     <div class="form-group co l">
-      <input type="date" name="start" id="start" class="col form-control inputCal">
+      <!-- <input type="date" name="start" id="start" class="col form-control inputCal"> -->
+      <p>Start Date <input type="text" id="startdatepicker" id="start" class="col form-control inputCal" ></p>
+ 
     </div>
     <div class="form-group col">
-      <input type="date" name="end" id="end" class="col form-control inputCal">
+      <!-- <input type="date" name="end" id="end" class="col form-control inputCal"> -->
+      <p>End Date <input type="text" id="enddatepicker" id="start" class="col form-control inputCal" ></p>
+ 
     </div>
     <div class="col form-group">
       <button onclick="leaveApply()" class="col btn btn-primary buttonCal">apply leave</button>
@@ -365,8 +369,11 @@
         <option value="4">Aa</option>
       </select>
       </div>
-      <img src="./img/Capture.PNG" alt="Smiley face" >
-    <script>$( "#dialog" ).dialog()</script>
+     
+    <script>$( "#dialog" ).dialog()
+     $( "#startdatepicker" ).datepicker();
+     $( "#enddatepicker" ).datepicker();
+    </script>
     <script type="text/javascript" src="./javascript/table_script.js"></script>
 
 </body>

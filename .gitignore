@@ -20,4 +20,5 @@ bin-release/
 =======
 node_modules/*
 temp/*
+Database/*
 >>>>>>> my first version

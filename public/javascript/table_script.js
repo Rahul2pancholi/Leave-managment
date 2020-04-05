@@ -95,8 +95,8 @@ function createDate(date_array) {
 /**************************************APPLY LEAVE START******************************************************* */
 function leaveApply() {
 
-    let start = document.getElementById("start");
-    let end = document.getElementById("end");
+    let start = document.getElementById("startdatepicker");
+    let end = document.getElementById("enddatepicker");
     var i = 0;
     var e = document.getElementById("emp_nm");
 
@@ -715,7 +715,7 @@ window.onload = () => {
 
 
     getEmpJsonData(); //this will fetch employee data from server and display 
-    defineFloating();
+   // defineFloating();
     myToggle();
     createLegend();
     createFloatingTab();
@@ -1347,14 +1347,6 @@ function Save() {
 
 
 
-function defineFloating() {
-
-    let thead = document.getElementById("thead1");
-    let abc = (thead.children);
-    // //console.log(abc)
-
-
-}
 
 function reload() {
     location.reload();
@@ -1600,7 +1592,10 @@ function createFloatingTab() {
                 Object.keys(floating_leave).forEach(function (val, ind) {
 
 
+
                     t_row = lBody.insertRow();
+                    t_cell = t_row.insertCell();
+                    
                     t_cell = t_row.insertCell();
                     t_cell.innerHTML = val;
                     t_cell = t_row.insertCell();
@@ -1676,38 +1671,36 @@ function floatingTable()
 {
     letflBody=document.getElementById("FL_TBODY");
     let child = ( letflBody.childNodes);
-    console.log(child.length);
-    for(i=0; i<child.length;i++)
-    {
-        
-        console.log(child[i]);
+    for(var i=0; i<child.length;i++)
+    { 
         let trChild = ( child[i].childNodes);
-        console.log(trChild.length);
 
-        for(j=0; j<trChild.length;j++)
-        {
-            child[j].addEventListener("dblclick", function () {
-        
-                child[j].contentEditable = true;
-                child[j].focus();
-                console.log(child[j]);
-        
-              });
-              
-              child[j].addEventListener('focusout', function (e) {
-                child[j].contentEditable = false;
-        
-              }
-              );
-        }
-         
+        //Adding event Litsner
+        trChild.forEach( (value,index) =>{  DoubleClickLitner(value);FocusOutListner(value)});
 
-
+//   fetch("/commentIMAGE", {
+//         method:"POST"
+//       , body:new URLSearchParams("email=test@example.com&password=pw")
+//       })
     
+// }
     }
-  fetch("/commentIMAGE", {
-        method:"POST"
-      , body:new URLSearchParams("email=test@example.com&password=pw")
-      })
-    
+}
+function DoubleClickLitner(element)
+{
+    element.addEventListener("dblclick", function () {
+        
+        element.contentEditable = true;
+        element.focus();
+        console.log(element);
+
+      });
+}
+function FocusOutListner(element)
+{
+    element.addEventListener('focusout', function (e) {
+        element.contentEditable = false;
+
+      }
+      );
 }
