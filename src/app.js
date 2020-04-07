@@ -5,7 +5,8 @@ var app = express();
 const fs = require("fs");
 var project="CB";
 var year="2020";
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var loggedIn=false;
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
 const publicDirectoryPath = path.join(__dirname, "../public");
 const jsonFilePath = path.join(__dirname, `../public/database/test_${project}_${year}.json`);
 const jsonLeaveColor = path.join(__dirname , "../public/database/leave_color.json");
@@ -28,9 +29,35 @@ app.get('/listUsers', function (req, res) {
 })  
 
 app.get('', (req, res) => {
-    res.render("index", {
-          "name" : "rahul"  
-    });
+
+    res.render("index");
+})
+
+app.get('/auth', (req, res) => {
+   
+     project=req.query.team;
+     year=req.query.year;
+     
+     loggedIn =true;
+
+     if(loggedIn)
+     {
+        res.redirect('/home');
+     }
+
+})
+
+app.get('/home', (req, res) => {
+   
+if(loggedIn)
+{
+   res.render("home", {
+         "name" : "rahul"  
+   });
+}else{
+    res.redirect('/');
+}
+
 })
 
 
@@ -57,14 +84,6 @@ app.get('/FLOATING_FILE', (req, res) => {
     console.log("called")
 
 })
-
-
-// app.get('/public/database/floating_leave.json', (req, res) => {
-//     res.sendFile(__dirname + "/" + "public/database/floating_leave.json");
-//     console.log("called")
-
-// })
-
 
 app.get('/report/report.html', (req, res) => {
     res.sendFile(__dirname + "/" + "report/report.html");
@@ -94,7 +113,7 @@ app.post('/NEW_EMPLOYEE', urlencodedParser, (req, res) => {
 
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)
-        addNewEmp(JSON.parse(data), JSON.parse(req.body.emp_data));          // Or put the next step in a function and invoke it
+        addNewEmp(jsonFilePath,JSON.parse(data), JSON.parse(req.body.emp_data));          // Or put the next step in a function and invoke it
     });
     res.send();
 });
@@ -111,7 +130,7 @@ app.post('/DELETE', urlencodedParser, (req, res) => {
 
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)
-        delEmp(JSON.parse(data), JSON.parse(req.body.emp_name));          // Or put the next step in a function and invoke it
+        delEmp(jsonFilePath,JSON.parse(data), JSON.parse(req.body.emp_name));          // Or put the next step in a function and invoke it
     });
     res.send();
 });
@@ -131,7 +150,7 @@ app.post('/UPDATE', urlencodedParser, (req, res) => {
         newemp = JSON.parse(req.body.newemp);
         filedata = JSON.parse(data);
         console.log(newemp);
-        updateEmpData(filedata, update, newemp);
+        updateEmpData(jsonFilePath,filedata, update, newemp);
     });
 
 
@@ -161,7 +180,7 @@ var server = app.listen(port, function () {
 
 
 
-function delEmp(filedata, resData) {
+function delEmp(jsonFilePath,filedata, resData) {
     demp = filedata.employee_name;
     dlev = filedata.leave_detail;
 
@@ -183,7 +202,7 @@ function delEmp(filedata, resData) {
     });
 }
 
-function updateEmpData(filedata, update, newemp) {
+function updateEmpData(jsonFilePath,filedata, update, newemp) {
     demp = filedata.employee_name;
     dlev = filedata.leave_detail;
     // console.log(newemp);
@@ -232,6 +251,7 @@ function updateEmpData(filedata, update, newemp) {
 
 
                 }
+        
                 else {
 
                     //delete the object
@@ -264,7 +284,7 @@ function updateEmpData(filedata, update, newemp) {
 }
 
 
-function addNewEmp(filedata, resData) {
+function addNewEmp(jsonFilePath,filedata, resData) {
     demp = filedata.employee_name;
     dlev = filedata.leave_detail;
 
