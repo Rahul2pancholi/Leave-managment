@@ -3,12 +3,12 @@ var bodyParser = require('body-parser')
 var path = require("path");
 var app = express();
 const fs = require("fs");
-var project="CB";
-var year="2020";
+var project;
+var year;
 var loggedIn=false;
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 const publicDirectoryPath = path.join(__dirname, "../public");
-const jsonFilePath = path.join(__dirname, `../public/database/test_${project}_${year}.json`);
+var jsonFilePath;// path.join(__dirname, `../public/database/test_${project}_${year}.json`);
 const jsonLeaveColor = path.join(__dirname , "../public/database/leave_color.json");
 const json_FloatLeave= path.join(__dirname , "../public/database/floating_leave.json");
 const viewsPath =  path.join(__dirname, "../public/views");
@@ -37,11 +37,11 @@ app.get('/auth', (req, res) => {
    
      project=req.query.team;
      year=req.query.year;
-     
-     loggedIn =true;
-
-     if(loggedIn)
-     {
+     if(project != undefined && year != undefined )
+    
+    {   
+        jsonFilePath = path.join(__dirname, `../public/database/test_${project}_${year}.json`);
+        loggedIn =true;
         res.redirect('/home');
      }
 
@@ -52,8 +52,11 @@ app.get('/home', (req, res) => {
 if(loggedIn)
 {
    res.render("home", {
-         "name" : "rahul"  
+         "name" : "rahul",
+         "project" :project,
+         "year" : year
    });
+   loggedIn =false;
 }else{
     res.redirect('/');
 }
@@ -67,6 +70,9 @@ app.get('/test.json', (req, res) => {
     console.log("called")
 
 })
+app.get("/getvar", function(req, res){
+    res.send({ "year" : year });
+});
 
 app.post('/commentIMAGE',urlencodedParser, (req, res) => {
    
@@ -110,6 +116,7 @@ app.post('/NEW_EMPLOYEE', urlencodedParser, (req, res) => {
            
         }
 
+        
 
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)

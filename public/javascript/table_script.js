@@ -2,7 +2,7 @@
 let selectEnabled = 0;
 let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 let day_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-let year = 2020;
+let year ;
 let logfile = [];
 let isAvailable = 0;
 let select = null;
@@ -458,19 +458,20 @@ function getEmpJsonData() {
     xhttp.open("GET", '/test.json', true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
    // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
-    xhttp.send(`data=2020&project=NPD`);
+    xhttp.send();
     xhttp.onload = function () {
         if (this.readyState == 4 && this.status == 200) {
 
 
             if (this.responseText != "") {
 
+                
                 tempJson = JSON.parse(this.responseText)["leave_detail"];
                 emp_nm = JSON.parse(this.responseText)["employee_name"];
 
-
-                //console.log(tempJson)
+               //console.log(tempJson)
                 //console.log(emp_nm)
+
             }
             else {
                 tempJson = tempJson = [];
@@ -480,20 +481,45 @@ function getEmpJsonData() {
 
             //console.log(Object.keys(tempJson).length)
             if ((Object.keys(tempJson).length != 0 && Object.keys(emp_nm).length != 0) && (tempJson != undefined && emp_nm != undefined)) {
-                createSelectEmp();
-                createInitRow();
-                applyEventLitn();
-                addDataToRow();
+                
+                xhttp.open("GET", '/getvar', true);
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+               // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
+                xhttp.send();
+                xhttp.onload = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+            
+            
+                       year=JSON.parse(this.responseText).year;
+                       console.log(year);
+                       createSelectEmp();
+                         createInitRow();
+                         applyEventLitn();
+                        addDataToRow();
+                    
+                    }
+                
             }
+        }
             else {
 
-
+                xhttp.open("GET", '/getvar', true);
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+               // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
+                xhttp.send();
+                xhttp.onload = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+            
+            
+                       year=JSON.parse(this.responseText).year;
                 tempJson = [];
                 emp_nm = [];
                 createSelectEmp(); //select list 
                 createInitRow(); // used to create the header row 
                 //  applyEventLitn();
             }
+        }
+    }
 
 
         }
@@ -721,7 +747,6 @@ let rightClickObject =null;
 
 window.onload = () => {
 
-
     getEmpJsonData(); //this will fetch employee data from server and display 
    // defineFloating();
     myToggle();
@@ -732,7 +757,17 @@ window.onload = () => {
    
 /*********************************tooltip********** */
 
-$( "#tbody_1" ).sortable();
+$( "#tbody_1" ).sortable({
+    placeholder: "highlight",
+    start: function (event, ui) {
+        ui.item.toggleClass("highlight");
+        console.log("start");
+    },
+    stop: function (event, ui) {
+        ui.item.toggleClass("highlight");
+        console.log("stop");
+    }
+});
 /********************************* */
 document.getElementById("div-1").addEventListener("scroll", function (event) {
     var scroll = this.scrollLeft; 
@@ -1462,7 +1497,7 @@ function myFunction() {
     table = document.getElementById("tbody_1");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
+        td = tr[i].getElementsByTagName("td")[2];
         if (td) {
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -1506,6 +1541,7 @@ function Delete() {
 
         }
     
+        
 console.log(node.style.display="none");
 
         delObjCurr = null;
