@@ -79,7 +79,7 @@ app.post('/commentIMAGE',urlencodedParser, (req, res) => {
     console.log(req.body)
 
 })
-app.get('/LEAVE_COLOR', (req, res) => {
+app.get('/LEAVE_COLOR', (req,   res) => {
     res.sendFile(jsonLeaveColor);
     console.log("called")
 
@@ -108,6 +108,20 @@ app.get('/report/js_report.js', (req, res) => {
 
 
 
+function checkDataLength(data)
+{
+    if(data.length <= 0  )
+    {
+return {
+ leave_detail : {},
+employee_name : { }
+}
+    }
+    else{
+        return JSON.parse(data);
+    }
+
+}
 /********************************ADDING NEW EMPLOYEE****************************** */
 app.post('/NEW_EMPLOYEE', urlencodedParser, (req, res) => {
     console.log(req.body.emp_data);
@@ -115,12 +129,10 @@ app.post('/NEW_EMPLOYEE', urlencodedParser, (req, res) => {
         if (err) {
            
         }
-
-        
-
+        data=checkDataLength(data);
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)
-        addNewEmp(jsonFilePath,JSON.parse(data), JSON.parse(req.body.emp_data));          // Or put the next step in a function and invoke it
+        addNewEmp(jsonFilePath,data, JSON.parse(req.body.emp_data));          // Or put the next step in a function and invoke it
     });
     res.send();
 });
@@ -133,11 +145,12 @@ app.post('/DELETE', urlencodedParser, (req, res) => {
             console.log(err)
 
         }
-
+       console.log(`data === ${data}`);
+       data=checkDataLength(data);
 
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)
-        delEmp(jsonFilePath,JSON.parse(data), JSON.parse(req.body.emp_name));          // Or put the next step in a function and invoke it
+        delEmp(jsonFilePath,data, JSON.parse(req.body.emp_name));          // Or put the next step in a function and invoke it
     });
     res.send();
 });
@@ -153,11 +166,12 @@ app.post('/UPDATE', urlencodedParser, (req, res) => {
         if (err) {
             console.log(err)
         }
+       console.log(`data === ${data}`);
         update = JSON.parse(req.body.update);
         newemp = JSON.parse(req.body.newemp);
-        filedata = JSON.parse(data);
+        data=checkDataLength(data);
         console.log(newemp);
-        updateEmpData(jsonFilePath,filedata, update, newemp);
+        updateEmpData(jsonFilePath,data, update, newemp);
     });
 
 
@@ -242,21 +256,13 @@ function updateEmpData(jsonFilePath,filedata, update, newemp) {
     update.forEach(function (val, ind) {
         // console.log(val)
         Object.keys(val).forEach(function (ival, iind) {
-            //    console.log(ival);
-            // console.log(val[ival])
-            // console.log(Object.keys(val[ival]));
+              
             Object.keys(val[ival]).forEach(function (innerval, innerindex) {
-                // console.log(innerval)
+             
                 leave = val[ival][innerval];
-                // console.log(JSON.stringify(leave)+"=="+innerval)
+                 console.log(JSON.stringify(leave)+"=="+innerval)
                 if (leave["leavetype"] != "") {
-                    // dlev[ival][innerval]  = leave;
-
-
-                    dlev[ival][innerval] = leave
-                    console.log(dlev[ival][innerval])
-
-
+                     dlev[ival][innerval]  = leave;
                 }
         
                 else {

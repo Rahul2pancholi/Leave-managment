@@ -34,6 +34,12 @@
     });
   </script>
   <style>
+    .dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
     .div1 {
       height: 100%;
       width: 100%;
@@ -374,17 +380,32 @@
     title="Type in a name">
                   </div>
             </div>
-            <div style="width: 25%;" class="my-3 divparent" tabindex="0" id="main_table_div">Leave Status
-              <table style="margin-bottom: 0px;width: fit-content" class="table table-sm table-bordered legend_table divclass"
-                id="legend_tab1">
-                <thead class="thead-dark table_head" id="legend_thead1">
-                  <tr id="LH_ROW">
-                    <td>LEAVE_COLOR</td>
-                    <td>LEAVE_TYPE</td>
-                  </tr>
-                </thead>
-                <tbody id="LH_TBODY"></tbody>
-              </table>
+           <div>    
+   <div>
+                <span class="dot" id="PL_C" style="background-color: blue;" ></span>
+                <span id="myspan">Planned Leave</span>
+              
+            </div>
+               <div>
+                <span class="dot" id="UL_C"style="background-color: darkslateblue;" ></span>
+                <span id="UL">Un-Planned Leave</span>
+                
+            </div>
+               <div>
+                <span class="dot" id="FL_C" style="background-color: darkorange;" ></span>
+                <span id="FL">Floating Leave</span>
+              
+            </div>
+            <div><span class="dot" id="APPROVE_C" style="background-color: green;"></span>
+                  <span id="APPROVE" >Approve</span></div>
+                
+                <div><span class="dot" id="REJ_C" style="background-color: red;"></span>
+                  <span id="REJ">Reject</span></div>
+                
+                <div><span class="dot" id="TENTATIVE_C" style="background-color:springgreen;"></span>
+                <span id="TENTATIVE">Tentetive</span></div>
+                   <div><span class="dot" id="ALT_C" style="background-color:dimgrey;"></span>
+                <span id="ALT">Alternate</span></div>
             </div>
 
           </div>

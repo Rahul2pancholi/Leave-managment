@@ -2,7 +2,7 @@
 let selectEnabled = 0;
 let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 let day_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-let year ;
+let year;
 let logfile = [];
 let isAvailable = 0;
 let select = null;
@@ -18,8 +18,8 @@ let showAllEnabled = 1;
 let xhttp = new XMLHttpRequest();
 let cmtElmt = document.getElementById("cmtID");
 let textarea = document.getElementById("lastname");
-let oldComment=null;
-let newComment=null;
+let oldComment = null;
+let newComment = null;
 /************TOOL-----TIP*********** */
 
 
@@ -249,22 +249,34 @@ function back_Color(clr, clrobj) {
 
         case "FL":
 
-            clrobj.style.backgroundColor = "75F900";
+            clrobj.style.backgroundColor = document.getElementById("FL_C").style.backgroundColor;
             clrobj.style.backgroundColor = "!important";
             break;
 
         case "PL":
-            clrobj.style.backgroundColor = "#103AE3";
+            clrobj.style.backgroundColor = document.getElementById("PL_C").style.backgroundColor;
 
             break;
-
-        case "ALT":
-            clrobj.style.backgroundColor = "#34eb64";
-
+            case "UL" :   clrobj.style.backgroundColor = document.getElementById("UL_C").style.backgroundColor;
             break;
-        case "REJ" :
-        clrobj.style.backgroundColor ="#ff0000";
-        break;
+case "PL(A)" : 
+    case "FL(A)" :  clrobj.style.backgroundColor = document.getElementById("APPROVE_C").style.backgroundColor;
+
+break;
+case "PL(R)" : 
+    case "FL(R)" :  clrobj.style.backgroundColor = document.getElementById("REJ_C").style.backgroundColor;
+
+    break;
+    case "PL(T)" : 
+    case "FL(T)" :  clrobj.style.backgroundColor = document.getElementById("TENTATIVE_C").style.backgroundColor;
+
+    break;
+    case "PL(ALT)" : 
+    case "FL(ALT)" :  clrobj.style.backgroundColor = document.getElementById("ALT_C").style.backgroundColor;
+
+    break;
+
+
         default:
             clrobj.style.backgroundColor = "";
     }
@@ -355,8 +367,13 @@ function createInitRow() {
     head = document.createElement("th");
     // text = document.createTextNode("Team_Name");
     // head.append(text)
-    head.setAttribute("id", `checkbox`);
+    let checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    checkBox.setAttribute("id", `all_checkbox`);
+    head.setAttribute("id", `checkbox_head`);
     // head.setAttribute("class", `pool`);
+    head.setAttribute("onclick", "selectAllCheckBOX(this)");
+    head.appendChild(checkBox);
     row.appendChild(head);
     // row.setAttribute("class", ` Team_Name`)
 
@@ -365,8 +382,11 @@ function createInitRow() {
     head.append(text)
     head.setAttribute("id", `team_name`);
     head.setAttribute("class", `pool`);
+    head.setAttribute("onclick", `sortTable(1)`);
     row.appendChild(head);
     row.setAttribute("class", ` Team_Name`)
+
+
 
     head = document.createElement("th");
     text = document.createTextNode("Emp_Name");
@@ -457,7 +477,7 @@ function getEmpJsonData() {
 
     xhttp.open("GET", '/test.json', true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-   // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
+    // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
     xhttp.send();
     xhttp.onload = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -465,11 +485,11 @@ function getEmpJsonData() {
 
             if (this.responseText != "") {
 
-                
+
                 tempJson = JSON.parse(this.responseText)["leave_detail"];
                 emp_nm = JSON.parse(this.responseText)["employee_name"];
 
-               //console.log(tempJson)
+                //console.log(tempJson)
                 //console.log(emp_nm)
 
             }
@@ -481,51 +501,50 @@ function getEmpJsonData() {
 
             //console.log(Object.keys(tempJson).length)
             if ((Object.keys(tempJson).length != 0 && Object.keys(emp_nm).length != 0) && (tempJson != undefined && emp_nm != undefined)) {
-                
+
                 xhttp.open("GET", '/getvar', true);
                 xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-               // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
+                // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
                 xhttp.send();
                 xhttp.onload = function () {
                     if (this.readyState == 4 && this.status == 200) {
-            
-            
-                       year=JSON.parse(this.responseText).year;
-                       console.log(year);
-                       createSelectEmp();
-                         createInitRow();
-                         applyEventLitn();
+
+
+                        year = JSON.parse(this.responseText).year;
+                        console.log(year);
+                        createSelectEmp();
+                        createInitRow();
+                        applyEventLitn();
                         addDataToRow();
-                    
+
                     }
-                
+
+                }
             }
-        }
             else {
 
                 xhttp.open("GET", '/getvar', true);
                 xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-               // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
+                // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
                 xhttp.send();
                 xhttp.onload = function () {
                     if (this.readyState == 4 && this.status == 200) {
-            
-            
-                       year=JSON.parse(this.responseText).year;
-                tempJson = [];
-                emp_nm = [];
-                createSelectEmp(); //select list 
-                createInitRow(); // used to create the header row 
-                //  applyEventLitn();
+
+
+                        year = JSON.parse(this.responseText).year;
+                        tempJson = [];
+                        emp_nm = [];
+                        createSelectEmp(); //select list 
+                        createInitRow(); // used to create the header row 
+                        //  applyEventLitn();
+                    }
+                }
             }
-        }
-    }
 
 
         }
-        else if(this.readyState == 4 && this.status == 404)
-        {
-            
+        else if (this.readyState == 4 && this.status == 404) {
+
             tempJson = [];
             emp_nm = [];
             createSelectEmp(); //select list 
@@ -580,14 +599,15 @@ let oldval = null;
 let delObjCurr = null;
 let delObjPrev = null;
 let oldcomment = null;
+let ctClickArr = [];
 function applyEventLitn() {
-    
+
 
     let innerVal;
     let cells = document.getElementsByClassName('content');
     let poolCell = document.getElementsByClassName('pool');
 
- 
+
 
     for (let cell of poolCell) {
         cell.addEventListener("click", function () {
@@ -619,29 +639,67 @@ function applyEventLitn() {
         }
         );
     }
+
     for (let cell of cells) {
-        cell.addEventListener("click", function () {
+        cell.addEventListener("click", function (event) {
 
             let prevObj = clickObject;
             clickObject = this;
-            if (prevObj != null && prevObj != undefined && prevObj.classList.contains("click_select")) {
-                prevObj.classList.remove("click_select");
-            }
-            if (!(this.classList.contains("click_select"))) {
+            // if (prevObj != null && prevObj != undefined && prevObj.classList.contains("click_select")) {
+            //     prevObj.classList.remove("click_select");
+            // }
+            // if (!(this.classList.contains("click_select"))) {
 
-                this.classList.add("click_select");
-                var rect = this.getBoundingClientRect();
-               var divreact= document.getElementById("div-1").getBoundingClientRect();
-               console.log(divreact.right- rect.right,  rect.left-  divreact.left, this.style.width);
+            //     this.classList.add("click_select");
+            //     var rect = this.getBoundingClientRect();
+            //    var divreact= document.getElementById("div-1").getBoundingClientRect();
+            //    console.log(divreact.right- rect.right,  rect.left-  divreact.left, this.style.width);
 
-            }
+            // }
             // //console.log("clicked= " + this);
 
 
 
+            if (cntrlIsPressed) {
+                console.log("called ")
+                if (this.classList.contains("click_select")) {
+                    clickObject.classList.remove("click_select");
+                    ctClickArr = arrayRemove(ctClickArr, this);
+
+
+                } else {
+                    clickObject.classList.add("click_select");
+                    console.log(clickObject.classList)
+                    ctClickArr.push(this);
+                }
+
+            } else {
+
+                for (var i = 0; i < ctClickArr.length; i++) {
+                    ctClickArr[i].classList.remove("click_select");
+
+                }
+
+                if (!(this.classList.contains("click_select"))) {
+                    this.classList.add("click_select");
+                    ctClickArr = [];
+                    ctClickArr.push(this);
+                }
+                else {
+                    this.classList.remove("click_select");
+                    ctClickArr = arrayRemove(ctClickArr, this);
+                }
+
+
+            }
+
+
+
+            console.log(ctClickArr);
+
         });
-       
-        
+
+
 
         cell.addEventListener("focusout", function () {
 
@@ -649,7 +707,7 @@ function applyEventLitn() {
 
             // //console.log("Cell focus out " + this.childElementCount);
 
-            
+
             if (activeCell != null) {
                 this.contentEditable = false;
                 color = back_Color(activeCell.innerText, activeCell);
@@ -672,7 +730,7 @@ function applyEventLitn() {
 
             console.log("db click called");
             innerVal = this.innerText || this.innerHTML;
-    
+
 
 
             let headerColId = (this.id).replace(((this.id).split("_"))[0], "row0");
@@ -689,39 +747,39 @@ function applyEventLitn() {
                 }
             });
 
-            
-
-                if (Fldate == 0) {
-                    // //console.log("float")
-                    if (found == undefined) {
-
-                        activeCell = this;
-                        oldval = this.innerText;
-                        oldcomment = this.getAttribute("title");
-                        this.style.backgroundColor = "";
-                        this.contentEditable = true;
-                        this.focus();
 
 
+            if (Fldate == 0) {
+                // //console.log("float")
+                if (found == undefined) {
 
-
-
-                    }
-                }
-                else {
-
-                    console.log("child element");
-                    this.contentEditable = true;
-                    this.style.backgroundColor = "";
+                    activeCell = this;
                     oldval = this.innerText;
                     oldcomment = this.getAttribute("title");
+                    this.style.backgroundColor = "";
+                    this.contentEditable = true;
                     this.focus();
-                    activeCell = this;
+
+
+
 
 
                 }
+            }
+            else {
 
-            
+                console.log("child element");
+                this.contentEditable = true;
+                this.style.backgroundColor = "";
+                oldval = this.innerText;
+                oldcomment = this.getAttribute("title");
+                this.focus();
+                activeCell = this;
+
+
+            }
+
+
 
 
 
@@ -743,92 +801,141 @@ function applyEventLitn() {
 
 
 
-let rightClickObject =null;
+let rightClickObject = null;
+var cntrlIsPressed = false;
 
 window.onload = () => {
 
     getEmpJsonData(); //this will fetch employee data from server and display 
-   // defineFloating();
+    // defineFloating();
     myToggle();
-    createLegend();
+    // createLegend();
     createFloatingTab();
-    
+    $("#myspan").click(function () {
+        Applyleavebycolor("PL");
+    });
+    $("#UL").click(function () {
+        Applyleavebycolor("UL");
+    });$("#FL").click(function () {
+        Applyleavebycolor("FL");
+    });$("#REJ").click(function () {
+        Applyleavebycolor("REJ");
+    });
+    $("#APPROVE").click(function () {
+        Applyleavebycolor("APP");
+    });
 
-   
-/*********************************tooltip********** */
-
-$( "#tbody_1" ).sortable({
-    placeholder: "highlight",
-    start: function (event, ui) {
-        ui.item.toggleClass("highlight");
-        console.log("start");
-    },
-    stop: function (event, ui) {
-        ui.item.toggleClass("highlight");
-        console.log("stop");
-    }
-});
-/********************************* */
-document.getElementById("div-1").addEventListener("scroll", function (event) {
-    var scroll = this.scrollLeft; 
-   // console.log(scroll)
-});
-
-$(function() {
-    $.contextMenu({
-        selector: '.umeric', 
-        callback: function(key, options) {
-            var m = "clicked: " + key;
-            window.console && console.log(m) ; 
-           
-           
-            switch(key) {
-                case "Edit_Comment":
-                  // code block 
-                  
-                  rightClickObject=this[0];
-                  var rect = this[0].getBoundingClientRect();
-                let comment=this[0].getAttribute("title").trim();
-                  textarea.innerText=comment;
-                  textarea.value=comment;
-                  oldComment=comment;
-                  console.log(`oldcommenr = ${comment}`)
-                  
+    $("#ALT").click(function () {
+        Applyleavebycolor("ALT");
+    });
+    $("#TENTATIVE").click(function () {
+        Applyleavebycolor("TEN");
+    });
 
 
 
-cmtElmt.style.display="block";
-cmtElmt.style.top =rect.top+"px" ;
-cmtElmt.style.right=rect.right+"px";
-cmtElmt.style.bottom=rect.bottom+"px"
-cmtElmt.style.left=rect.left+"px"
 
-textarea.focus();   
-textarea.click();       
-break;    
-case "Reject_Leave":
-    this
-rejectLeave(this[0])
-break;
-                default:
-                  // code block
-              }
-           
-        },
-        items: {
-            "Approve_Leave": {name: "Approve_Leave", icon: "edit"},
-            "Reject_Leave": {name: "Reject_Leave", icon: "cut"},
-            "Edit_Comment": {name: "Edit_Comment", icon: "paste"},
-            "delete": {name: "Delete", icon: "delete"},
-            "sep1": "---------",
-            "quit": {name: "Quit", icon: function(){
-                return 'context-menu-icon context-menu-icon-quit';
-            }}
+
+
+    $(document).keydown(function (event) {
+        switch (event.which) {
+            case 17: cntrlIsPressed = true;
+                break;
+            case 46: deleteElementValue(); console.log("delete");
         }
-    }
-    );  
-    
-});
+        //     if(event.which=="17")
+        //         cntrlIsPressed = true;
+    });
+
+    $(document).keyup(function (event) {
+        cntrlIsPressed = false;
+    });
+
+
+
+
+
+    /*********************************tooltip********** */
+
+    $("#tbody_1").sortable({
+        placeholder: "highlight",
+        start: function (event, ui) {
+            ui.item.toggleClass("highlight");
+            console.log("start");
+        },
+        stop: function (event, ui) {
+            ui.item.toggleClass("highlight");
+            console.log("stop");
+            changeOrder(ui, event);
+
+        }
+    });
+
+
+
+    /********************************* */
+    document.getElementById("div-1").addEventListener("scroll", function (event) {
+        var scroll = this.scrollLeft;
+        // console.log(scroll)
+    });
+
+    $(function () {
+        $.contextMenu({
+            selector: '.umeric',
+            callback: function (key, options) {
+                var m = "clicked: " + key;
+                window.console && console.log(m);
+
+
+                switch (key) {
+                    case "Edit_Comment":
+                        // code block 
+
+                        rightClickObject = this[0];
+                        var rect = this[0].getBoundingClientRect();
+                        let comment = this[0].getAttribute("title").trim();
+                        textarea.innerText = comment;
+                        textarea.value = comment;
+                        oldComment = comment;
+                        console.log(`oldcommenr = ${comment}`)
+
+
+
+
+                        cmtElmt.style.display = "block";
+                        cmtElmt.style.top = rect.top + "px";
+                        cmtElmt.style.right = rect.right + "px";
+                        cmtElmt.style.bottom = rect.bottom + "px"
+                        cmtElmt.style.left = rect.left + "px"
+
+                        textarea.focus();
+                        textarea.click();
+                        break;
+                    case "Reject_Leave":
+                        this
+                        rejectLeave(this[0])
+                        break;
+                    default:
+                    // code block
+                }
+
+            },
+            items: {
+                "Approve_Leave": { name: "Approve_Leave", icon: "edit" },
+                "Reject_Leave": { name: "Reject_Leave", icon: "cut" },
+                "Edit_Comment": { name: "Edit_Comment", icon: "paste" },
+                "delete": { name: "Delete", icon: "delete" },
+                "sep1": "---------",
+                "quit": {
+                    name: "Quit", icon: function () {
+                        return 'context-menu-icon context-menu-icon-quit';
+                    }
+                }
+            }
+        }
+        );
+
+    });
 
 
 
@@ -844,7 +951,7 @@ break;
 
 
 
-   
+
 
 
 
@@ -900,57 +1007,57 @@ function addDataToRow() {
                     // //console.log(ivalue["leavedate"]);
                     // //console.log(ivalue["leavetype"]);
                     // //console.log(ivalue["comment"]);
-                   // for (var thcount = thindex; thcount < thead.length; thcount++) {
+                    // for (var thcount = thindex; thcount < thead.length; thcount++) {
 
 
-                        //     var leavedate = tempJson[empcount]["leave"][leave]["leavedate"];
+                    //     var leavedate = tempJson[empcount]["leave"][leave]["leavedate"];
 
-                        for (var thcount = thindex; thcount < thead.length; thcount++) {
+                    for (var thcount = thindex; thcount < thead.length; thcount++) {
 
-                            var thdate = thead[thcount].innerText;
-                            //        var leavedate = tempJson[empcount]["leave"][leave]["leavedate"];
+                        var thdate = thead[thcount].innerText;
+                        //        var leavedate = tempJson[empcount]["leave"][leave]["leavedate"];
 
-                            empleavedata = empnm[thdate];
-                            if (empleavedata != null && empleavedata != undefined) {
-                                let leavetype = empleavedata["leavetype"];
-                                let leaveComment = empleavedata["comment"];
-                                let innerCell = tbody[rowCount].childNodes[thcount];
-                                console.log("innerdiv " + (innerCell.hasChildNodes()))
-                                // while(innerCell.hasChildNodes())
-                                // {
-                                //     let textelement = innerCell.firstChild;
-                                //     let className = textelement.classList;
-                                //     innerCell =textelement
-                                //    if( className[0] == "textarea1" ) 
-                                //    {
+                        empleavedata = empnm[thdate];
+                        if (empleavedata != null && empleavedata != undefined) {
+                            let leavetype = empleavedata["leavetype"];
+                            let leaveComment = empleavedata["comment"];
+                            let innerCell = tbody[rowCount].childNodes[thcount];
+                            console.log("innerdiv " + (innerCell.hasChildNodes()))
+                            // while(innerCell.hasChildNodes())
+                            // {
+                            //     let textelement = innerCell.firstChild;
+                            //     let className = textelement.classList;
+                            //     innerCell =textelement
+                            //    if( className[0] == "textarea1" ) 
+                            //    {
 
-                                //     break;
-                                //    }
-                                // }
-
-
-                                let color = back_Color(leavetype, innerCell);
-                                // let temp = innerCell.inn
-                                innerCell.setAttribute("title", leaveComment);
-                                /*******************BADGE************************ */
-                                //    var span = document.createElement("span");
-                                //     span.setAttribute("class","badge badge-danger")
-                                //    span.innerText="*";
-                                /*************************************** */
-                                
-                                let textNode = document.createTextNode(leavetype);
-                               // innerCell.innerVal = leavetype;
-                              innerCell.appendChild(textNode);
-                                //  innerCell.setAttribute("style",`background-image: url(C:/Users/rahul pancholi/Pictures/Capture.PNG);`);
-                                //  innerCell.style.backgroundImage="url('C:/Users/rahul pancholi/Pictures/Capture.PNG'
-                            }
+                            //     break;
+                            //    }
+                            // }
 
 
+                            let color = back_Color(leavetype, innerCell);
+                            // let temp = innerCell.inn
+                            innerCell.setAttribute("title", leaveComment);
+                            /*******************BADGE************************ */
+                            //    var span = document.createElement("span");
+                            //     span.setAttribute("class","badge badge-danger")
+                            //    span.innerText="*";
+                            /*************************************** */
+
+                            let textNode = document.createTextNode(leavetype);
+                            // innerCell.innerVal = leavetype;
+                            innerCell.appendChild(textNode);
+                            //  innerCell.setAttribute("style",`background-image: url(C:/Users/rahul pancholi/Pictures/Capture.PNG);`);
+                            //  innerCell.style.backgroundImage="url('C:/Users/rahul pancholi/Pictures/Capture.PNG'
                         }
 
 
+                    }
 
-                  //      }
+
+
+                    //      }
 
 
                 }
@@ -993,12 +1100,13 @@ function createTableRow(parent_element, name, index, pool) {
     row.setAttribute("id", `row_${index + 1}`);
 
 
-     var cell = row.insertCell();
-     let checkBox = document.createElement("input");
-     checkBox.setAttribute("type","checkbox");
-     checkBox.setAttribute("id","main_chkbox_"+index);
-     cell.appendChild(checkBox);
-    row.appendChild(cell); 
+    var cell = row.insertCell();
+    let checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    checkBox.setAttribute("onclick", "selectCheckBOX(this)");
+    checkBox.setAttribute("id", "main_chkbox_" + index);
+    cell.appendChild(checkBox);
+    row.appendChild(cell);
 
 
     var cell = row.insertCell();
@@ -1010,7 +1118,7 @@ function createTableRow(parent_element, name, index, pool) {
 
     cell = row.insertCell();
     text = document.createTextNode(name);
-   
+
     cell.setAttribute("ROW_ID", rownum);
     cell.setAttribute("COL_ID", colnum);
     cell.setAttribute("id", `row${index + 1}_${num}`);
@@ -1034,17 +1142,17 @@ function createTableRow(parent_element, name, index, pool) {
             // let div = document.createElement("div");
 
 
-           // let div1 = document.createElement("div");
+            // let div1 = document.createElement("div");
             // let textarea1 = document.createElement("input");
             // let div2 = document.createElement("div");
-    
+
             // div1.setAttribute("class","div1");
             // div2.setAttribute("class","div2");
             // textarea1.setAttribute("class","textarea1");
             // div1.appendChild(textarea1);
             // div1.appendChild(div2);
 
-    
+
             // span.setAttribute("class","starimg");
             // span.innerHTML=`&#11088;`;
 
@@ -1059,13 +1167,16 @@ function createTableRow(parent_element, name, index, pool) {
 
             // cell.setAttribute("tabindex", "0");
             // cell.appendChild(div1);
-            cell.setAttribute("class", `${full_date} content ellipsis ${s_month} ${day_nm_class} non_sel umeric ${s_month} ${day_nm_class}`)
+            cell.setAttribute("date", full_date);
+            cell.setAttribute("ename", name);
+
+            cell.setAttribute("class", `content ellipsis ${s_month} ${day_nm_class} non_sel umeric ${s_month} ${day_nm_class}`)
             /*************************************TOOLTIP ADDED ****************** */
             cell.setAttribute("data-toggle", "tooltip");
             cell.setAttribute("title", ``);
-          //  cell.appendChild(div1);
+            //  cell.appendChild(div1);
             //cell.appendChild(span);
-           
+
             /************************************************************************ */
             // cell.setAttribute("class", ``)
             row.appendChild(cell);
@@ -1174,7 +1285,7 @@ function employeeNameAvailablity(name) {
 /**********************************************************************/
 function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
 
-console.log("comment :: ",comment);
+    console.log("comment :: ", comment);
 
     let leave = {};
     let dateFlag = 0;
@@ -1256,41 +1367,22 @@ let uarr = []; // for updating existing database leave
 let narr = []; // for applying new leave 
 //let darr =[]; // for deteting the leave 
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
-function addToJson1(cell_object, oldVal , oldcomment) {
-
-
-    let mainCellId = `${cell_object.id.split("_")[0]}_0`;
-    let mainCellElement = document.getElementById(mainCellId);
+function addToJson1(cell_object, oldVal, oldcomment) {
 
 
     let flag = 0;
-    let empnm = mainCellElement.innerHTML;
+
+    let empnm = cell_object.getAttribute("ename");
     let leave_typ = cell_object.innerText;
 
+    let applyDate = cell_object.getAttribute("date");
+    let comment = cell_object.getAttribute("title");
 
-
-
-    console.log("Add to json ",empnm);
-
-
-    let mainRowId = (cell_object.id).replace(((cell_object.id).split("_"))[0], "row0");
-
-    //console.log(mainRowId)
-    let applyDate = document.getElementById(mainRowId).innerText;
-    let comment=cell_object.getAttribute("title");
-   
-    // if(leave_typ == "" &&  oldVal == "" )
-    // {
-
-    // }
-    // if (!(leave_typ == "" || leave_typ == undefined))
     if (!(leave_typ == "" && oldVal == "") || !(comment == "" && oldcomment == "")) {
 
-        //console.log("testing = " + JSON.stringify(tempJson[empnm]));
-        //console.log("leave === " + cell_object.innerText);
         let employee_name = tempJson[empnm];
 
-        if (employee_name == undefined || employee_name == null) {
+        if (employee_name != undefined && employee_name != null) {
             // //console.log("First time applying leave");
 
             uarr = createDataArray(uarr, empnm, applyDate, leave_typ, comment);
@@ -1298,32 +1390,9 @@ function addToJson1(cell_object, oldVal , oldcomment) {
 
         }
         else {
-            // //console.log("Applying new leave for already have taken  leave  or updating existing leave");
 
-
-
-            //   //console.log(JSON.stringify(employee_name)); 
-            if (employee_name[applyDate] != undefined) {
-                // //console.log("UPDAATING EXISTING VALUE FROM DATABASE");
-
-                uarr = createDataArray(uarr, empnm, applyDate, leave_typ, comment);
-                // //console.log("createDataArray = " + JSON.stringify(uarr));
-                // //console.log(uarr);
-
-
-
-
-            }
-            else {
-
-                // //console.log("Applyin new leave for existing employee");
-                narr = createDataArray(narr, empnm, applyDate, leave_typ, comment);
-                // //console.log("createDataArray = " + JSON.stringify(narr));
-                // //console.log(narr);
-
-            }
-
-
+            console.log("called naarr " + JSON.stringify(narr));
+            narr = createDataArray(narr, empnm, applyDate, leave_typ, comment);
 
         }
 
@@ -1341,10 +1410,10 @@ function addToJson1(cell_object, oldVal , oldcomment) {
         //console.log("change save button color or toggle button");
         myToggle();
 
-  }
+    }
 
-   console.log("createDataArray = " + JSON.stringify(uarr));
-   console.log("createDataArray = " + JSON.stringify(narr));
+    console.log("createDataArray = " + JSON.stringify(uarr));
+    console.log("createDataArray = " + JSON.stringify(narr));
 }
 
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
@@ -1403,7 +1472,14 @@ function reload() {
 
 ////////////////////////////////////////////////////////////
 
+function finalmove(a, b) {
+    nextid = `row${a}_${b}`;
 
+    let selCell = document.getElementById(nextid);
+    if (selCell != null) {
+        selCell.click();
+    }
+}
 function getKeyAndMove(e) {
     var key_code = e.which || e.keyCode;
     if (clickObject != null && clickObject != undefined) {
@@ -1419,61 +1495,56 @@ function getKeyAndMove(e) {
         switch (key_code) {
             case 37: //left arrow key
                 b--;
+                finalmove(a, b)
                 break;
             case 38: //Up arrow key
                 a--;
+                finalmove(a, b)
                 break;
             case 39: //right arrow key
                 b++;
+                finalmove(a, b)
                 break;
             case 40: //down arrow key
                 a++;
+                finalmove(a, b)
                 break;
             default:
-                //console.log(key_code);
+            //console.log(key_code);
         }
 
 
+        // // document.get
 
-        nextid = `row${a}_${b}`;
+        // ////////**************************************** */
+        // var width = clickObject.offsetWidth;
+        // var height = clickObject.offsetHeight;
+        // //console.log(width + " " + height);
+        // //console.log(document.getElementById("legend_tab1").scrollLeft);
 
-        let selCell = document.getElementById(nextid);
-        if (selCell != null) {
-            selCell.click();
-        }
-
-
-        // document.get
-
-        ////////**************************************** */
-        var width = clickObject.offsetWidth;
-        var height = clickObject.offsetHeight;
-        //console.log(width + " " + height);
-        //console.log(document.getElementById("legend_tab1").scrollLeft);
-
-        var rect = clickObject.getBoundingClientRect();
+        // var rect = clickObject.getBoundingClientRect();
 
 
-        clickObject.style.left = rect.left;
+        // clickObject.style.left = rect.left;
 
-        //console.log(`${clickObject.style.left}`)
-        selected = clickObject.id.split("_")[1]
+        // //console.log(`${clickObject.style.left}`)
+        // selected = clickObject.id.split("_")[1]
 
 
 
 
-        var elmnt = document.getElementById("div-1");
-        var x = elmnt.scrollLeft;
-        var y = elmnt.scrollTop;
-        var viewport = x + width;
-        var elOffset = width * selected;
-        //console.log(`x=${x} VIEWPORT=${viewport} selected=${selected} elOffset=${elOffset} width =${width}`)
+        // var elmnt = document.getElementById("div-1");
+        // var x = elmnt.scrollLeft;
+        // var y = elmnt.scrollTop;
+        // var viewport = x + width;
+        // var elOffset = width * selected;
+        // //console.log(`x=${x} VIEWPORT=${viewport} selected=${selected} elOffset=${elOffset} width =${width}`)
 
-        // if (elOffset < x || (elOffset + width) > viewport)
-        // elmnt.scrollBy(elOffset, 0);
+        // // if (elOffset < x || (elOffset + width) > viewport)
+        // // elmnt.scrollBy(elOffset, 0);
 
 
-        /**************************************************************************** */
+        // /**************************************************************************** */
 
     }
 }
@@ -1489,6 +1560,7 @@ function sortTable() {
 
 
 }
+
 
 function myFunction() {
     var input, filter, table, tr, td, i, txtValue;
@@ -1513,10 +1585,8 @@ document.onkeydown = function (t) {
     if (t.which == 9) {
         return false;
     }
-
-
-
 }
+
 
 function Delete() {
 
@@ -1530,7 +1600,7 @@ function Delete() {
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
         let emp_node = document.getElementById(`row${node.id.split("_")[1]}_0`);
-         let employename = emp_node.innerText
+        let employename = emp_node.innerText
         //console.log(employename);
 
         //console.log(node.parentNode.removeChild(node));
@@ -1540,9 +1610,9 @@ function Delete() {
             //console.log(`${this.readyState} == 4 $$ ${this.status} == 200`);
 
         }
-    
-        
-console.log(node.style.display="none");
+
+
+        console.log(node.style.display = "none");
 
         delObjCurr = null;
         delObjPrev = null;
@@ -1564,53 +1634,53 @@ function myToggle() {
 }
 
 let leave_color = {};
-function createLegend() {
+// function createLegend() {
 
 
-    let xhttp = new XMLHttpRequest();
+//     let xhttp = new XMLHttpRequest();
 
-    xhttp.open("GET", '/LEAVE_COLOR', true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send();
-    xhttp.onload = function () {
-        if (this.readyState == 4 && this.status == 200) {
-
-
-            if (this.responseText != "") {
-
-                leave_color = JSON.parse(this.responseText);
-                let lBody = document.getElementById("LH_TBODY");
-                Object.keys(leave_color).forEach(function (val, ind) {
-                    t_row = lBody.insertRow();
-                    t_cell = t_row.insertCell();
-                    t_cell.style.backgroundColor = val;
-                    t_cell.innerHTML = `<input type="color" class="form-control" id="favcolor" onchange="chnageColor(this)" name="favcolor" value=${val}></input>`;
-                    t_cell = t_row.insertCell();
-                    t_cell.innerHTML = leave_color[val];
+//     xhttp.open("GET", '/LEAVE_COLOR', true);
+//     xhttp.setRequestHeader("Content-Type", "application/json");
+//     xhttp.send();
+//     xhttp.onload = function () {
+//         if (this.readyState == 4 && this.status == 200) {
 
 
+//             if (this.responseText != "") {
 
-                })
+//                 leave_color = JSON.parse(this.responseText);
+//                 let lBody = document.getElementById("LH_TBODY");
+//                 Object.keys(leave_color).forEach(function (val, ind) {
+//                     t_row = lBody.insertRow();
+//                     t_cell = t_row.insertCell();
+//                     t_cell.style.backgroundColor = val;
+//                     t_cell.innerHTML = `<input type="color" class="form-control" id="favcolor" onchange="chnageColor(this)" name="favcolor" value=${val}></input>`;
+//                     t_cell = t_row.insertCell();
+//                     t_cell.innerHTML = leave_color[val];
 
 
 
-
-
-
-            }
-            else {
-                leave_color = {};
-
-            }
-
-        }
-    }
+//                 })
 
 
 
 
 
-}
+
+//             }
+//             else {
+//                 leave_color = {};
+
+//             }
+
+//         }
+//     }
+
+
+
+
+
+// }
 
 
 function chnageColor(currretObject) {
@@ -1646,8 +1716,8 @@ function createFloatingTab() {
                     t_row = lBody.insertRow();
                     t_cell = t_row.insertCell();
                     let checkBox = document.createElement("input");
-                    checkBox.setAttribute("type","checkbox");
-                    checkBox.setAttribute("id","chkbox"+ind);
+                    checkBox.setAttribute("type", "checkbox");
+                    checkBox.setAttribute("id", "chkbox" + ind);
                     t_cell.appendChild(checkBox);
                     t_cell = t_row.insertCell();
                     t_cell.innerHTML = val;
@@ -1676,84 +1746,302 @@ function createFloatingTab() {
 
 }
 
-function formdata()
-{
-    
-    cmtElmt.style.display="none";
-    newComment=textarea.value.trim();
+function formdata() {
+
+    cmtElmt.style.display = "none";
+    newComment = textarea.value.trim();
     textarea.disable;
     console.log(`newcommenr = ${newComment}`)
-    if((newComment!=null && oldComment!=null))
-    {
-        if(newComment == oldComment)
-        {
+    if ((newComment != null && oldComment != null)) {
+        if (newComment == oldComment) {
             console.log("NO NEW CHNAGE");
-            newComment=null;
-            oldComment=null;
+            newComment = null;
+            oldComment = null;
         }
-        else{
-        
-            rightClickObject.setAttribute("title",newComment);
-            addToJson1(rightClickObject,rightClickObject.innerVal,oldComment);
+        else {
+
+            rightClickObject.setAttribute("title", newComment);
+            addToJson1(rightClickObject, rightClickObject.innerVal, oldComment);
             console.log("NEW CHNAEGS");
-            newComment=null;
-            oldComment=null;
+            newComment = null;
+            oldComment = null;
         }
     }
 
 
 }
-function Cancledata()
-{
-    cmtElmt.style.display="none";
-    textarea.value="";
+function Cancledata() {
+    cmtElmt.style.display = "none";
+    textarea.value = "";
 }
 
-function rejectLeave(obj)
-{
-    old=obj.innerHTML;
-    obj.innerHTML="REJ"
+function rejectLeave(obj) {
+    old = obj.innerHTML;
+    obj.innerHTML = "REJ"
     back_Color("REJ", obj)
-    addToJson1(obj,old);
-    console.log(obj,old)
+    addToJson1(obj, old);
+    console.log(obj, old)
 
-    
+
 }
 
-function floatingTable()
-{
-    letflBody=document.getElementById("FL_TBODY");
-    let child = ( letflBody.childNodes);
-    for(var i=0; i<child.length;i++)
-    { 
-        let trChild = ( child[i].childNodes);
+function floatingTable() {
+    letflBody = document.getElementById("FL_TBODY");
+    let child = (letflBody.childNodes);
+    for (var i = 0; i < child.length; i++) {
+        let trChild = (child[i].childNodes);
 
         //Adding event Litsner
-        trChild.forEach( (value,index) =>{  DoubleClickLitner(value);FocusOutListner(value)});
+        trChild.forEach((value, index) => { DoubleClickLitner(value); FocusOutListner(value) });
 
-//   fetch("/commentIMAGE", {
-//         method:"POST"
-//       , body:new URLSearchParams("email=test@example.com&password=pw")
-//       })
-    
-// }
+        //   fetch("/commentIMAGE", {
+        //         method:"POST"
+        //       , body:new URLSearchParams("email=test@example.com&password=pw")
+        //       })
+
+        // }
     }
 }
-function DoubleClickLitner(element)
-{
+function DoubleClickLitner(element) {
     element.addEventListener("dblclick", function () {
-        
+
         element.contentEditable = true;
         element.focus();
         console.log(element);
 
-      });
+    });
 }
-function FocusOutListner(element)
-{
+function FocusOutListner(element) {
     element.addEventListener('focusout', function (e) {
         element.contentEditable = false;
 
-      }
-      );
+    }
+    );
+}
+function changeOrder(a, b) {
+
+}
+
+let checkbox_arr = [];
+function selectCheckBOX(currnetObject) {
+    var parentNode = currnetObject.parentNode.parentNode;
+    if (currnetObject.checked) {
+
+        console.log(parentNode.classList.add("poolSelect"));
+        checkbox_arr.push(parentNode);
+
+
+    }
+    else {
+        console.log(parentNode.classList.remove("poolSelect"));
+        checkbox_arr = arrayRemove(checkbox_arr, parentNode);
+
+    }
+
+    console.log(checkbox_arr);
+    // if (poolCell != null && poolCell != undefined) {
+    //     if (delObjPrev != null && this != delObjPrev) {
+    //         if (delObjPrev.parentNode.classList.contains("poolSelect")) {
+    //             //console.log(delObjPrev.classList);
+    //             delObjPrev.parentNode.classList.remove("poolSelect");
+    //             //console.log("delObjPrev != null")
+    //         }
+    //     }
+    //     if (this.parentNode.classList.contains("poolSelect")) {
+    //         this.parentNode.classList.remove("poolSelect")
+    //         delObjCurr = null;
+    //         delObjPrev = null;
+    //         //console.log("curr removev
+    //     }
+    //     else {
+
+    //         this.parentNode.classList.add("poolSelect")
+    //         delObjCurr = this;
+    //         //console.log("curr add")
+    //     }
+    //     delObjPrev = this;
+
+    // }
+}
+function selectAllCheckBOX(currnetObject) {
+    console.log(this);
+}
+
+function arrayRemove(arr, value) {
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
+}
+
+
+function Applyleavebycolor(type) {
+    console.log(tempJson);
+
+    let leavtype="";
+    let final="";
+    switch(type)
+    {
+        case "PL" : leavtype="PL";break; 
+        case "FL" :leavtype="FL";break;
+        case "UL": leavtype="UL";break;
+        case "REJ" : leavtype="REJ";break;
+        case "APP" :leavtype="APP";break;
+        case "ALT" :leavtype="ALT";break;
+        case "TEN" :leavtype="TEN"
+    }
+   
+    console.log("cllled")
+    if (ctClickArr.length > 0) {
+
+let ename = "";
+let applydate = "";
+        for (let i = 0; i < ctClickArr.length; i++) {
+            console.log("call arr = "+( ctClickArr[i].innerText.length == "0" ) )
+
+            if(!( leavtype != "PL" && leavtype != "UL" && leavtype != "FL" ) )
+            {
+               
+                    console.log("inside")
+                    applydate = ctClickArr[i].getAttribute("date");
+                    ename = ctClickArr[i].getAttribute("ename");
+                    ctClickArr[i].innerText = leavtype;
+                    final=leavtype;
+                    back_Color(final, ctClickArr[i]);
+                   
+                
+                    
+                }
+                else
+                {
+                
+                    if(ctClickArr[i].innerText.length >  0 )
+                    {
+
+                        innerval=ctClickArr[i].innerText.slice(0,2) 
+                    switch(leavtype)
+                    {
+                    
+                    case "REJ" :    applydate = ctClickArr[i].getAttribute("date");
+                    ename = ctClickArr[i].getAttribute("ename");
+                    final = innerval+"(R)";
+                     ctClickArr[i].innerText = final;
+                
+                    back_Color(final, ctClickArr[i]); break;
+                    case "APP" : 
+                    applydate = ctClickArr[i].getAttribute("date");
+                    ename = ctClickArr[i].getAttribute("ename");
+                    final = innerval+"(A)";
+                     ctClickArr[i].innerText = final;
+                    
+                    back_Color(final, ctClickArr[i]); break;
+                    case "ALT" : 
+                    applydate = ctClickArr[i].getAttribute("date");
+                    ename = ctClickArr[i].getAttribute("ename");
+                    final = innerval+"(ALT)";
+                     ctClickArr[i].innerText = final;
+                     
+                    back_Color(final, ctClickArr[i]); break;
+                    case "TEN" : 
+                    applydate = ctClickArr[i].getAttribute("date");
+                    ename = ctClickArr[i].getAttribute("ename");
+                    final = innerval+"(T)";
+                     ctClickArr[i].innerText = final;
+                     
+                    back_Color(final, ctClickArr[i]); break;
+                    
+                }
+            }
+
+
+                }
+
+
+
+                if (tempJson[ename] != undefined) {
+                    createDataArray(uarr, ename, applydate, final, "");
+            }
+            else {
+        
+                    createDataArray(narr, ename, applydate, final, "");
+                }
+
+            }
+        }  
+        
+        
+}
+function deleteElementValue() {
+
+    if (ctClickArr.length > 0) {
+
+        for (let i = 0; i < ctClickArr.length; i++) {
+            applydate = ctClickArr[i].getAttribute("date");
+            ename = ctClickArr[i].getAttribute("ename");
+            oldVal = ctClickArr[i].innerText = "";
+            back_Color("", ctClickArr[i]);
+            if (oldval != "") {
+
+                if (tempJson[ename] != undefined) {
+                    createDataArray(uarr, ename, applydate, "", "");
+                }
+                else {
+                    createDataArray(narr, ename, applydate, "", "");
+                }
+            }
+
+
+        }
+
+
+    }
+}
+
+var asc = 0;
+function sort_table(table, col) {
+    $('.sortorder').remove();
+    if (asc == 2) { asc = -1; } else { asc = 2; }
+    var rows = table.tBodies[0].rows;
+    var rlen = rows.length - 1;
+    var arr = new Array();
+    var i, j, cells, clen;
+    // fill the array with values from the table
+    for (i = 0; i < rlen; i++) {
+        cells = rows[i].cells;
+        clen = cells.length;
+        arr[i] = new Array();
+        for (j = 0; j < clen; j++) { arr[i][j] = cells[j].innerHTML; }
+    }
+    // sort the array by the specified column number (col) and order (asc)
+    arr.sort(function (a, b) {
+        console.log("val of a b = "+a,b);
+        var retval = 0;
+        var col1 = a[col].toLowerCase().replace(',', '').replace('$', '').replace(' usd', '')
+        var col2 = b[col].toLowerCase().replace(',', '').replace('$', '').replace(' usd', '')
+        console.log("val of col = "+col1,col2)
+        var fA = parseFloat(col1);
+        var fB = parseFloat(col2);
+        if (col1 != col2) {
+            if ((fA == col1) && (fB == col2)) { retval = (fA > fB) ? asc : -1 * asc; } //numerical
+            else { retval = (col1 > col2) ? asc : -1 * asc; }
+        }
+        return retval;
+    });
+    for (var rowidx = 0; rowidx < rlen; rowidx++) {
+        for (var colidx = 0; colidx < arr[rowidx].length; colidx++) 
+        { 
+            table.tBodies[0].rows[rowidx].cells[colidx].innerHTML = arr[rowidx][colidx];
+         }
+    }
+
+    hdr = table.rows[0].cells[col];
+    if (asc == -1) {
+        $(hdr).html($(hdr).html() + '<span class="sortorder">▲</span>');
+    } else {
+        $(hdr).html($(hdr).html() + '<span class="sortorder">▼</span>');
+    }
+}
+
+
+function sortTable(n) {
+    /*sort_table(document.getElementById("tab1"), n);*/
 }
