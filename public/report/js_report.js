@@ -155,21 +155,19 @@ function addDataTOUi(employee_name, header = 1) {
 
 
                     switch (leavetype) {
-                        case "FL":
+                        case "FL(A)":
                             FL++;
                             break;
-                        case "PL":
+                        case "PL(A)":
                             PL++;
                             break
-                        case "ALT":
+                          case "FL(ALT)":  
+                        case "PL(ALT)":
                             ALT++
                             break;
                         case "UL":
                             UL++;
                             break;
-                        case "WKG":
-                            WKG++;
-                            break
                         case "HL":
                             HL++;
                             break
@@ -296,10 +294,10 @@ function Init() {
 window.onload = (() => {
 
     getEmpJsonData();
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        console.log("called");
-    });
+    // $(document).ready(function () {
+    //     $('[data-toggle="tooltip"]').tooltip();
+    //     console.log("called");
+    // });
 
 
 });

@@ -33,6 +33,7 @@ app.get('', (req, res) => {
     res.render("index");
 })
 
+
 app.get('/auth', (req, res) => {
    
      project=req.query.team;
@@ -91,20 +92,12 @@ app.get('/FLOATING_FILE', (req, res) => {
 
 })
 
-app.get('/report/report.html', (req, res) => {
-    res.sendFile(__dirname + "/" + "report/report.html");
-    console.log("called")
-
-})
 
 
 
 
-app.get('/report/js_report.js', (req, res) => {
-    res.sendFile(__dirname + "/" + "report/js_report.js");
-    console.log("called")
 
-})
+
 
 
 
