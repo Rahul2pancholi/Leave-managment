@@ -486,6 +486,7 @@ function getEmpJsonData() {
             if (this.responseText != "") {
 
 
+                console.log(this.responseText);
                 tempJson = JSON.parse(this.responseText)["leave_detail"];
                 emp_nm = JSON.parse(this.responseText)["employee_name"];
 
@@ -661,7 +662,7 @@ function applyEventLitn() {
 
 
 
-            // //console.log("Cell focus out " + this.childElementCount);
+            console.log("Cell focus out ");
 
 
             if (activeCell != null) {

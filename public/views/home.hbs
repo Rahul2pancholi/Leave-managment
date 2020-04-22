@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   {{!-- ************************************************************** --}}
-  <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+  {{!-- <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'> --}}
     <link rel="stylesheet" href="css/jquery.toast.css">
 
 
@@ -347,25 +347,9 @@
       <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
       <span class="slider round"></span>
     </label>
-    {{!-- <div class="form-group">
-      <button onclick="" class="btn btn-primary ademp">Add Comment</button>
-    </div> --}}
   </div>
 
-  <!-- <input type="checkbox" id="myCheck" name="Selection on :" onclick="mySelection()">
- 
-  <div id="isChanged">YES</div> -->
 
-
-  <!-- 
-  <form class="was-validated">
-    <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-      <label class="custom-control-label" for="customControlValidation1"></label>
-      <div class="invalid-feedback">Data Not Saved</div>
-      <div class="valid-feedback">Data Saved</div>
-    </div>
-  </form> -->
 
 <div class="panel panel-info">
       <div class="panel-heading">
@@ -491,8 +475,8 @@
     showHideTransition: 'slide',
     icon: 'info'
 })</code></pre>
-                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./javascript/jquery.toast.js"></script>
+                 {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
+    <script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
    
     <script>$( "#dialog" ).dialog()
         $( "#startdatepicker" ).datepicker();
