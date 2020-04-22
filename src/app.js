@@ -119,9 +119,7 @@ employee_name : { }
 app.post('/NEW_EMPLOYEE', urlencodedParser, (req, res) => {
     console.log(req.body.emp_data);
     fs.readFile(jsonFilePath, 'UTF8', function read(err, data) {
-        if (err) {
-           
-        }
+
         data=checkDataLength(data);
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)
