@@ -609,55 +609,11 @@ function applyEventLitn() {
 
 
 
-    for (let cell of poolCell) {
-        cell.addEventListener("click", function () {
-
-            if (poolCell != null && poolCell != undefined) {
-                if (delObjPrev != null && this != delObjPrev) {
-                    if (delObjPrev.parentNode.classList.contains("poolSelect")) {
-                        //console.log(delObjPrev.classList);
-                        delObjPrev.parentNode.classList.remove("poolSelect");
-                        //console.log("delObjPrev != null")
-                    }
-                }
-                if (this.parentNode.classList.contains("poolSelect")) {
-                    this.parentNode.classList.remove("poolSelect")
-                    delObjCurr = null;
-                    delObjPrev = null;
-                    //console.log("curr removev")
-                }
-                else {
-
-                    this.parentNode.classList.add("poolSelect")
-                    delObjCurr = this;
-                    //console.log("curr add")
-                }
-                delObjPrev = this;
-
-            }
-
-        }
-        );
-    }
 
     for (let cell of cells) {
         cell.addEventListener("click", function (event) {
-
-            let prevObj = clickObject;
             clickObject = this;
-            // if (prevObj != null && prevObj != undefined && prevObj.classList.contains("click_select")) {
-            //     prevObj.classList.remove("click_select");
-            // }
-            // if (!(this.classList.contains("click_select"))) {
-
-            //     this.classList.add("click_select");
-            //     var rect = this.getBoundingClientRect();
-            //    var divreact= document.getElementById("div-1").getBoundingClientRect();
-            //    console.log(divreact.right- rect.right,  rect.left-  divreact.left, this.style.width);
-
-            // }
-            // //console.log("clicked= " + this);
-
+        
 
 
             if (cntrlIsPressed) {
@@ -1590,9 +1546,11 @@ document.onkeydown = function (t) {
 
 function Delete() {
 
-    if (delObjCurr != null) {
-        let node = delObjCurr.parentNode;
-        let id = node.id.split("_")[1];
+    for(var i=0;i<checkbox_arr.length;i++)
+ {
+  
+        let node = checkbox_arr[i];
+       // let id = node.id.split("_")[1];
         //console.log(id)
 
 
@@ -1601,24 +1559,12 @@ function Delete() {
 
         let emp_node = document.getElementById(`row${node.id.split("_")[1]}_0`);
         let employename = emp_node.innerText
-        //console.log(employename);
-
-        //console.log(node.parentNode.removeChild(node));
         xhttp.send("emp_name=" + (JSON.stringify(employename)));
-        xhttp.onload = function () {
-
-            //console.log(`${this.readyState} == 4 $$ ${this.status} == 200`);
-
-        }
-
-
+        xhttp.onload = function () {  }
         console.log(node.style.display = "none");
 
         delObjCurr = null;
         delObjPrev = null;
-
-
-
     }
 }
 
@@ -1839,29 +1785,6 @@ function selectCheckBOX(currnetObject) {
     }
 
     console.log(checkbox_arr);
-    // if (poolCell != null && poolCell != undefined) {
-    //     if (delObjPrev != null && this != delObjPrev) {
-    //         if (delObjPrev.parentNode.classList.contains("poolSelect")) {
-    //             //console.log(delObjPrev.classList);
-    //             delObjPrev.parentNode.classList.remove("poolSelect");
-    //             //console.log("delObjPrev != null")
-    //         }
-    //     }
-    //     if (this.parentNode.classList.contains("poolSelect")) {
-    //         this.parentNode.classList.remove("poolSelect")
-    //         delObjCurr = null;
-    //         delObjPrev = null;
-    //         //console.log("curr removev
-    //     }
-    //     else {
-
-    //         this.parentNode.classList.add("poolSelect")
-    //         delObjCurr = this;
-    //         //console.log("curr add")
-    //     }
-    //     delObjPrev = this;
-
-    // }
 }
 function selectAllCheckBOX(currnetObject) {
     console.log(this);
