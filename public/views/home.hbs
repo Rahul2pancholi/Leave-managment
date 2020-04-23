@@ -37,12 +37,62 @@
     });
   </script>
   <style>
+    
+    .outerDIV
+    {
+      display: flex;
+    }
+.table-header-rotated th.rotate{
+  height: 80px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  position: relative;
+  vertical-align: bottom;
+  padding: 0;
+  font-size: 12px;
+  line-height: 0.8;
+}
+
+.table-header-rotated th.rotate > div{
+  position: relative;
+  top: 0px;
+  left: 40px; /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
+  height: 100%;
+  -ms-transform:skew(-45deg,0deg);
+  -moz-transform:skew(-45deg,0deg);
+  -webkit-transform:skew(-45deg,0deg);
+  -o-transform:skew(-45deg,0deg);
+  transform:skew(-45deg,0deg);
+  overflow: hidden;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+  border-top: 1px solid #dddddd;
+}
+
+.table-header-rotated th.rotate span {
+  -ms-transform:skew(45deg,0deg) rotate(315deg);
+  -moz-transform:skew(45deg,0deg) rotate(315deg);
+  -webkit-transform:skew(45deg,0deg) rotate(315deg);
+  -o-transform:skew(45deg,0deg) rotate(315deg);
+  transform:skew(45deg,0deg) rotate(315deg);
+  position: absolute;
+  bottom: 30px; /* 40 cos(45) = 28 with an additional 2px margin*/
+  left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
+  display: inline-block;
+  // width: 100%;
+  width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
+  text-align: left;
+  // white-space: nowrap; /*whether to display in one line or not*/
+}
+
     .dot {
   height: 10px;
   width: 10px;
   border-radius: 50%;
   display: inline-block;
 }
+
     .div1 {
       height: 100%;
       width: 100%;
@@ -168,8 +218,7 @@
       background-color: #17a2b8;
     }
 
-    .eName,
-    #team_name {
+    .eName,.pool {
       background-color: #dbd951;
     }
     .eName
@@ -227,7 +276,7 @@
 
     }
     .nav-bar{
-  background-color:#2E4053;
+  background-color:white;
   height: 45px;
   width: 100%;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 2);
@@ -249,6 +298,13 @@
       width: 50%;
       padding: 10px;
     }
+    .nav-iteam
+    {
+    
+    margin-top: 9px
+
+    }
+
   </style>
 
 
@@ -256,60 +312,93 @@
 
 </head>
 
-<body class="container">
-  
-<div class="nav-bar">
-  <div class="nav-content">
-    <div class="nav-heading">
-      AMS APP
-    </div>
+<body >
+  {{!-- ***************************************************************************** --}}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bar">
+<a class="navbar-brand" href="#">
+    <img src="./img/bitwise.jpg" width="100" height="30" class="d-inline-block align-top" alt="">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+   
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+            <button onclick="reload()" class="nav-iteam btn btn-link reload nav-link">Reset</button>
+                    
+      </li>
+      <li class="nav-item">
+        <a class="btn  nav-link" href="/report/report.html">Generate report</a>
+                 
+      </li>
+      <li class="nav-item">
+           <button onclick="reject()" class="nav-iteam btn btn-link  nav-link reject_Leave">Reject Leave</button
+           >
+              
+      </li>
+         <li class="nav-item">
+         
+               <button onclick="createSCV()" class="nav-iteam btn btn-link createSCV nav-link">export to CSV</button>
+                   
+      </li>
+       <li class="nav-item">
+          <button onclick="sortTable()" class="nav-iteam btn btn-link sortTable nav-link">Sort Table</button> 
+                    
+              
+      </li>
+       <li class="nav-item">
+         <button onclick="Delete()" class="nav-iteam btn btn btn-link sortTable nav-link">Delete Employee</button>
+              
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown link
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+    </ul>
   </div>
-</div>
-  <!-- select employee and add leave  -->
-  <div class="container main-block">
+    <div class="row">                  
+      <div class="col-sm-10">       
+                      <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
+    title="Type in a name">
+                  </div>
+            </div>
+    <div class="form-group" style=" margin-top: 19px" >
+    <label class="switch ">
+      <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
+      <span class="slider round"></span>
+    </label>
+    </div>
+</nav>
+
+<div class="pos-f-t">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+        <div class="container main-block">
   {{!-- block 1 --}}
   <div class="form-inline block-1">
-    <table>
-      <tr>
-        <div class="form-group">
-         
-        <td>Employee Name</td>
-        <td>
-          <select id="emp_nm" class="custom-select empCal">
+
+    
+          <select id="emp_nm" class="form-control empCal">
             <option value="0">select emp</option>
           </select>
-          </td>
-        </div>
-      </tr>
-      <tr>
-         <div class="form-group"></div>
-          <td>
+      
+  
               Start date
-          </td>
-          <td>
+        
             <input type="text" id="startdatepicker" id="start" class="col form-control inputCal" >
-          </td>
-        </div>
-      </tr>
-      <tr>
-         <div class="form-group"></div>
-          <td>
+          
               End date
-          </td>
-          <td>
+      
            <input type="text" id="enddatepicker" id="start" class="col form-control inputCal" >
-          </td>
-        </div>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <div class="col form-group">
-            <button onclick="leaveApply()" class="col btn btn-primary buttonCal">apply leave</button>
-          </div>
-        </td>
-      </tr>
-    </table>
+  
+            <button onclick="applyLeaveByDateRange()" class="col btn btn-primary buttonCal">apply leave</button>
+        
   </div>
 
   {{!-- block 2 --}}
@@ -340,14 +429,30 @@
 </div>
 
 
+    
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>
+{{!-- *********************************************************************** --}}
+{{!-- <div class="nav-bar">
+  <div class="nav-content">
+    <div class="nav-heading">  
+  </div>
+
+
+ 
+  </div>
+</div> --}}
+  <!-- select employee and add leave  -->
+
 
   <!-- data save not save toggle -->
-  <div class="form-group">
-    <label class="switch ">
-      <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
-      <span class="slider round"></span>
-    </label>
-  </div>
+
 
 
 
@@ -355,34 +460,19 @@
       <div class="panel-heading">
          <!-- button stack -->
           <div class="form-group container-fluid">
-            <div class="row">
-                  <div class="col-sm-8">
-                    <button onclick="reload()" class="btn btn-warning reload">Reset</button>
-                    <a class="btn btn-primary" href="/report/report.html">Generate report</a>
-                    <button onclick="reject()" class="btn btn-danger reject_Leave">Reject Leave</button>
-                    <button onclick="createSCV()" class="btn btn-info createSCV">export to CSV</button>
-                    <button onclick="sortTable()" class="btn btn-info sortTable">Sort Table</button> 
-                    <button onclick="Delete()" class="btn btn-danger sortTable">Delete Employee</button>
-                    
-                  </div>
-                  <div class="col-sm-4">
-                        
-                      <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
-    title="Type in a name">
-                  </div>
-            </div>
-           <div>    
-   <div>
+          
+           <div calss="outerDIV">     
+   <div class="legend">
                 <span class="dot" id="PL_C" style="background-color: blue;" ></span>
                 <span id="myspan">Planned Leave</span>
               
-            </div>
-               <div>
+            </div >
+               <div class="legend">
                 <span class="dot" id="UL_C"style="background-color: darkslateblue;" ></span>
-                <span id="UL">Un-Planned Leave</span>
+                <span id="UL">Un-Planned Leave</span></div>
                 
             </div>
-               <div>
+              <div class="legend">
                 <span class="dot" id="FL_C" style="background-color: darkorange;" ></span>
                 <span id="FL">Floating Leave</span>
               
@@ -404,9 +494,10 @@
       <div class="panel-body">
 
         <div class="table-wrapper my-3" tabindex="0" id="div-1">
-          <table style="margin-bottom: 0px;" class="table  table-sm table-bordered main_table" id="tab1">
-            <thead class="thead-dark table_head" id="thead1"></thead>
-            <tbody id="tbody_1"></tbody>
+          <table style="margin-bottom: 0px;" class="table  table-sm  main_table table-header-rotated" id="tab1">
+            <thead class="
+             table_head" id="thead1"></thead>
+            <tbody id="tbody_1" class="table-bordered"></tbody>
           </table>
           <div class="commentdiv" id="cmtID">
 
@@ -432,7 +523,7 @@
 
       <table style="margin-bottom: 0px;width: fit-content" class="table table-sm table-bordered legend_table "
         id="FL_legend_tab1">
-        <thead class="thead-dark table_head" id="legend_thead1">
+        <thead class= "table_head" id="legend_thead1">
           <tr id="FL_ROW">
             <td>&nbsp;</td>
             <td>FLOATING_DATE</td>
@@ -444,27 +535,6 @@
     </div>
   </div>
 
-
-
-
-
-  {{!-- <div class="table-wrapper my-3" tabindex="0" id="div-1">
-    <table style="margin-bottom: 0px;" class="table  table-sm table-bordered main_table" id="tab1">
-      <thead class="thead-dark table_head" id="thead1"></thead>
-      <tbody id="tbody_1"></tbody>
-    </table>
-    <div class="commentdiv" id="cmtID">
-
-      <label>Rahul Pancholi ( 2020-02-22 )</label><br>
-      <textarea id="lastname" class="docos-input-textarea" autocomplete="input-area" x-webkit-speech="" speech=""
-        role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr" style="height: 76px;"></textarea>
-      <br>
-      <input type="submit" value="Submit" onclick="formdata()" />
-      <input type="button" value="Cancle" onclick=" " /><br>
-
-    </div>
-
-  --}}
 
     
     </div>

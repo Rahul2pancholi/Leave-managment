@@ -70,8 +70,6 @@ function titleCase(string) {
     for (var i = 0; i < sentence.length; i++) {
         sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
     }
-
-    //console.log(sentence.join(" "));
     return sentence.join(" ");
 }
 
@@ -93,7 +91,7 @@ function createDate(date_array) {
 /**************************************CREATE DATE FORAMTE END***************** */
 
 /**************************************APPLY LEAVE START******************************************************* */
-function leaveApply() {
+function applyLeaveByDateRange() {
 
     let start = document.getElementById("startdatepicker");
     let end = document.getElementById("enddatepicker");
@@ -318,17 +316,6 @@ function createSelForDiv(a, b) {
 }
 //chk height width fun
 /****************************CRETE SELECET END************************************************* */
-
-/*********************************GET WEIDTH AND HEIGHT START************** */
-function getHeightWidth(element) {
-    element.style.width = "100";
-    element.style.height = "40";
-
-
-}
-
-/* *************************************GET WEIDTH AND HEIGHT END****************************************************** */
-
 /******************************step:1 INTITIAL_PHASE_START***************************************************/
 
 
@@ -351,19 +338,36 @@ function createSelectEmp() {
     });
 }
 ///////////select emp list end /////////
+function dateFormatter(year,month,day)
+{
+return `${day}-${month}-${year}`;
+}
 //////create all row //////
+
+
+function createDivSpan(insidele)
+{
+var div=document.createElement("div");
+var span=document.createElement("span")
+span.appendChild(insidele);
+ div.appendChild(span);
+ return div;
+}
+
 let date = [];
 function createInitRow() {
 
     // //console.log("createInitRow ");
 
-    let num = 1;
+    let num = 1;  // this num  is used to make column no. ex row0_${num} row0_1,row0_2
+
     let thead = document.getElementById("thead1");
     let table = document.getElementById("tab1");
     let row = thead.insertRow();
     let head, text;
-    let rownum = 0, colnum = 1;
+    let rownum = 0, colnum = 0;
 
+/*******************************COLUMN-1  ********** */
     head = document.createElement("th");
     // text = document.createTextNode("Team_Name");
     // head.append(text)
@@ -373,36 +377,41 @@ function createInitRow() {
     head.setAttribute("id", `checkbox_head`);
     // head.setAttribute("class", `pool`);
     head.setAttribute("onclick", "selectAllCheckBOX(this)");
-    head.appendChild(checkBox);
+    divspan=createDivSpan(checkBox);
+    head.appendChild(divspan)
     row.appendChild(head);
     // row.setAttribute("class", ` Team_Name`)
 
+    /*******************************COLUMN-2  ********** */
+
     head = document.createElement("th");
     text = document.createTextNode("Team_Name");
-    head.append(text)
     head.setAttribute("id", `team_name`);
-    head.setAttribute("class", `pool`);
+    head.setAttribute("class", ` rotate`);
     head.setAttribute("onclick", `sortTable(1)`);
+    divspan=createDivSpan(text);
+    head.appendChild(divspan)
     row.appendChild(head);
-    row.setAttribute("class", ` Team_Name`)
+    // row.setAttribute("class", ` Team_Name`)
 
 
-
+/*******************************COLUMN-3  ********** */
     head = document.createElement("th");
     text = document.createTextNode("Emp_Name");
     head.append(text)
     head.setAttribute("id", `row0_0`);
-    head.setAttribute("class", `eName`);
+    head.setAttribute("class", ` rotate`);
     head.setAttribute("ROW_ID", rownum);
     head.setAttribute("COL_ID", colnum);
-
+    divspan=createDivSpan(text);
+    head.appendChild(divspan)
     row.appendChild(head);
     row.setAttribute("class", `tab_row_0 Emp_Name`);
     row.setAttribute("id", "header_row");
 
 
 
-
+/*******************************All remaining COLUMN********** */
 
     let row_nm = 0;
     colnum += 1;
@@ -413,10 +422,12 @@ function createInitRow() {
         let mth_lst_day = new Date(year, i + 1, 0).getDate().toString();
         for (var j = 1; j <= mth_lst_day; j++) {
 
-            let full_date = year + "/" + appendZero(i + 1) + "/" + appendZero(j); //year/moth/date
+          //  let full_date = year + "/" + appendZero(i + 1) + "/" + appendZero(j); //year/moth/date
+          let full_date = year + "/" + appendZero(i + 1) + "/" + appendZero(j); //year/moth/date
 
             let dayname = new Date(full_date);
 
+            full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
             day_nm_class = day_name[dayname.getDay()].toLowerCase();
 
             // //console.log(full_date) ////console
@@ -431,9 +442,12 @@ function createInitRow() {
             head.setAttribute("id", `row0_${num}`);
 
 
-            head.setAttribute("class", `${s_month} ${day_nm_class} ${full_date}`);
-            head.append(text)
-            row.appendChild(head);
+            head.setAttribute("class", `${s_month} ${full_date} rotate`);
+
+            divspan=createDivSpan(text);
+    head.appendChild(divspan)
+    row.appendChild(head);
+           
 
 
 
@@ -450,7 +464,7 @@ function createInitRow() {
     }
     ///////////////////******************************************************* */
 
-    row_nm++;
+
     rownum += 1;
     let tbody = document.getElementById("tbody_1");
     // tbody.setAttribute("id", "tbody_1");
@@ -577,7 +591,7 @@ function addFocusListiner(nodename) {
 
             //  //console.log("container")
             activeCell.innerText = container.value;
-            color = back_Color(activeCell.innerText, activeCell);
+           back_Color(activeCell.innerText, activeCell);
             // activeCell.style.backgroundColor = color;
             // addToJson(activeCell);
             // //console.log("old value from activeCell.innerText = "+oldval);
@@ -606,13 +620,13 @@ function applyEventLitn() {
 
     let innerVal;
     let cells = document.getElementsByClassName('content');
-    let poolCell = document.getElementsByClassName('pool');
 
 
 
 
     for (let cell of cells) {
         cell.addEventListener("click", function (event) {
+        
             clickObject = this;
         
 
@@ -869,7 +883,6 @@ window.onload = () => {
                         textarea.click();
                         break;
                     case "Reject_Leave":
-                        this
                         rejectLeave(this[0])
                         break;
                     default:
@@ -1093,30 +1106,12 @@ function createTableRow(parent_element, name, index, pool) {
 
         for (var m = 1; m <= mth_lst_day; m++) {
             let full_date = year + "/" + appendZero(k + 1) + "/" + appendZero(m); //year/moth/date
+           
             let dayname = new Date(full_date);
+            full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
             let day_nm_class = day_name[dayname.getDay()].toLowerCase();
-            // let span = document.createElement("span");
-            // let div = document.createElement("div");
-
-
-            // let div1 = document.createElement("div");
-            // let textarea1 = document.createElement("input");
-            // let div2 = document.createElement("div");
-
-            // div1.setAttribute("class","div1");
-            // div2.setAttribute("class","div2");
-            // textarea1.setAttribute("class","textarea1");
-            // div1.appendChild(textarea1);
-            // div1.appendChild(div2);
-
-
-            // span.setAttribute("class","starimg");
-            // span.innerHTML=`&#11088;`;
 
             cell = row.insertCell();
-
-            // let div1 = document.createElement("div");
-            getHeightWidth(cell)
 
             cell.setAttribute("ROW_ID", rownum);
             cell.setAttribute("COL_ID", colnum);
@@ -1244,7 +1239,7 @@ function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
 
     console.log("comment :: ", comment);
 
-    let leave = {};
+    let leave = [];
     let dateFlag = 0;
     let arrPush = 0;
     let arr = arrey;
@@ -1376,7 +1371,6 @@ function addToJson1(cell_object, oldVal, oldcomment) {
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
 function mySelection() {
     var checkBox = document.getElementById("myCheck");
-    var text = document.getElementById("text");
     if (checkBox.checked == true) {
         selectEnabled = 1;
     } else {
@@ -1466,42 +1460,8 @@ function getKeyAndMove(e) {
                 a++;
                 finalmove(a, b)
                 break;
-            default:
-            //console.log(key_code);
+            
         }
-
-
-        // // document.get
-
-        // ////////**************************************** */
-        // var width = clickObject.offsetWidth;
-        // var height = clickObject.offsetHeight;
-        // //console.log(width + " " + height);
-        // //console.log(document.getElementById("legend_tab1").scrollLeft);
-
-        // var rect = clickObject.getBoundingClientRect();
-
-
-        // clickObject.style.left = rect.left;
-
-        // //console.log(`${clickObject.style.left}`)
-        // selected = clickObject.id.split("_")[1]
-
-
-
-
-        // var elmnt = document.getElementById("div-1");
-        // var x = elmnt.scrollLeft;
-        // var y = elmnt.scrollTop;
-        // var viewport = x + width;
-        // var elOffset = width * selected;
-        // //console.log(`x=${x} VIEWPORT=${viewport} selected=${selected} elOffset=${elOffset} width =${width}`)
-
-        // // if (elOffset < x || (elOffset + width) > viewport)
-        // // elmnt.scrollBy(elOffset, 0);
-
-
-        // /**************************************************************************** */
 
     }
 }
@@ -1580,62 +1540,9 @@ function myToggle() {
     }
 }
 
-let leave_color = {};
-// function createLegend() {
-
-
-//     let xhttp = new XMLHttpRequest();
-
-//     xhttp.open("GET", '/LEAVE_COLOR', true);
-//     xhttp.setRequestHeader("Content-Type", "application/json");
-//     xhttp.send();
-//     xhttp.onload = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-
-
-//             if (this.responseText != "") {
-
-//                 leave_color = JSON.parse(this.responseText);
-//                 let lBody = document.getElementById("LH_TBODY");
-//                 Object.keys(leave_color).forEach(function (val, ind) {
-//                     t_row = lBody.insertRow();
-//                     t_cell = t_row.insertCell();
-//                     t_cell.style.backgroundColor = val;
-//                     t_cell.innerHTML = `<input type="color" class="form-control" id="favcolor" onchange="chnageColor(this)" name="favcolor" value=${val}></input>`;
-//                     t_cell = t_row.insertCell();
-//                     t_cell.innerHTML = leave_color[val];
 
 
 
-//                 })
-
-
-
-
-
-
-//             }
-//             else {
-//                 leave_color = {};
-
-//             }
-
-//         }
-//     }
-
-
-
-
-
-// }
-
-
-function chnageColor(currretObject) {
-    //console.log(currretObject.value);
-    //console.log(currretObject.getAttribute("value"));
-
-
-}
 
 
 
@@ -1737,16 +1644,9 @@ function floatingTable() {
     let child = (letflBody.childNodes);
     for (var i = 0; i < child.length; i++) {
         let trChild = (child[i].childNodes);
+   trChild.forEach((value, index) => { DoubleClickLitner(value); FocusOutListner(value) });
 
-        //Adding event Litsner
-        trChild.forEach((value, index) => { DoubleClickLitner(value); FocusOutListner(value) });
-
-        //   fetch("/commentIMAGE", {
-        //         method:"POST"
-        //       , body:new URLSearchParams("email=test@example.com&password=pw")
-        //       })
-
-        // }
+ 
     }
 }
 function DoubleClickLitner(element) {
