@@ -579,32 +579,32 @@ function getEmpJsonData() {
 
 ///////////////////////////////////////////
 
-function addFocusListiner(nodename) {
-    nodename.addEventListener('focusout', function (e) {
+// function addFocusListiner(nodename) {
+//     nodename.addEventListener('focusout', function (e) {
 
-        if (activeCell != null) {
+//         if (activeCell != null) {
 
-            // //console.log("focusout");
+//             // //console.log("focusout");
 
-            let container = (activeCell.children)[0];
-            // //console.log("onchanged" + container);
+//             let container = (activeCell.children)[0];
+//             // //console.log("onchanged" + container);
 
-            //  //console.log("container")
-            activeCell.innerText = container.value;
-           back_Color(activeCell.innerText, activeCell);
-            // activeCell.style.backgroundColor = color;
-            // addToJson(activeCell);
-            // //console.log("old value from activeCell.innerText = "+oldval);
-            addToJson1(activeCell, oldval);
+//             //  //console.log("container")
+//             activeCell.innerText = container.value;
+//            back_Color(activeCell.innerText, activeCell);
+//             // activeCell.style.backgroundColor = color;
+//             // addToJson(activeCell);
+//             // //console.log("old value from activeCell.innerText = "+oldval);
+//             addToJson1(activeCell, oldval);
 
-            activeCell = null;
-
-
-        }
+//             activeCell = null;
 
 
-    });
-}
+//         }
+
+
+//     });
+// }
 
 
 ///////////////APPLY_EVENT_LITNER//////////
@@ -618,6 +618,9 @@ let ctClickArr = [];
 function applyEventLitn() {
 
 
+
+
+
     let innerVal;
     let cells = document.getElementsByClassName('content');
 
@@ -627,8 +630,11 @@ function applyEventLitn() {
     for (let cell of cells) {
         cell.addEventListener("click", function (event) {
         
+    
             clickObject = this;
-        
+            if (activeCell != null) {
+                activeCell.contentEditable = false;
+            }
 
 
             if (cntrlIsPressed) {
@@ -676,15 +682,16 @@ function applyEventLitn() {
 
 
 
-            console.log("Cell focus out ");
+            console.log("Cell focus out = " +activeCell);
 
 
             if (activeCell != null) {
                 this.contentEditable = false;
-                color = back_Color(activeCell.innerText, activeCell);
-                activeCell.style.backgroundColor = color;
+                back_Color(activeCell.innerText, activeCell);
+
                 // addToJson(activeCell);
                 // //console.log("old value from activeCell.innerText = "+oldval);
+                console.log("line 694 = "+activeCell, oldval);
                 addToJson1(activeCell, oldval);
                 activeCell = null;
                 oldval = null;
@@ -696,7 +703,14 @@ function applyEventLitn() {
 
         /***********************SET DOUBLE CLICK EVENT LISTENER*********** */
 
-
+        ['click','ontouchstart','focusout','focusin'].forEach( evt => 
+            cell.addEventListener(evt, function()
+            {
+                console.log(evt);
+            }
+            )
+        
+        );
         cell.addEventListener("dblclick", function () {
 
             console.log("db click called");
@@ -729,11 +743,7 @@ function applyEventLitn() {
                     oldcomment = this.getAttribute("title");
                     this.style.backgroundColor = "";
                     this.contentEditable = true;
-                    this.focus();
-
-
-
-
+                   // this.focus();
 
                 }
             }
@@ -781,7 +791,7 @@ window.onload = () => {
     // defineFloating();
     myToggle();
     // createLegend();
-    createFloatingTab();
+   // createFloatingTab();
     $("#myspan").click(function () {
         Applyleavebycolor("PL");
     });
@@ -891,7 +901,10 @@ window.onload = () => {
 
             },
             items: {
-                "Approve_Leave": { name: "Approve_Leave", icon: "edit" },
+                "Planned_Leave": { name: "Planned_Leave", icon: "edit" },
+                "UnPlanned_Leave": { name: "UnPlanned_Leave", icon: "edit" },
+                "Floating_Leave": { name: "Floating_Leave", icon: "edit" },
+                "Alternate_Leave": { name: "Alternate_Leave", icon: "edit" },
                 "Reject_Leave": { name: "Reject_Leave", icon: "cut" },
                 "Edit_Comment": { name: "Edit_Comment", icon: "paste" },
                 "delete": { name: "Delete", icon: "delete" },
@@ -1006,9 +1019,14 @@ function addDataToRow() {
                             // }
 
 
-                            let color = back_Color(leavetype, innerCell);
+                          back_Color(leavetype, innerCell);
                             // let temp = innerCell.inn
+                            if(leaveComment.length > 0)
+                            {
+                                console.log("comment available", leaveComment);
+                            }
                             innerCell.setAttribute("title", leaveComment);
+
                             /*******************BADGE************************ */
                             //    var span = document.createElement("span");
                             //     span.setAttribute("class","badge badge-danger")
@@ -1157,8 +1175,8 @@ function addEmployee() {
     if (Uname == "" && UTname == "") {
         alert("shold not be empty");
     } else {
-        name = titleCase(Uname);
-        Tname = titleCase(UTname);
+        name = Uname.toUpperCase();
+        Tname = UTname.toUpperCase();
         if (employeeNameAvailablity(name) == false) {
 
             newEmp[name] = {
@@ -1171,7 +1189,7 @@ function addEmployee() {
             input1.value = "";
             input2.value = "";
 
-            createTableRow(thead, titleCase(name), -1, Tname);
+            createTableRow(thead, name, -1, Tname);
 
         }
         else {
@@ -1251,7 +1269,7 @@ function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
         //Updating existing one but not present in database 
         if (ival[empnm] != undefined || ival[empnm] != null) {
             let eval = ival[empnm];
-            // //console.log("prsent = " + eval);
+            console.log("prsent = " + eval);
 
             if (eval[applyDate] != undefined) {
                 let edate = eval[applyDate];
@@ -1268,7 +1286,7 @@ function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
     if (dateFlag == 0) {
         //Add data into employee if prsent
 
-
+console.log("dataflag ==  0")
 
 
         leave[empnm] =
@@ -1280,6 +1298,9 @@ function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
             }
 
         }
+
+
+        console.log(leave,arr);
 
 
 
@@ -1300,14 +1321,17 @@ function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
         if (arrPush != 1) {
             arr.push(leave);
             arrPush = 0;
+
+           
         }
-    } else {
+} else {
         // //console.log("UDPATE THEEXISTIG");
         dateFlag = 0;
 
     }
 
     // //console.log(arr);
+    console.log("leave pushed sucessfully",arr)
     return arr;
 
 }
@@ -1335,10 +1359,11 @@ function addToJson1(cell_object, oldVal, oldcomment) {
         let employee_name = tempJson[empnm];
 
         if (employee_name != undefined && employee_name != null) {
-            // //console.log("First time applying leave");
-
+            console.log("First time applying leave");
+//console.log(uarr, empnm, applyDate, leave_typ, comment);
             uarr = createDataArray(uarr, empnm, applyDate, leave_typ, comment);
-            // //console.log("createDataArray = " + JSON.stringify(arr));
+            console.log(uarr);
+            console.log("createDataArray = " + JSON.stringify(uarr));
 
         }
         else {
@@ -1354,6 +1379,7 @@ function addToJson1(cell_object, oldVal, oldcomment) {
 
         //    delete or hadel empty string data
         //    //console.log("delete val = "+  oldVal);
+        console.log("i am calling *****************")
 
     }
 
@@ -1384,6 +1410,7 @@ function mySelection() {
 function Save() {
     xhttp.open("POST", "UPDATE", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      console.log("update=" + uarr + "&" + "newemp=" + narr);
     if (!(uarr.length == 0 && narr.length == 0)) {
         //console.log("empty");
         xhttp.send("update=" + (JSON.stringify(uarr)) + "&" + "newemp=" + (JSON.stringify(narr)));
@@ -1507,27 +1534,47 @@ document.onkeydown = function (t) {
 
 function Delete() {
 
+    var tempArray=[];
+    let employename;
+    let node ;
+    let id=[];
+
     for(var i=0;i<checkbox_arr.length;i++)
  {
-  
-        let node = checkbox_arr[i];
-       // let id = node.id.split("_")[1];
+
+     node = checkbox_arr[i];
+    let emp_node = document.getElementById(`row${node.id.split("_")[1]}_0`);
+     id.push(node.id.split("_")[1]);
+     employename = emp_node.innerText;
+    tempArray.push(employename);
+}
+
+
+    console.log(tempArray);
+
+         
         //console.log(id)
 
 
         xhttp.open("POST", "DELETE", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        let emp_node = document.getElementById(`row${node.id.split("_")[1]}_0`);
-        let employename = emp_node.innerText
-        xhttp.send("emp_name=" + (JSON.stringify(employename)));
+        console.log(JSON.stringify(employename));
+        xhttp.send("emp_name=" + (JSON.stringify(tempArray)));
         xhttp.onload = function () {  }
-        console.log(node.style.display = "none");
 
+        for(var j in id)
+        {
+            document.getElementById("tab1").deleteRow(id[j]);
+
+        }
+       
         delObjCurr = null;
         delObjPrev = null;
+        checkbox_arr=[];
+        tempArray=[];
     }
-}
+
 
 function myToggle() {
     toggle_bt = document.getElementById("toggle_bt");
@@ -1583,7 +1630,7 @@ function createFloatingTab() {
 
 
 
-                floatingTable();
+               // floatingTable();
 
             }
             else {
@@ -1639,32 +1686,32 @@ function rejectLeave(obj) {
 
 }
 
-function floatingTable() {
-    letflBody = document.getElementById("FL_TBODY");
-    let child = (letflBody.childNodes);
-    for (var i = 0; i < child.length; i++) {
-        let trChild = (child[i].childNodes);
-   trChild.forEach((value, index) => { DoubleClickLitner(value); FocusOutListner(value) });
+// function floatingTable() {
+//     letflBody = document.getElementById("FL_TBODY");
+//     let child = (letflBody.childNodes);
+//     for (var i = 0; i < child.length; i++) {
+//         let trChild = (child[i].childNodes);
+//        trChild.forEach((value, index) => { DoubleClickLitner(value); FocusOutListner(value) });
 
  
-    }
-}
-function DoubleClickLitner(element) {
-    element.addEventListener("dblclick", function () {
+//     }
+// }
+// function DoubleClickLitner(element) {
+//     element.addEventListener("dblclick", function () {
 
-        element.contentEditable = true;
-        element.focus();
-        console.log(element);
+//         element.contentEditable = true;
+//         element.focus();
+//         console.log(element);
 
-    });
-}
-function FocusOutListner(element) {
-    element.addEventListener('focusout', function (e) {
-        element.contentEditable = false;
+//     });
+// }
+// function FocusOutListner(element) {
+//     element.addEventListener('focusout', function (e) {
+//         element.contentEditable = false;
 
-    }
-    );
-}
+//     }
+//     );
+// }
 function changeOrder(a, b) {
 
 }
@@ -1709,7 +1756,6 @@ function Applyleavebycolor(type) {
         case "FL" :leavtype="FL";break;
         case "UL": leavtype="UL";break;
         case "REJ" : leavtype="REJ";break;
-        case "APP" :leavtype="APP";break;
         case "ALT" :leavtype="ALT";break;
         case "TEN" :leavtype="TEN"
     }
@@ -1751,26 +1797,12 @@ let applydate = "";
                      ctClickArr[i].innerText = final;
                 
                     back_Color(final, ctClickArr[i]); break;
-                    case "APP" : 
-                    applydate = ctClickArr[i].getAttribute("date");
-                    ename = ctClickArr[i].getAttribute("ename");
-                    final = innerval+"(A)";
-                     ctClickArr[i].innerText = final;
-                    
-                    back_Color(final, ctClickArr[i]); break;
+                
                     case "ALT" : 
                     applydate = ctClickArr[i].getAttribute("date");
                     ename = ctClickArr[i].getAttribute("ename");
                     final = innerval+"(ALT)";
-                     ctClickArr[i].innerText = final;
-                     
-                    back_Color(final, ctClickArr[i]); break;
-                    case "TEN" : 
-                    applydate = ctClickArr[i].getAttribute("date");
-                    ename = ctClickArr[i].getAttribute("ename");
-                    final = innerval+"(T)";
-                     ctClickArr[i].innerText = final;
-                     
+                     ctClickArr[i].innerText = final;  
                     back_Color(final, ctClickArr[i]); break;
                     
                 }

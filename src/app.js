@@ -193,22 +193,25 @@ var server = app.listen(port, function () {
 
 
 function delEmp(jsonFilePath,filedata, resData) {
+
+    console.log(resData);
     demp = filedata.employee_name;
     dlev = filedata.leave_detail;
 
-
-    console.log(delete demp[resData]);
-    console.log(delete dlev[resData]);
-
+for(var i in resData)
+{
+    console.log(delete demp[resData[i]]);
+    console.log(delete dlev[resData[i]]);
+}
     console.log(demp);
     console.log(dlev);
     // dlev[val] = {};
+    
 
 
 
     fs.writeFile(jsonFilePath, `{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${JSON.stringify(demp)} } `, function (err) {
-        if (err)
-        console.log(err);
+        if (err) console.log(err);
         
        
     });
@@ -281,8 +284,7 @@ function updateEmpData(jsonFilePath,filedata, update, newemp) {
     // });
 
     fs.writeFile(jsonFilePath, `{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${JSON.stringify(demp)} } `, function (err) {
-        if (err) 
-        console.log(err);
+        if (err) console.log(err);
         
     });
 }
@@ -307,8 +309,7 @@ function addNewEmp(jsonFilePath,filedata, resData) {
 
 
             fs.writeFile(jsonFilePath, `{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${JSON.stringify(demp)} } `, function (err) {
-                if (err) 
-                console.log(err);
+                if (err)  console.log(err);
         
             });
         }

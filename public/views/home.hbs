@@ -1,5 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html>
 <head>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -27,9 +26,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   {{!-- ************************************************************** --}}
   {{!-- <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'> --}}
-    <link rel="stylesheet" href="css/jquery.toast.css">
-
-
+  <link rel="stylesheet" href="css/jquery.toast.css">
   <script>
     $(function () {
       $("#tbody_1").sortable();
@@ -37,76 +34,72 @@
     });
   </script>
   <style>
-    
-    .outerDIV
-    {
+    .outerDIV {
       display: flex;
     }
-.table-header-rotated th.rotate{
-  height: 80px;
-  width: 40px;
-  min-width: 40px;
-  max-width: 40px;
-  position: relative;
-  vertical-align: bottom;
-  padding: 0;
-  font-size: 12px;
-  line-height: 0.8;
-}
-
-.table-header-rotated th.rotate > div{
-  position: relative;
-  top: 0px;
-  left: 40px; /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
-  height: 100%;
-  -ms-transform:skew(-45deg,0deg);
-  -moz-transform:skew(-45deg,0deg);
-  -webkit-transform:skew(-45deg,0deg);
-  -o-transform:skew(-45deg,0deg);
-  transform:skew(-45deg,0deg);
-  overflow: hidden;
-  border-left: 1px solid #dddddd;
-  border-right: 1px solid #dddddd;
-  border-top: 1px solid #dddddd;
-}
-
-.table-header-rotated th.rotate span {
-  -ms-transform:skew(45deg,0deg) rotate(315deg);
-  -moz-transform:skew(45deg,0deg) rotate(315deg);
-  -webkit-transform:skew(45deg,0deg) rotate(315deg);
-  -o-transform:skew(45deg,0deg) rotate(315deg);
-  transform:skew(45deg,0deg) rotate(315deg);
-  position: absolute;
-  bottom: 30px; /* 40 cos(45) = 28 with an additional 2px margin*/
-  left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
-  display: inline-block;
-  // width: 100%;
-  width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
-  text-align: left;
-  // white-space: nowrap; /*whether to display in one line or not*/
-}
-
+    .table-header-rotated th.rotate {
+      height: 80px;
+      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      position: relative;
+      vertical-align: bottom;
+      padding: 0;
+      font-size: 12px;
+      line-height: 0.8;
+    }
+    .table-header-rotated th.rotate>div {
+      position: relative;
+      top: 0px;
+      left: 40px;
+      /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
+      height: 100%;
+      -ms-transform: skew(-45deg, 0deg);
+      -moz-transform: skew(-45deg, 0deg);
+      -webkit-transform: skew(-45deg, 0deg);
+      -o-transform: skew(-45deg, 0deg);
+      transform: skew(-45deg, 0deg);
+      overflow: hidden;
+      border-left: 1px solid #dddddd;
+      border-right: 1px solid #dddddd;
+      border-top: 1px solid #dddddd;
+    }
+    .table-header-rotated th.rotate span {
+      -ms-transform: skew(45deg, 0deg) rotate(315deg);
+      -moz-transform: skew(45deg, 0deg) rotate(315deg);
+      -webkit-transform: skew(45deg, 0deg) rotate(315deg);
+      -o-transform: skew(45deg, 0deg) rotate(315deg);
+      transform: skew(45deg, 0deg) rotate(315deg);
+      position: absolute;
+      bottom: 30px;
+      /* 40 cos(45) = 28 with an additional 2px margin*/
+      left: -25px;
+      /*Because it looked good, but there is probably a mathematical link here as well*/
+      display: inline-block;
+      // width: 100%;
+      width: 85px;
+      /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
+      text-align: left;
+      // white-space: nowrap; /*whether to display in one line or not*/
+    }
     .dot {
-  height: 10px;
-  width: 10px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
     .div1 {
       height: 100%;
       width: 100%;
       position: relative;
       background: black;
     }
-
     .textarea1 {
       background: aqua;
       height: 100%;
       width: 100%;
       position: absolute;
     }
-
     .div2 {
       position: absolute;
       z-index: 1;
@@ -116,7 +109,6 @@
       height: 5px;
       background: red;
     }
-
     .commentdiv {
       position: fixed;
       display: none;
@@ -124,7 +116,6 @@
       height: fit-content;
       background-color: crimson;
     }
-
     .custom-cm {
       background-color: #ffffff;
       border: 1px solid #cccccc;
@@ -136,35 +127,27 @@
       left: 0;
       width: 200px;
     }
-
     .custom-cm__item {
       cursor: pointer;
       padding: 8px 15px;
     }
-
     .custom-cm__item:hover {
       background-color: #f8f8f8;
     }
-
     .custom-cm__divider {
       border-bottom: 1px solid #eeeeee;
       margin: 10px 0;
     }
-
-
     /* toggle css  */
-
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
-
     .switch input {
       display: none;
     }
-
     .slider {
       position: absolute;
       cursor: pointer;
@@ -176,7 +159,6 @@
       -webkit-transition: .4s;
       transition: .4s;
     }
-
     .slider:before {
       position: absolute;
       content: "";
@@ -188,68 +170,54 @@
       -webkit-transition: .4s;
       transition: .4s;
     }
-
     input:checked+.slider {
       background-color: #8bc34a;
     }
-
     input:checked+.slider:before {
       -webkit-transform: translateX(26px);
       -ms-transform: translateX(26px);
       transform: translateX(26px);
     }
-
     .slider.round {
       border-radius: 34px;
     }
-
     .slider.round:before {
       border-radius: 50%;
     }
-
     /* toggle css ends  */
-
     .table-wrapper {
       overflow-x: scroll;
     }
-
     .sat,
     .sun {
       background-color: #17a2b8;
     }
-
-    .eName,.pool {
+    .eName,
+    .pool {
       background-color: #dbd951;
     }
-    .eName
-    {
+    .eName {
       white-space: nowrap;
     }
-
     .click_select {
       border: 2px solid #5292f7 !important;
     }
-
     .poolSelect {
       border: 2px solid rgba(230, 177, 116, 0.3);
       background-color: rgba(230, 177, 116, 0.3);
     }
-
     .umeric:hover {
       cursor: pointer;
       border: 2px solid #5292f7;
       background: lightgray;
       box-shadow: inset -1px 0 0 #bababa;
     }
-
     .table td {
       vertical-align: middle !important;
     }
-
     .hoverWrapper:hover #hoverShow1 {
       display: block;
     }
-
     .hoverWrapper #hoverShow1 {
       display: none;
       position: absolute;
@@ -259,271 +227,190 @@
       left: 200px;
       top: 100px;
     }
-
-
     .divclass {
       position: absolute;
       background: aqua;
       display: none;
     }
-
     .divparent:hover .divclass {
       display: block;
     }
-
     .divparent {
       z-index: 1;
-
     }
-    .nav-bar{
-  background-color:white;
-  height: 45px;
-  width: 100%;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 2);
-
-}
-.nav-heading{
-  color: white;
-  padding-top: 10px;
-  margin-left: 10px;
-}
-    .main-block{
+    .nav-bar {
+      background-color: white;
+      height: 45px;
+      width: 100%;
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 2);
+    }
+    .nav-heading {
+      color: white;
+      padding-top: 10px;
+      margin-left: 10px;
+    }
+    .main-block {
       display: flex;
     }
-    .block-1{
-      width: 50%;
-      padding: 10px;
+    .nav-iteam {
+      margin-top: 9px
     }
-    .block-2{
-      width: 50%;
-      padding: 10px;
+    .form-inline label{
+      display: inline;
     }
-    .nav-iteam
-    {
-    
-    margin-top: 9px
-
-    }
-
   </style>
-
-
   <!-- <link href="table.css" rel="stylesheet"> -->
-
 </head>
-
-<body >
-  {{!-- ***************************************************************************** --}}
+<body class="container" style="background-color: #e9ecef;">
+  {{!-- *********************************Nav bar******************************************** --}}
   <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bar">
-<a class="navbar-brand" href="#">
-    <img src="./img/bitwise.jpg" width="100" height="30" class="d-inline-block align-top" alt="">
-  </a>
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-   
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-            <button onclick="reload()" class="nav-iteam btn btn-link reload nav-link">Reset</button>
-                    
-      </li>
-      <li class="nav-item">
-        <a class="btn  nav-link" href="/report/report.html">Generate report</a>
-                 
-      </li>
-      <li class="nav-item">
-           <button onclick="reject()" class="nav-iteam btn btn-link  nav-link reject_Leave">Reject Leave</button
-           >
-              
-      </li>
-         <li class="nav-item">
-         
-               <button onclick="createSCV()" class="nav-iteam btn btn-link createSCV nav-link">export to CSV</button>
-                   
-      </li>
-       <li class="nav-item">
-          <button onclick="sortTable()" class="nav-iteam btn btn-link sortTable nav-link">Sort Table</button> 
-                    
-              
-      </li>
-       <li class="nav-item">
-         <button onclick="Delete()" class="nav-iteam btn btn btn-link sortTable nav-link">Delete Employee</button>
-              
-      </li>
-      
-      
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown link
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-    </ul>
-  </div>
-    <div class="row">                  
-      <div class="col-sm-10">       
-                      <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
-    title="Type in a name">
-                  </div>
-            </div>
-    <div class="form-group" style=" margin-top: 19px" >
-    <label class="switch ">
-      <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
-      <span class="slider round"></span>
-    </label>
+    <a class="navbar-brand" href="#">
+      <img src="./img/bitwise.jpg" width="100" height="30" class="d-inline-block align-top" alt="">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <button onclick="reload()" class="nav-iteam btn btn-link reload nav-link">Reset</button>
+        </li>
+        <li class="nav-item">
+          <a class="btn  nav-link" href="/report/report.html">Generate report</a>
+        </li>
+        <li class="nav-item">
+          <button onclick="reject()" class="nav-iteam btn btn-link  nav-link reject_Leave">Reject Leave</button>
+        </li>
+        <li class="nav-item">
+          <button onclick="createSCV()" class="nav-iteam btn btn-link createSCV nav-link">export to CSV</button>
+        </li>
+        <li class="nav-item">
+          <button onclick="sortTable()" class="nav-iteam btn btn-link sortTable nav-link">Sort Table</button>
+        </li>
+        <li class="nav-item">
+          <button onclick="Delete()" class="nav-iteam btn btn btn-link sortTable nav-link">Delete Employee</button>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Dropdown link
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ul>
     </div>
-</nav>
-
-<div class="pos-f-t">
-  <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-        <div class="container main-block">
-  {{!-- block 1 --}}
-  <div class="form-inline block-1">
-
-    
-          <select id="emp_nm" class="form-control empCal">
-            <option value="0">select emp</option>
-          </select>
-      
-  
-              Start date
-        
-            <input type="text" id="startdatepicker" id="start" class="col form-control inputCal" >
-          
-              End date
-      
-           <input type="text" id="enddatepicker" id="start" class="col form-control inputCal" >
-  
-            <button onclick="applyLeaveByDateRange()" class="col btn btn-primary buttonCal">apply leave</button>
-        
-  </div>
-
-  {{!-- block 2 --}}
-  <!-- Add employee and team -->
-  <div class="form-inline my-3 block-2">
-    <table>
-      <tr>
-        <div class="form-group">
-          <td>Employee Name</td>
-          <td><input class="form-control" placeholder="Add Employee Name" type="text" id="addEmp"></td>
-        </div>
-      </tr>
-      <tr>
-        <div class="form-group">
-          <td>Team Name</td>
-          <td><input class="form-control" placeholder="Add Team name" type="text" id="addEmpTeam"></td>
-        </div>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <button onclick="addEmployee()" class="btn btn-primary ademp">Add employee</button>
-          <button onclick="Save()" class="btn btn-danger ">Save</button>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-
-
-    
+    <div class="row">
+      <div class="col-sm-10">
+        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
+          title="Type in a name">
+      </div>
     </div>
-  </div>
-  <nav class="navbar navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="form-group" style=" margin-top: 19px">
+      <label class="switch ">
+        <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
+        <span class="slider round"></span>
+      </label>
+    </div>
   </nav>
-</div>
-{{!-- *********************************************************************** --}}
-{{!-- <div class="nav-bar">
+  {{!-- Nav bar ended --}}
+  <div class="form-row form-inline mb-3">
+    <div class="form-group col-2">
+      <select id="emp_nm" class="form-control empCal">
+        <option value="0">select emp</option>
+      </select>
+    </div>
+    <div class="form-group col-4">
+      <label for="start">Start date</label>
+      <input type="text" id="startdatepicker" id="start" class="form-control inputCal">
+    </div>
+    <div class="form-group col-4">
+      <label for="start">End date</label>
+      <input type="text" id="enddatepicker" id="start" class="form-control inputCal">
+    </div>
+  </div>
+  <form class="form-row form-inline mb-3">
+    <div class="form-group offset-2 col-4">
+      <label for="addEmp">Employee Name</label>
+      <input class="form-control" placeholder="Add Employee Name" type="text" id="addEmp">
+    </div>
+    <div class="form-group col-4">
+      <label for="addEmpTeam">Team name</label>
+      <input class="form-control" placeholder="Add Team name" type="text" id="addEmpTeam">
+    </div>
+    <button onclick="addEmployee()" class="btn btn-primary ademp">Add employee</button>
+  </form>
+  <button onclick="Save()" class="btn btn-danger mb-3">Save</button>
+  {{!-- *********************************************************************** --}}
+  {{!-- <div class="nav-bar">
   <div class="nav-content">
     <div class="nav-heading">  
   </div>
-
-
- 
   </div>
 </div> --}}
   <!-- select employee and add leave  -->
-
-
   <!-- data save not save toggle -->
-
-
-
-
-<div class="panel panel-info">
-      <div class="panel-heading">
-         <!-- button stack -->
-          <div class="form-group container-fluid">
-          
-           <div calss="outerDIV">     
-   <div class="legend">
-                <span class="dot" id="PL_C" style="background-color: blue;" ></span>
-                <span id="myspan">Planned Leave</span>
-              
-            </div >
-               <div class="legend">
-                <span class="dot" id="UL_C"style="background-color: darkslateblue;" ></span>
-                <span id="UL">Un-Planned Leave</span></div>
-                
-            </div>
-              <div class="legend">
-                <span class="dot" id="FL_C" style="background-color: darkorange;" ></span>
-                <span id="FL">Floating Leave</span>
-              
-            </div>
-            <div><span class="dot" id="APPROVE_C" style="background-color: green;"></span>
-                  <span id="APPROVE" >Approve</span></div>
-                
-                <div><span class="dot" id="REJ_C" style="background-color: red;"></span>
-                  <span id="REJ">Reject</span></div>
-                
-                <div><span class="dot" id="TENTATIVE_C" style="background-color:springgreen;"></span>
-                <span id="TENTATIVE">Tentetive</span></div>
-                   <div><span class="dot" id="ALT_C" style="background-color:dimgrey;"></span>
-                <span id="ALT">Alternate</span></div>
-            </div>
-
-          </div>
-      </div>
-      <div class="panel-body">
-
-        <div class="table-wrapper my-3" tabindex="0" id="div-1">
-          <table style="margin-bottom: 0px;" class="table  table-sm  main_table table-header-rotated" id="tab1">
-            <thead class="
+  {{!-- color coding  --}}
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-primary"><span class="dot" id="PL_C" style="background-color: blue;"></span>
+        <span id="myspan">Planned Leave</span></button>
+    </div>
+    <div class="col">
+      <button class="btn btn-info"><span class="dot" id="UL_C" style="background-color: darkslateblue;"></span>
+        <span id="UL">Un-Planned Leave</span></button>
+    </div>
+    <div class="col">
+      <button class="btn btn-warning"> <span class="dot" id="FL_C" style="background-color: darkorange;"></span>
+        <span id="FL">Floating Leave</span></button>
+    </div>
+    {{!-- need to delete below--}}
+    {{!-- <div><span class="dot" id="APPROVE_C" style="background-color: green;"></span>
+          <span id="APPROVE">Approve</span></div> --}}
+    <div class="col">
+      <button class="btn btn-danger"><span class="dot" id="REJ_C" style="background-color: red;"></span>
+        <span id="REJ">Reject</span></button>
+    </div>
+    {{!-- <div><span class="dot" id="TENTATIVE_C" style="background-color:springgreen;"></span>
+          <span id="TENTATIVE">Tentetive</span></div> --}}
+    <div class="col">
+      <button class="btn btn-success"><span class="dot" id="ALT_C" style="background-color:dimgrey;"></span>
+        <span id="ALT">Alternate</span></button>
+    </div>
+  </div>
+  {{!-- color coding ended --}}
+  <div class="panel-body">
+    <div class="row">
+      <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
+        title="Type in a name">
+    </div>
+    <div class="table-wrapper my-3" tabindex="0" id="div-1">
+      <table style="margin-bottom: 0px;" class="table  table-sm  main_table table-header-rotated" id="tab1">
+        <thead class="
              table_head" id="thead1"></thead>
-            <tbody id="tbody_1" class="table-bordered"></tbody>
-          </table>
-          <div class="commentdiv" id="cmtID">
+        <tbody id="tbody_1" class="table-bordered"></tbody>
+      </table>
+      <div class="commentdiv" id="cmtID">
+        <label>Rahul Pancholi ( 2020-02-22 )</label>
 
-            <label>Rahul Pancholi ( 2020-02-22 )</label><br>
-            <textarea id="lastname" class="docos-input-textarea" autocomplete="input-area" x-webkit-speech="" speech=""
-              role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr" style="height: 76px;"></textarea>
-            <br>
-            <input type="submit" value="Submit" onclick="formdata()" />
-            <input type="button" value="Cancle" onclick=" " /><br>
+        <textarea id="lastname" class="docos-input-textarea" autocomplete="input-area" x-webkit-speech="" speech=""
+          role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr"
+          style="height: 76px;"></textarea>
+        
 
-          </div>
+        <input type="submit" value="Submit" onclick="formdata()" />
+        <input type="button" value="Cancle" onclick=" " />
 
       </div>
     </div>
-
-
- 
-
+  </div>
   <div id="hoverShow1" style="width: 25%;" class="my-3 divparent" tabindex="0" id="FL_main_table_div">
     <div class="divclass">
       <button onclick="addFl()">add</button>
       <button onclick="deleteFl()">remove</button>
-
       <table style="margin-bottom: 0px;width: fit-content" class="table table-sm table-bordered legend_table "
         id="FL_legend_tab1">
-        <thead class= "table_head" id="legend_thead1">
+        <thead class="table_head" id="legend_thead1">
           <tr id="FL_ROW">
             <td>&nbsp;</td>
             <td>FLOATING_DATE</td>
@@ -534,283 +421,236 @@
       </table>
     </div>
   </div>
-
-
-    
-    </div>
-    <a class="eval-js" href="#">Run code</a>
-                <pre><code>$.toast({
+  <a class="eval-js" href="#">Run code</a>
+  <pre><code>$.toast({
     heading: 'Information',
     text: 'Now you can add icons to generate different kinds of toasts',
     showHideTransition: 'slide',
     icon: 'info'
 })</code></pre>
-                 {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
-    <script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
-   
-    <script>$( "#dialog" ).dialog()
-        $( "#startdatepicker" ).datepicker();
-     $( "#enddatepicker" ).datepicker();
-    
-    </script>
-    <script type="text/javascript" src="./javascript/table_script.js">  </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            
-            $('.eval-js').on('click', function ( e ) {
-                e.preventDefault();
-
-                if ( !$(this).hasClass('generate-toast') ) {
-                    var code = $(this).siblings('pre').find('code').text();
-                    code.replace("<span class='hidden'>", '');
-                    code.replace("</span");
-
-                    eval( code );
-                };
-            });
-
-            $('#icon-type').on('change', function () {
-                if ( !$(this).val() ) {
-                    $('.custom-color-info').show();
-                    $('.toast-icon-line').hide();
-                    $('.toast-bgColor-line').show();
-                    $('.toast-textColor-line').show();
-                } else {
-                    $('.toast-icon-line').show();
-                    $('.custom-color-info').hide();
-                    $('.toast-bgColor-line').hide();
-                    $('.toast-textColor-line').hide();
-                    $('.toast-icon-line span.toast-icon').text( $(this).val() );
-                }
-            });
-
-            // You are about to see some extremely horrible code that can be MUCH MUCH improved,
-            // I've knowlingly done it that way, please don't judge me based upon this ;)
-            $(document).ready(function () {
-                
-                function generateCode () {
-                    var text = $('.plugin-options #toast-text').val(); 
-                    var heading = $('.plugin-options #toast-heading').val(); 
-                    var transition = $('.toast-transition').val(); 
-                    var allowToastClose = $('#allow-toast-close').val(); 
-                    var autoHide = $('#auto-hide-toast').val(); 
-                    var stackToasts = $('#stack-toasts').val(); 
-                    var toastPosition = $('#toast-position').val() 
-                    var toastBg = $('#toast-bg').val(); 
-                    var toastTextColor = $('#toast-text-color').val();
-                    var toastIcon = $('#icon-type').val();
-                    var textAlign = $('#text-align').val();
-                    var toastEvents = $('#add-toast-events').val();
-                    var loader = $('#show-loader').val();
-                    var loaderBg = $('#loader-bg').val();
-
-                    if ( text ) {
-                        $('.toast-text-line').show(); 
-                        $('.toast-text-line .toast-text').text( text ); 
-                    } else {
-                        $('.toast-text-line').hide() 
-                        $('.toast-text-line .toast-text').text(''); 
-                    };
-
-                    if ( heading ) {
-                        $('.toast-heading-line').show(); 
-                        $('.toast-heading-line .toast-heading').text( heading ); 
-                    } else {
-                        $('.toast-heading-line').hide() 
-                        $('.toast-heading-line .toast-heading').text(''); 
-                    }; 
-
-                    if ( transition ) {
-                        $('.toast-transition-line').show() 
-                        $('.toast-transition-line .toast-transition').text( transition ); 
-                    } else {
-                        $('.toast-transition-line').hide(); 
-                        $('.toast-transition-line .toast-transition').text('fade'); 
-                    } 
-
-                    if ( allowToastClose ) {
-                        $('.toast-allowToastClose-line').show(); 
-                        $('.toast-allowToastClose-line .toast-allowToastClose').text( allowToastClose ); 
-                    } else {
-                        $('.toast-allowToastClose-line').hide(); 
-                        $('.toast-allowToastClose-line .toast-allowToastClose').text( false ); 
-                    } 
-
-                    if ( autoHide && ( autoHide == 'false' ) ) {
-                        $('.toast-hideAfter-line').show(); 
-                        $('.toast-hideAfter-line .toast-hideAfter').text('false'); 
-                        $('.autohide-after').hide(); 
-                    } else {
-                        $('.toast-hideAfter-line').show(); 
-                        $('.toast-hideAfter-line .toast-hideAfter').text( $('#autohide-after').val() ? $('#autohide-after').val() : 3000 ); 
-                        $('.autohide-after').show(); 
-                    } 
-
-                    if ( stackToasts && stackToasts != 'true') {
-                        $('.toast-stackLength-line').show(); 
-                        $('.toast-stackLength-line .toast-stackLength').text( stackToasts ); 
-                        $('.stack-length').hide(); 
-                    } else {
-                        $('.stack-length').show(); 
-                        $('.toast-stackLength-line').show(); 
-                        $('.toast-stackLength-line .toast-stackLength').text( $('#stack-length').val() ? $('#stack-length').val() : 5 ); 
-                    } 
-
-                    if ( toastPosition && ( toastPosition !== 'custom-position' ) ) {
-                        $('.toast-position-string-line').show(); 
-                        $('.custom-toast-position').hide(); 
-                        $('.toast-position-string-line .toast-position').text( toastPosition ); 
-                    } else {
-                        $('.toast-position-string-line').hide(); 
-                        $('.toast-position-string-line .toast-position').text(''); 
-                    } 
-
-                    if ( toastPosition && ( toastPosition === 'custom-position' ) ) {
-                        $('.custom-toast-position').show(); 
-                        $('.toast-position-string-obj').show(); 
-                        var left = $('#left-position').val() ? $('#left-position').val() : 'auto'; 
-                        var right = $('#right-position').val() ? $('#right-position').val() : 'auto'; 
-                        var top = $('#top-position').val() ? $('#top-position').val() : 'auto'; 
-                        var bottom = $('#bottom-position').val() ? $('#bottom-position').val() : 'auto'; 
-                        $('.toast-position-string-obj .toast-position-left').text( ( left !== 'auto' ) ? left : "'" + left + "'" ); 
-                        $('.toast-position-string-obj .toast-position-right').text( ( right !== 'auto' ) ? right : "'" + right + "'" ); 
-                        $('.toast-position-string-obj .toast-position-top').text( ( top !== 'auto' ) ? top : "'" + top + "'" ); 
-                        $('.toast-position-string-obj .toast-position-bottom').text(  ( bottom !== 'auto' ) ? bottom : "'" + bottom + "'"  ); 
-                    } else {
-                        $('.toast-position-string-obj').hide(); 
-                        // $('.toast-position-string-obj toast-position').text('');
-                    } 
-
-                    if ( !toastIcon ) {
-                        if ( toastBg ) {
-                            $('.toast-bgColor-line').show(); 
-                            $('.toast-bgColor-line .toast-bgColor').text( toastBg ); 
-                        } else {
-                            $('.toast-bgColor-line').hide(); 
-                            $('.toast-bgColor-line .toast-bgColor').text(''); 
-                        } 
-
-                        if ( toastTextColor ) {
-                            $('.toast-textColor-line').show(); 
-                            $('.toast-textColor-line .toast-textColor').text( toastTextColor ); 
-                        } else {
-                            $('.toast-textColor-line').hide(); 
-                            $('.toast-textColor-line .toast-textColor').text(''); 
-                        } 
-                    }
-
-                    if ( textAlign ) {
-                        $('.toast-textAlign-line').show(); 
-                        $('.toast-textAlign-line .toast-textAlign').text( textAlign ); 
-                    } else {
-                        $('.toast-textAlign-line').hide(); 
-                        $('.toast-textAlign-line .toast-textAlign').text( ''); 
-                    } 
-
-                    if (loader == 'false') {
-                        $('.toast-textLoader').html('false');
-                    } else {
-                        $('.toast-textLoader').html('true');
-                    }
-                    
-                    if (loaderBg) {
-                        $('.toast-textLoaderBg').html(loaderBg);
-                    }
-
-                    if ( toastEvents == 'false' ) {
-                        $('.toast-beforeShow-line').hide(); 
-                        $('.toast-afterShown-line').hide(); 
-                        $('.toast-beforeHide-line').hide(); 
-                        $('.toast-afterHidden-line').hide(); 
-                    } else {
-                        $('.toast-beforeShow-line').show(); 
-                        $('.toast-afterShown-line').show(); 
-                        $('.toast-beforeHide-line').show(); 
-                        $('.toast-afterHidden-line').show(); 
-                    } 
-                }
-
-                $('#top-position').on('change', function () { $('#bottom-position').val('auto'); });
-                $('#bottom-position').on('change', function () { $('#top-position').val('auto'); });
-                $('#left-position').on('change', function () { $('#right-position').val('auto'); });
-                $('#right-position').on('change', function () {$('#left-position').val('auto'); });
-                $('.plugin-options :input').on('change', function () {
-                  $.toast().reset('all');
-                  generateCode();
-                });
-
-                $('.generate-toast').on('click', function( e ) {
-                  e.preventDefault();
-                  generateToast();
-                });
-
-                function generateToast () {
-                    var options = {};
-
-                    if ( $('.toast-text-line').is(':visible') ) {
-                        options.text = $('.toast-text-line .toast-text').text();
-                    } 
-
-                    if ( $('.toast-heading-line').is(':visible') ) {
-                        options.heading = $('.toast-heading').text(); 
-                    }; 
-
-                    if ( $('.toast-transition-line').is(':visible') ) {
-                        options.showHideTransition = $('.toast-transition-line .toast-transition').text(); 
-                    }; 
-
-                    if ( $('.toast-allowToastClose-line').is(':visible') ) {
-                        options.allowToastClose = ( $('.toast-allowToastClose-line .toast-allowToastClose').text() === 'true' ) ? true : false; 
-                    }; 
-
-                    if ( $('.toast-hideAfter-line').is(':visible') ) {
-                        options.hideAfter = parseInt($('.toast-hideAfter-line .toast-hideAfter').text(), 10) || false; 
-                    }; 
-
-                    if ( $('.toast-stackLength-line').is(':visible') ) {
-                        options.stack = parseInt($('.toast-stackLength-line .toast-stackLength').text(), 10) || false; 
-                    }; 
-
-                    if ( $('.toast-position-string-line').is(':visible') ) {
-                        options.position = $('.toast-position-string-line .toast-position').text(); 
-                    }; 
-
-                    if ( $('.toast-position-string-obj').is(':visible') ) {
-                        options.position = {}; 
-                        options.position.left =  parseFloat( $('.toast-position .toast-position-left').text() ) || 'auto'; 
-                        options.position.right =  parseFloat( $('.toast-position .toast-position-right').text() ) || 'auto'; 
-                        options.position.top =  parseFloat( $('.toast-position .toast-position-top').text() ) || 'auto'; 
-                        options.position.bottom =  parseFloat( $('.toast-position .toast-position-bottom').text() ) || 'auto'; 
-                    }; 
-
-                    if ( $('.toast-icon-line').is(':visible') ) {
-                        options.icon = $('.toast-icon-line .toast-icon').text();
-                    };
-
-                    if ( $('.toast-bgColor-line').is(':visible') ) {
-                        options.bgColor = $('#toast-bg').val(); 
-                    }; 
-
-                    if ( $('.toast-text-color').is(':visible') ) {
-                        options.textColor = $('#toast-text-color').val(); 
-                    }; 
-
-                    if ( $("#text-align").is(':visible') ) {
-                        options.textAlign = $('#text-align').val(); 
-                    };
-
-                    options.loader = $('.toast-textLoader').html() === 'false' ? false : true;
-                    options.loaderBg = $('.toast-textLoaderBg').html();
-
-                    $.toast( options ); 
-                }
-
-                generateCode(); 
-            });
+  {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
+  <script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
+  <script>$("#dialog").dialog()
+    $("#startdatepicker").datepicker();
+    $("#enddatepicker").datepicker();
+  </script>
+  <script type="text/javascript" src="./javascript/table_script.js">  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('.eval-js').on('click', function (e) {
+        e.preventDefault();
+        if (!$(this).hasClass('generate-toast')) {
+          var code = $(this).siblings('pre').find('code').text();
+          code.replace("<span class='hidden'>", '');
+          code.replace("</span");
+          eval(code);
+        };
+      });
+      $('#icon-type').on('change', function () {
+        if (!$(this).val()) {
+          $('.custom-color-info').show();
+          $('.toast-icon-line').hide();
+          $('.toast-bgColor-line').show();
+          $('.toast-textColor-line').show();
+        } else {
+          $('.toast-icon-line').show();
+          $('.custom-color-info').hide();
+          $('.toast-bgColor-line').hide();
+          $('.toast-textColor-line').hide();
+          $('.toast-icon-line span.toast-icon').text($(this).val());
+        }
+      });
+      // You are about to see some extremely horrible code that can be MUCH MUCH improved,
+      // I've knowlingly done it that way, please don't judge me based upon this ;)
+      $(document).ready(function () {
+        function generateCode() {
+          var text = $('.plugin-options #toast-text').val();
+          var heading = $('.plugin-options #toast-heading').val();
+          var transition = $('.toast-transition').val();
+          var allowToastClose = $('#allow-toast-close').val();
+          var autoHide = $('#auto-hide-toast').val();
+          var stackToasts = $('#stack-toasts').val();
+          var toastPosition = $('#toast-position').val()
+          var toastBg = $('#toast-bg').val();
+          var toastTextColor = $('#toast-text-color').val();
+          var toastIcon = $('#icon-type').val();
+          var textAlign = $('#text-align').val();
+          var toastEvents = $('#add-toast-events').val();
+          var loader = $('#show-loader').val();
+          var loaderBg = $('#loader-bg').val();
+          if (text) {
+            $('.toast-text-line').show();
+            $('.toast-text-line .toast-text').text(text);
+          } else {
+            $('.toast-text-line').hide()
+            $('.toast-text-line .toast-text').text('');
+          };
+          if (heading) {
+            $('.toast-heading-line').show();
+            $('.toast-heading-line .toast-heading').text(heading);
+          } else {
+            $('.toast-heading-line').hide()
+            $('.toast-heading-line .toast-heading').text('');
+          };
+          if (transition) {
+            $('.toast-transition-line').show()
+            $('.toast-transition-line .toast-transition').text(transition);
+          } else {
+            $('.toast-transition-line').hide();
+            $('.toast-transition-line .toast-transition').text('fade');
+          }
+          if (allowToastClose) {
+            $('.toast-allowToastClose-line').show();
+            $('.toast-allowToastClose-line .toast-allowToastClose').text(allowToastClose);
+          } else {
+            $('.toast-allowToastClose-line').hide();
+            $('.toast-allowToastClose-line .toast-allowToastClose').text(false);
+          }
+          if (autoHide && (autoHide == 'false')) {
+            $('.toast-hideAfter-line').show();
+            $('.toast-hideAfter-line .toast-hideAfter').text('false');
+            $('.autohide-after').hide();
+          } else {
+            $('.toast-hideAfter-line').show();
+            $('.toast-hideAfter-line .toast-hideAfter').text($('#autohide-after').val() ? $('#autohide-after').val() : 3000);
+            $('.autohide-after').show();
+          }
+          if (stackToasts && stackToasts != 'true') {
+            $('.toast-stackLength-line').show();
+            $('.toast-stackLength-line .toast-stackLength').text(stackToasts);
+            $('.stack-length').hide();
+          } else {
+            $('.stack-length').show();
+            $('.toast-stackLength-line').show();
+            $('.toast-stackLength-line .toast-stackLength').text($('#stack-length').val() ? $('#stack-length').val() : 5);
+          }
+          if (toastPosition && (toastPosition !== 'custom-position')) {
+            $('.toast-position-string-line').show();
+            $('.custom-toast-position').hide();
+            $('.toast-position-string-line .toast-position').text(toastPosition);
+          } else {
+            $('.toast-position-string-line').hide();
+            $('.toast-position-string-line .toast-position').text('');
+          }
+          if (toastPosition && (toastPosition === 'custom-position')) {
+            $('.custom-toast-position').show();
+            $('.toast-position-string-obj').show();
+            var left = $('#left-position').val() ? $('#left-position').val() : 'auto';
+            var right = $('#right-position').val() ? $('#right-position').val() : 'auto';
+            var top = $('#top-position').val() ? $('#top-position').val() : 'auto';
+            var bottom = $('#bottom-position').val() ? $('#bottom-position').val() : 'auto';
+            $('.toast-position-string-obj .toast-position-left').text((left !== 'auto') ? left : "'" + left + "'");
+            $('.toast-position-string-obj .toast-position-right').text((right !== 'auto') ? right : "'" + right + "'");
+            $('.toast-position-string-obj .toast-position-top').text((top !== 'auto') ? top : "'" + top + "'");
+            $('.toast-position-string-obj .toast-position-bottom').text((bottom !== 'auto') ? bottom : "'" + bottom + "'");
+          } else {
+            $('.toast-position-string-obj').hide();
+            // $('.toast-position-string-obj toast-position').text('');
+          }
+          if (!toastIcon) {
+            if (toastBg) {
+              $('.toast-bgColor-line').show();
+              $('.toast-bgColor-line .toast-bgColor').text(toastBg);
+            } else {
+              $('.toast-bgColor-line').hide();
+              $('.toast-bgColor-line .toast-bgColor').text('');
+            }
+            if (toastTextColor) {
+              $('.toast-textColor-line').show();
+              $('.toast-textColor-line .toast-textColor').text(toastTextColor);
+            } else {
+              $('.toast-textColor-line').hide();
+              $('.toast-textColor-line .toast-textColor').text('');
+            }
+          }
+          if (textAlign) {
+            $('.toast-textAlign-line').show();
+            $('.toast-textAlign-line .toast-textAlign').text(textAlign);
+          } else {
+            $('.toast-textAlign-line').hide();
+            $('.toast-textAlign-line .toast-textAlign').text('');
+          }
+          if (loader == 'false') {
+            $('.toast-textLoader').html('false');
+          } else {
+            $('.toast-textLoader').html('true');
+          }
+          if (loaderBg) {
+            $('.toast-textLoaderBg').html(loaderBg);
+          }
+          if (toastEvents == 'false') {
+            $('.toast-beforeShow-line').hide();
+            $('.toast-afterShown-line').hide();
+            $('.toast-beforeHide-line').hide();
+            $('.toast-afterHidden-line').hide();
+          } else {
+            $('.toast-beforeShow-line').show();
+            $('.toast-afterShown-line').show();
+            $('.toast-beforeHide-line').show();
+            $('.toast-afterHidden-line').show();
+          }
+        }
+        $('#top-position').on('change', function () { $('#bottom-position').val('auto'); });
+        $('#bottom-position').on('change', function () { $('#top-position').val('auto'); });
+        $('#left-position').on('change', function () { $('#right-position').val('auto'); });
+        $('#right-position').on('change', function () { $('#left-position').val('auto'); });
+        $('.plugin-options :input').on('change', function () {
+          $.toast().reset('all');
+          generateCode();
         });
-    </script>
-
-
+        $('.generate-toast').on('click', function (e) {
+          e.preventDefault();
+          generateToast();
+        });
+        function generateToast() {
+          var options = {};
+          if ($('.toast-text-line').is(':visible')) {
+            options.text = $('.toast-text-line .toast-text').text();
+          }
+          if ($('.toast-heading-line').is(':visible')) {
+            options.heading = $('.toast-heading').text();
+          };
+          if ($('.toast-transition-line').is(':visible')) {
+            options.showHideTransition = $('.toast-transition-line .toast-transition').text();
+          };
+          if ($('.toast-allowToastClose-line').is(':visible')) {
+            options.allowToastClose = ($('.toast-allowToastClose-line .toast-allowToastClose').text() === 'true') ? true : false;
+          };
+          if ($('.toast-hideAfter-line').is(':visible')) {
+            options.hideAfter = parseInt($('.toast-hideAfter-line .toast-hideAfter').text(), 10) || false;
+          };
+          if ($('.toast-stackLength-line').is(':visible')) {
+            options.stack = parseInt($('.toast-stackLength-line .toast-stackLength').text(), 10) || false;
+          };
+          if ($('.toast-position-string-line').is(':visible')) {
+            options.position = $('.toast-position-string-line .toast-position').text();
+          };
+          if ($('.toast-position-string-obj').is(':visible')) {
+            options.position = {};
+            options.position.left = parseFloat($('.toast-position .toast-position-left').text()) || 'auto';
+            options.position.right = parseFloat($('.toast-position .toast-position-right').text()) || 'auto';
+            options.position.top = parseFloat($('.toast-position .toast-position-top').text()) || 'auto';
+            options.position.bottom = parseFloat($('.toast-position .toast-position-bottom').text()) || 'auto';
+          };
+          if ($('.toast-icon-line').is(':visible')) {
+            options.icon = $('.toast-icon-line .toast-icon').text();
+          };
+          if ($('.toast-bgColor-line').is(':visible')) {
+            options.bgColor = $('#toast-bg').val();
+          };
+          if ($('.toast-text-color').is(':visible')) {
+            options.textColor = $('#toast-text-color').val();
+          };
+          if ($("#text-align").is(':visible')) {
+            options.textAlign = $('#text-align').val();
+          };
+          options.loader = $('.toast-textLoader').html() === 'false' ? false : true;
+          options.loaderBg = $('.toast-textLoaderBg').html();
+          $.toast(options);
+        }
+        generateCode();
+      });
+    });
+  </script>
 </body>
-
 </html>
