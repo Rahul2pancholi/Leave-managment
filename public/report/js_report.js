@@ -86,12 +86,33 @@ function getEmpJsonData() {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
 }
 
 
 
 
 
+
+
+function dateFormatter(year,month,day)
+{
+return `${day}-${month}-${year}`;
+}
 
 function appendZero(temp) {
     if (temp.toString().length < 2) {
@@ -136,6 +157,7 @@ function addDataTOUi(employee_name, header = 1) {
             let dayname = new Date(full_date);
 
             let day_nm_class = day_name[dayname.getDay()].toLowerCase();
+            full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
             // console.log(full_date);
 
 
@@ -147,6 +169,7 @@ function addDataTOUi(employee_name, header = 1) {
                 if (day_nm_class == "sat" || day_nm_class == "sun") {
                     count++;
                 }
+                console.log(employee_name,emp_data)
                 let em = (emp_data[employee_name])[full_date];
                 if (em != undefined) {
                     let leavetype = em["leavetype"];
@@ -155,10 +178,10 @@ function addDataTOUi(employee_name, header = 1) {
 
 
                     switch (leavetype) {
-                        case "FL(A)":
+                        case "FL":
                             FL++;
                             break;
-                        case "PL(A)":
+                        case "PL":
                             PL++;
                             break
                           case "FL(ALT)":  
@@ -196,7 +219,7 @@ function addDataTOUi(employee_name, header = 1) {
 
 
             total_leave_hours = (((PL + FL + UL + ALT) * 8) + (HL * 4));
-            total_hour_worked = (((mth_lst_day) - (count - WKG)) * 8);
+            total_hour_worked = (((mth_lst_day) - (count)) * 8);
             total = total_hour_worked - total_leave_hours;
             final = final + total;
             //   console.log("TOTAL = "+total);
@@ -235,6 +258,7 @@ function addDataTOUi(employee_name, header = 1) {
         dataArray.push(arr);
         console.log(dataArray);
         totalleave = 0;
+        final=0;
     }
 }
 
@@ -286,6 +310,7 @@ function Init() {
 
 
 
+    console.log(JSON.stringify(dataArray));
 
 }
 
@@ -294,6 +319,7 @@ function Init() {
 window.onload = (() => {
 
     getEmpJsonData();
+ 
     // $(document).ready(function () {
     //     $('[data-toggle="tooltip"]').tooltip();
     //     console.log("called");

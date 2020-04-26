@@ -1,4 +1,5 @@
 
+
 let selectEnabled = 0;
 let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 let day_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -18,6 +19,8 @@ let showAllEnabled = 1;
 let xhttp = new XMLHttpRequest();
 let cmtElmt = document.getElementById("cmtID");
 let textarea = document.getElementById("lastname");
+let c_name=document.getElementById("c_name");
+let c_date=document.getElementById("c_date");
 let oldComment = null;
 let newComment = null;
 /************TOOL-----TIP*********** */
@@ -156,9 +159,6 @@ function applyLeaveByDateRange() {
                 startElement = document.getElementById(`row${rowNO}_${colNO}`);
                 date1 = tomorrow.getFullYear() + "/" + appendZero((tomorrow.getMonth()) + 1) + "/" + appendZero(tomorrow.getDate());
                 let satSun = (tomorrow.toString().slice(0, 3)).toUpperCase();
-                //console.log("satSun =" + satSun);
-
-                //console.log(`${date1} === ${satSun} `);
 
                 if (satSun != "SAT" && satSun != "SUN") {
                     //console.log(satSun != "SAT" && satSun != "SUN")
@@ -387,7 +387,7 @@ function createInitRow() {
     head = document.createElement("th");
     text = document.createTextNode("Team_Name");
     head.setAttribute("id", `team_name`);
-    head.setAttribute("class", ` rotate`);
+    head.setAttribute("class", ` rotate verticalTableHeader`);
     head.setAttribute("onclick", `sortTable(1)`);
     divspan=createDivSpan(text);
     head.appendChild(divspan)
@@ -400,7 +400,7 @@ function createInitRow() {
     text = document.createTextNode("Emp_Name");
     head.append(text)
     head.setAttribute("id", `row0_0`);
-    head.setAttribute("class", ` rotate`);
+    head.setAttribute("class", ` rotate verticalTableHeader`);
     head.setAttribute("ROW_ID", rownum);
     head.setAttribute("COL_ID", colnum);
     divspan=createDivSpan(text);
@@ -442,7 +442,7 @@ function createInitRow() {
             head.setAttribute("id", `row0_${num}`);
 
 
-            head.setAttribute("class", `${s_month} ${full_date} rotate`);
+            head.setAttribute("class", `${s_month} ${full_date} rotate verticalTableHeader`);
 
             divspan=createDivSpan(text);
     head.appendChild(divspan)
@@ -509,8 +509,8 @@ function getEmpJsonData() {
 
             }
             else {
-                tempJson = tempJson = [];
-                emp_nm = [];
+                tempJson.length=0 ;
+                emp_nm.length=0;
 
             }
 
@@ -574,37 +574,6 @@ function getEmpJsonData() {
 
 }
 
-/////////////////////////////////////////////
-
-
-///////////////////////////////////////////
-
-// function addFocusListiner(nodename) {
-//     nodename.addEventListener('focusout', function (e) {
-
-//         if (activeCell != null) {
-
-//             // //console.log("focusout");
-
-//             let container = (activeCell.children)[0];
-//             // //console.log("onchanged" + container);
-
-//             //  //console.log("container")
-//             activeCell.innerText = container.value;
-//            back_Color(activeCell.innerText, activeCell);
-//             // activeCell.style.backgroundColor = color;
-//             // addToJson(activeCell);
-//             // //console.log("old value from activeCell.innerText = "+oldval);
-//             addToJson1(activeCell, oldval);
-
-//             activeCell = null;
-
-
-//         }
-
-
-//     });
-// }
 
 
 ///////////////APPLY_EVENT_LITNER//////////
@@ -623,67 +592,64 @@ function applyEventLitn() {
 
     let innerVal;
     let cells = document.getElementsByClassName('content');
-
-
-
-
     for (let cell of cells) {
-        cell.addEventListener("click", function (event) {
+
+    ['click','focusout','dblclick'].forEach( evt => 
+        cell.addEventListener(evt, function()
+        {
+         
+           switch(evt)
+           {
+case "click" :
         
+        /********This code is added for diable double click event *******/
+                clickObject = this;
+                if (activeCell != null) {
     
-            clickObject = this;
-            if (activeCell != null) {
-                activeCell.contentEditable = false;
-            }
-
-
-            if (cntrlIsPressed) {
-                console.log("called ")
-                if (this.classList.contains("click_select")) {
-                    clickObject.classList.remove("click_select");
-                    ctClickArr = arrayRemove(ctClickArr, this);
-
-
+                    activeCell.contentEditable = false;
+                }
+    /******************************************************** */
+    
+                if (cntrlIsPressed) {
+    
+                     if (this.classList.contains("click_select")) {
+                        clickObject.classList.remove("click_select");
+                        ctClickArr = arrayRemove(ctClickArr, this);
+    
+    
+                    } else {
+                        clickObject.classList.add("click_select");
+                        console.log(clickObject.classList)
+                        ctClickArr.push(this);
+                    }
+    
                 } else {
-                    clickObject.classList.add("click_select");
-                    console.log(clickObject.classList)
-                    ctClickArr.push(this);
+    
+                    for (var i = 0; i < ctClickArr.length; i++) 
+                        {
+                        ctClickArr[i].classList.remove("click_select");
+                        }
+    
+                    if (!(this.classList.contains("click_select"))) {
+                        this.classList.add("click_select");
+                        ctClickArr.length = 0;
+                        ctClickArr.push(this);
+                    }
+                    else {
+                        this.classList.remove("click_select");
+                        ctClickArr = arrayRemove(ctClickArr, this);
+                    }
                 }
-
-            } else {
-
-                for (var i = 0; i < ctClickArr.length; i++) {
-                    ctClickArr[i].classList.remove("click_select");
-
-                }
-
-                if (!(this.classList.contains("click_select"))) {
-                    this.classList.add("click_select");
-                    ctClickArr = [];
-                    ctClickArr.push(this);
-                }
-                else {
-                    this.classList.remove("click_select");
-                    ctClickArr = arrayRemove(ctClickArr, this);
-                }
-
-
-            }
-
-
-
-            console.log(ctClickArr);
-
-        });
-
-
-
-        cell.addEventListener("focusout", function () {
-
-
+            
+     break ;
+    case "focusout" :
 
             console.log("Cell focus out = " +activeCell);
-
+            for (var i = 0; i < ctClickArr.length; i++) 
+            {
+            ctClickArr[i].classList.remove("click_select");
+            }
+            ctClickArr.length=0;
 
             if (activeCell != null) {
                 this.contentEditable = false;
@@ -699,19 +665,10 @@ function applyEventLitn() {
             else {
                 // //console.log("disable")
             }
-        });
 
-        /***********************SET DOUBLE CLICK EVENT LISTENER*********** */
 
-        ['click','ontouchstart','focusout','focusin'].forEach( evt => 
-            cell.addEventListener(evt, function()
-            {
-                console.log(evt);
-            }
-            )
-        
-        );
-        cell.addEventListener("dblclick", function () {
+         break ;
+    case "dblclick" :
 
             console.log("db click called");
             innerVal = this.innerText || this.innerHTML;
@@ -766,8 +723,25 @@ function applyEventLitn() {
 
 
 
-        });
 
+
+         break ;
+
+           } 
+
+
+
+
+
+
+
+
+
+
+        }
+        )
+    
+    );
 
 
 
@@ -786,33 +760,15 @@ let rightClickObject = null;
 var cntrlIsPressed = false;
 
 window.onload = () => {
+   
 
     getEmpJsonData(); //this will fetch employee data from server and display 
     // defineFloating();
     myToggle();
     // createLegend();
    // createFloatingTab();
-    $("#myspan").click(function () {
-        Applyleavebycolor("PL");
-    });
-    $("#UL").click(function () {
-        Applyleavebycolor("UL");
-    });$("#FL").click(function () {
-        Applyleavebycolor("FL");
-    });$("#REJ").click(function () {
-        Applyleavebycolor("REJ");
-    });
-    $("#APPROVE").click(function () {
-        Applyleavebycolor("APP");
-    });
-
-    $("#ALT").click(function () {
-        Applyleavebycolor("ALT");
-    });
-    $("#TENTATIVE").click(function () {
-        Applyleavebycolor("TEN");
-    });
-
+    
+ 
 
 
 
@@ -837,20 +793,46 @@ window.onload = () => {
 
 
     /*********************************tooltip********** */
+var tempArrayForSortable=[];
+   
+$(function() {
+    $('#tbody_1').sortable({
+       update: function(event, ui) {
+          var productOrder = $(this).sortable('toArray').toString();
+         console.log(productOrder);
 
-    $("#tbody_1").sortable({
-        placeholder: "highlight",
-        start: function (event, ui) {
-            ui.item.toggleClass("highlight");
-            console.log("start");
-        },
-        stop: function (event, ui) {
-            ui.item.toggleClass("highlight");
-            console.log("stop");
-            changeOrder(ui, event);
-
-        }
+         productOrder.split(",").forEach(function(ival,index)
+         {
+            employee_name=document.getElementById(`row${ival.split("_")[1]}_0`).innerText;
+            console.log(employee_name)
+            tempArrayForSortable[employee_name] =emp_nm[employee_name] ;
+         })
+          // $("#sortable-9").text (productOrder);
+          emp_nm.length=0;
+          emp_nm=tempArrayForSortable;
+          tempArrayForSortable.length=0;
+          console.log(emp_nm);
+       }
     });
+ });
+// $("#tbody_1").sortable({
+    //     placeholder: "highlight",
+    //     start: function (event, ui) {
+    //         ui.item.toggleClass("highlight");
+    //         console.log("start");
+    //     },
+    //     stop: function (event, ui) {
+    //         ui.item.toggleClass("highlight");
+    //         this.childNodes.forEach( function(val ,index)
+    //         {
+    //             employee_name=document.getElementById(`row${val.getAttribute("class").split("_")[2]}_0`).innerText;
+    //             //console.log(emp_nm)
+    //             tempArrayForSortable[employee_name] =emp_nm[employee_name] ;
+    //         })
+ 
+                
+    //     }
+    // });
 
 
 
@@ -875,6 +857,9 @@ window.onload = () => {
                         rightClickObject = this[0];
                         var rect = this[0].getBoundingClientRect();
                         let comment = this[0].getAttribute("title").trim();
+                        console.log(`${rightClickObject.getAttribute("ename")}`)
+                        c_name.innerText=rightClickObject.getAttribute("ename")
+                        c_date.innerText=rightClickObject.getAttribute("date")
                         textarea.innerText = comment;
                         textarea.value = comment;
                         oldComment = comment;
@@ -892,16 +877,24 @@ window.onload = () => {
                         textarea.focus();
                         textarea.click();
                         break;
-                    case "Reject_Leave":
-                        rejectLeave(this[0])
-                        break;
+
+                        case "Planned_Leave":       Applyleavebycolor("PL"); break;
+
+                        case "UnPlanned_Leave"  : Applyleavebycolor("UL"); break;
+                
+                        case "Floating_Leave" : Applyleavebycolor("FL"); break;
+                 
+                        case "Reject_Leave" : Applyleavebycolor("REJ"); break;
+                  
+                        case "Alternate_Leave" :   Applyleavebycolor("ALT"); break;
+                 
                     default:
                     // code block
                 }
 
             },
             items: {
-                "Planned_Leave": { name: "Planned_Leave", icon: "edit" },
+                "Planned_Leave": { name: "PL - Planned Leave", icon: "edit" },
                 "UnPlanned_Leave": { name: "UnPlanned_Leave", icon: "edit" },
                 "Floating_Leave": { name: "Floating_Leave", icon: "edit" },
                 "Alternate_Leave": { name: "Alternate_Leave", icon: "edit" },
@@ -1006,24 +999,15 @@ function addDataToRow() {
                             let leaveComment = empleavedata["comment"];
                             let innerCell = tbody[rowCount].childNodes[thcount];
                             console.log("innerdiv " + (innerCell.hasChildNodes()))
-                            // while(innerCell.hasChildNodes())
-                            // {
-                            //     let textelement = innerCell.firstChild;
-                            //     let className = textelement.classList;
-                            //     innerCell =textelement
-                            //    if( className[0] == "textarea1" ) 
-                            //    {
-
-                            //     break;
-                            //    }
-                            // }
-
+                        
 
                           back_Color(leavetype, innerCell);
-                            // let temp = innerCell.inn
+                            
                             if(leaveComment.length > 0)
                             {
                                 console.log("comment available", leaveComment);
+                                innerCell.classList.add("commentIMG");
+
                             }
                             innerCell.setAttribute("title", leaveComment);
 
@@ -1223,7 +1207,7 @@ function addEmployee() {
 
     //////////////////////////////////////
 
-    newEmp = {};
+    newEmp.length= 0;
     applyEventLitn();
     createSelectEmp();
 
@@ -1257,13 +1241,13 @@ function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
 
     console.log("comment :: ", comment);
 
-    let leave = [];
+    let leave = {};
     let dateFlag = 0;
     let arrPush = 0;
     let arr = arrey;
     empnm = employe__name;
 
-
+console.log(`val of arr ${arr}`)
     //console.log("employe name " + empnm);
     arr.forEach(function (ival, iidx) {
         //Updating existing one but not present in database 
@@ -1300,8 +1284,8 @@ console.log("dataflag ==  0")
         }
 
 
-        console.log(leave,arr);
-
+        console.log(leave);
+        console.log(JSON.stringify(leave))
 
 
         arr.forEach(function (ival, iidx) {
@@ -1332,6 +1316,8 @@ console.log("dataflag ==  0")
 
     // //console.log(arr);
     console.log("leave pushed sucessfully",arr)
+    console.log(`formatted arr ${JSON.stringify(leave)}`);
+
     return arr;
 
 }
@@ -1361,9 +1347,10 @@ function addToJson1(cell_object, oldVal, oldcomment) {
         if (employee_name != undefined && employee_name != null) {
             console.log("First time applying leave");
 //console.log(uarr, empnm, applyDate, leave_typ, comment);
-            uarr = createDataArray(uarr, empnm, applyDate, leave_typ, comment);
-            console.log(uarr);
-            console.log("createDataArray = " + JSON.stringify(uarr));
+            // uarr = createDataArray(uarr, empnm, applyDate, leave_typ, comment);
+           console.log(uarr =createDataArray(uarr, empnm, applyDate, leave_typ, comment));
+            console.log(uarr instanceof Array);
+            console.log("createDataArray = " + uarr.length);
 
         }
         else {
@@ -1389,9 +1376,9 @@ function addToJson1(cell_object, oldVal, oldcomment) {
         myToggle();
 
     }
-
-    console.log("createDataArray = " + JSON.stringify(uarr));
-    console.log("createDataArray = " + JSON.stringify(narr));
+console.log(uarr)
+    console.log("createDataArray = " + ( uarr instanceof Array ) , uarr[0].toString());
+    console.log("createDataArray = " + narr);
 }
 
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
@@ -1412,7 +1399,9 @@ function Save() {
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       console.log("update=" + uarr + "&" + "newemp=" + narr);
     if (!(uarr.length == 0 && narr.length == 0)) {
-        //console.log("empty");
+
+        console.log(uarr[0])
+        console.log(JSON.stringify(uarr));
         xhttp.send("update=" + (JSON.stringify(uarr)) + "&" + "newemp=" + (JSON.stringify(narr)));
         xhttp.onload = function () {
 
@@ -1646,6 +1635,12 @@ function createFloatingTab() {
 
 
 }
+function cancelComment()
+{
+    cmtElmt.style.display = "none";
+    textarea.disable;
+
+}
 
 function formdata() {
 
@@ -1661,9 +1656,16 @@ function formdata() {
         }
         else {
 
-            rightClickObject.setAttribute("title", newComment);
+           
+            rightClickObject.setAttribute("title", newComment.trim());
             addToJson1(rightClickObject, rightClickObject.innerVal, oldComment);
-            console.log("NEW CHNAEGS");
+            if(newComment.trim().length == 0)
+            {
+                rightClickObject.classList.remove("commentIMG")
+            }else{
+
+                rightClickObject.classList.add("commentIMG")
+            }
             newComment = null;
             oldComment = null;
         }

@@ -121,6 +121,7 @@ app.post('/NEW_EMPLOYEE', urlencodedParser, (req, res) => {
     fs.readFile(jsonFilePath, 'UTF8', function read(err, data) {
 
         data=checkDataLength(data);
+    
         // Invoke the next step here however you like
         //   console.log(data);   // Put all of the code here (not the best solution)
         addNewEmp(jsonFilePath,data, JSON.parse(req.body.emp_data));          // Or put the next step in a function and invoke it
@@ -228,9 +229,6 @@ function updateEmpData(jsonFilePath,filedata, update, newemp) {
     newemp.forEach(function (val, ind) {
         // console.log(val)
         Object.keys(val).forEach(function (ival, iind) {
-            //    console.log(ival);
-            // console.log(val[ival])
-            // console.log(Object.keys(val[ival]));
             Object.keys(val[ival]).forEach(function (innerval, innerindex) {
                 // console.log(innerval)
                 leave = val[ival][innerval];

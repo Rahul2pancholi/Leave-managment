@@ -18,7 +18,7 @@
   <!-- ****************ADDING RIGHT CLICK CONTEXT******************** -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+    href="css/contextmenu/contextMenu.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
   <!-- ******************************************************** -->
@@ -34,9 +34,58 @@
     });
   </script>
   <style>
+    .legend
+    {
+          z-index: 1;
+    }
+   #mySidenav a {
+    position: absolute;
+    left: -99px;
+    transition: 0.3s;
+    padding: 10px;
+    width: 108px;
+    text-decoration: none;
+    font-size: 10px;
+    color: white;
+    border-radius: 0 5px 5px 0;
+}
+
+#mySidenav a:hover {
+  left: 0;
+}
     .outerDIV {
       display: flex;
     }
+    .commentIMG{
+      	background-image: url(http://localhost:3000/img/multi.png);
+    background-size: 10px 10px;
+	background-repeat: no-repeat;
+	background-position: right top;
+    }
+.verticalTableHeader{
+
+ {{!-- //border : 1px solid black;
+  writing-mode: vertical-lr;
+  -webkit-writing-mode: vertical-lr;
+  -ms-writing-mode: vertical-lr; --}}
+}
+    {{!-- .verticalTableHeader {
+    text-align:center;
+    white-space:nowrap;
+    transform-origin:50% 50%;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    
+}
+.verticalTableHeader:before {
+    content:'';
+    padding-top:110%;/* takes width as reference, + 10% for faking some extra padding */
+    display:inline-block;
+    vertical-align:middle;
+} --}}
     .table-header-rotated th.rotate {
       height: 80px;
       width: 40px;
@@ -48,7 +97,7 @@
       font-size: 12px;
       line-height: 0.8;
     }
-    .table-header-rotated th.rotate>div {
+    {{!-- .table-header-rotated th.rotate>div {
       position: relative;
       top: 0px;
       left: 40px;
@@ -60,11 +109,45 @@
       -o-transform: skew(-45deg, 0deg);
       transform: skew(-45deg, 0deg);
       overflow: hidden;
-      border-left: 1px solid #dddddd;
-      border-right: 1px solid #dddddd;
-      border-top: 1px solid #dddddd;
-    }
-    .table-header-rotated th.rotate span {
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      border-top: 1px solid black;
+    } --}}
+
+.table-header-rotated th.rotate>div {
+    position: relative;
+    top: 0px;
+    /* left: 40px; */
+    height: 100%;
+    -ms-transform: skew(-45deg, 0deg);
+    -moz-transform: skew(-45deg, 0deg);
+    -webkit-transform: skew(-45deg, 0deg);
+    -o-transform: skew(-45deg, 0deg);
+    transform: skew(0deg, 0deg);
+    overflow: hidden;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.table-header-rotated th.rotate span {
+    -ms-transform: skew(45deg, 0deg) rotate(315deg);
+    -moz-transform: skew(45deg, 0deg) rotate(315deg);
+    -webkit-transform: skew(45deg, 0deg) rotate(315deg);
+    -o-transform: skew(45deg, 0deg) rotate(315deg);
+    transform: skew(13deg, 0deg) rotate(283deg);
+    position: absolute;
+    bottom: 42px;
+    left: -25px;
+    display: inline-block;
+    //: ;
+    width: 100%;
+    width: 85px;
+    text-align: left;
+    //: ;
+    white-space: nowrap;
+}
+    {{!-- .table-header-rotated th.rotate span {
       -ms-transform: skew(45deg, 0deg) rotate(315deg);
       -moz-transform: skew(45deg, 0deg) rotate(315deg);
       -webkit-transform: skew(45deg, 0deg) rotate(315deg);
@@ -81,7 +164,8 @@
       /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
       text-align: left;
       // white-space: nowrap; /*whether to display in one line or not*/
-    }
+    }  --}}
+
     .dot {
       height: 10px;
       width: 10px;
@@ -111,10 +195,37 @@
     }
     .commentdiv {
       position: fixed;
-      display: none;
       width: fit-content;
       height: fit-content;
-      background-color: crimson;
+      background-color: white;
+      /*  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);*/
+      box-shadow: 0 2px 6px 2px rgba(60, 64, 67, .15);
+      border: 1px solid rgba(60, 64, 67, .15);
+      border-radius: 10px;
+      font-family: var(--docs-material-font-family, Arial, sans-serif, sans);
+      padding: 10px;
+      display: none;
+
+    }
+    .c_img
+    {
+
+      border-radius : 100px;
+      height: 43px;
+      width: 43px;
+
+    }
+    .c_div1
+    {
+      display: flex;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    .c_textarea
+    {
+      width: -webkit-fill-available;
+      border-radius: 6px;
+      resize: none;
     }
     .custom-cm {
       background-color: #ffffff;
@@ -192,10 +303,10 @@
     .sun {
       background-color: #17a2b8;
     }
-    .eName,
+    {{!-- .eName,
     .pool {
       background-color: #dbd951;
-    }
+    } --}}
     .eName {
       white-space: nowrap;
     }
@@ -261,7 +372,7 @@
   </style>
   <!-- <link href="table.css" rel="stylesheet"> -->
 </head>
-<body class="container" style="background-color: #e9ecef;">
+<body class="" style="background-color: #e9ecef;">
   {{!-- *********************************Nav bar******************************************** --}}
   <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bar">
     <a class="navbar-brand" href="#">
@@ -301,10 +412,7 @@
       </ul>
     </div>
     <div class="row">
-      <div class="col-sm-10">
-        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
-          title="Type in a name">
-      </div>
+ <button onclick="Save()" class="btn btn-danger mb-3">Save</button>
     </div>
     <div class="form-group" style=" margin-top: 19px">
       <label class="switch ">
@@ -320,6 +428,7 @@
         <option value="0">select emp</option>
       </select>
     </div>
+    
     <div class="form-group col-4">
       <label for="start">Start date</label>
       <input type="text" id="startdatepicker" id="start" class="form-control inputCal">
@@ -340,7 +449,7 @@
     </div>
     <button onclick="addEmployee()" class="btn btn-primary ademp">Add employee</button>
   </form>
-  <button onclick="Save()" class="btn btn-danger mb-3">Save</button>
+ 
   {{!-- *********************************************************************** --}}
   {{!-- <div class="nav-bar">
   <div class="nav-content">
@@ -351,33 +460,37 @@
   <!-- select employee and add leave  -->
   <!-- data save not save toggle -->
   {{!-- color coding  --}}
-  <div class="row">
+  {{!-- <div class="row">
     <div class="col">
       <button class="btn btn-primary"><span class="dot" id="PL_C" style="background-color: blue;"></span>
         <span id="myspan">Planned Leave</span></button>
     </div>
     <div class="col">
       <button class="btn btn-info"><span class="dot" id="UL_C" style="background-color: darkslateblue;"></span>
-        <span id="UL">Un-Planned Leave</span></button>
+        <span id="UL" >Un-Planned Leave</span></button>
     </div>
     <div class="col">
       <button class="btn btn-warning"> <span class="dot" id="FL_C" style="background-color: darkorange;"></span>
         <span id="FL">Floating Leave</span></button>
     </div>
-    {{!-- need to delete below--}}
-    {{!-- <div><span class="dot" id="APPROVE_C" style="background-color: green;"></span>
-          <span id="APPROVE">Approve</span></div> --}}
     <div class="col">
       <button class="btn btn-danger"><span class="dot" id="REJ_C" style="background-color: red;"></span>
-        <span id="REJ">Reject</span></button>
+        <spaan id="REJ">Reject</span></button>
     </div>
-    {{!-- <div><span class="dot" id="TENTATIVE_C" style="background-color:springgreen;"></span>
-          <span id="TENTATIVE">Tentetive</span></div> --}}
     <div class="col">
       <button class="btn btn-success"><span class="dot" id="ALT_C" style="background-color:dimgrey;"></span>
         <span id="ALT">Alternate</span></button>
     </div>
-  </div>
+  </div> --}}
+
+<div id="mySidenav" class="sidenav">
+ <a id="PL_C" class="legend" style="background-color:#6BBBE8 ;top: 210px; ">Planned Leave"</a>
+  <a id="UL_C" class="legend" style="top: 250px;background-color: darkslateblue;">Un-Planned Leave"</a>
+   <a id="FL_C" class="legend" style="background-color: darkorange;top: 290px;">Floating Leave"</a>
+    <a id="REJ_C" class="legend" style="background-color: red;top: 329px;">"Reject"</a>
+	<a id="ALT_C" class="legend" style="background-color: dimgrey;top: 369px;">"Alternate"</a>
+	
+ </div>
   {{!-- color coding ended --}}
   <div class="panel-body">
     <div class="row">
@@ -391,17 +504,16 @@
         <tbody id="tbody_1" class="table-bordered"></tbody>
       </table>
       <div class="commentdiv" id="cmtID">
-        <label>Rahul Pancholi ( 2020-02-22 )</label>
 
-        <textarea id="lastname" class="docos-input-textarea" autocomplete="input-area" x-webkit-speech="" speech=""
-          role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr"
-          style="height: 76px;"></textarea>
-        
-
-        <input type="submit" value="Submit" onclick="formdata()" />
-        <input type="button" value="Cancle" onclick=" " />
-
-      </div>
+    <div class="c_div1"> <img class="c_img" src="./img/img_avatar.png" alt="Avatar">
+      <div style="margin: auto; margin-left: 5px;"><div style="    display: grid"><span id="c_name">Rahul Pancholi</span> <span id="c_date">( 2020-02-22 )</span></div></div></div>
+    <textarea id="lastname" class="c_textarea" autocomplete="input-area" x-webkit-speech="" speech=""
+      role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr" style="height: 76px;"></textarea>
+    <div style="margin-top: 10px ;">
+      <input type="submit" value="Comment" onclick="formdata()" />
+      <input type="button" value="Cancle" onclick="cancelComment()" />
+    </div>
+  </div>
     </div>
   </div>
   <div id="hoverShow1" style="width: 25%;" class="my-3 divparent" tabindex="0" id="FL_main_table_div">
@@ -429,6 +541,7 @@
     icon: 'info'
 })</code></pre>
   {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
+  {{!-- <script type="module" src="./javascript/temp_test.js"></script> --}}
   <script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
   <script>$("#dialog").dialog()
     $("#startdatepicker").datepicker();
