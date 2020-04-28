@@ -811,7 +811,7 @@ $(function() {
           emp_nm.length=0;
           emp_nm=tempArrayForSortable;
           tempArrayForSortable.length=0;
-          console.log(emp_nm);
+        console.log(emp_nm);
        }
     });
  });
@@ -1196,6 +1196,7 @@ function addEmployee() {
     xhttp.send("emp_data=" + (JSON.stringify(newEmp)));
     xhttp.onload = function () {
 
+
         //console.log(`${this.readyState} == 4 $$ ${this.status} == 200`);
 
     }
@@ -1405,7 +1406,20 @@ function Save() {
         xhttp.send("update=" + (JSON.stringify(uarr)) + "&" + "newemp=" + (JSON.stringify(narr)));
         xhttp.onload = function () {
 
-            //console.log(`${this.readyState} == 4 $$ ${this.status} == 200`);
+            if(this.readyState == 4 && this.status == 200 )
+            {
+                    if(this.responseText == "true")
+                    {
+                        console.log("sucessfill")
+                        document.getElementById("runTimeToast").innerHTML=`$.toast({
+                            heading: 'Success',
+                            text: 'Sheet saved sucessfully into database',
+                            showHideTransition: 'slide',
+                            icon: 'success'
+                        })`
+                    }
+            }
+            
 
         }
 

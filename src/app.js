@@ -163,6 +163,7 @@ app.post('/UPDATE', urlencodedParser, (req, res) => {
         newemp = JSON.parse(req.body.newemp);
         data=checkDataLength(data);
         console.log(newemp);
+        
         updateEmpData(jsonFilePath,data, update, newemp);
     });
 
@@ -178,7 +179,7 @@ app.post('/UPDATE', urlencodedParser, (req, res) => {
 
 
 
-    res.send("all_good");
+    res.send(true);
 
 })
 

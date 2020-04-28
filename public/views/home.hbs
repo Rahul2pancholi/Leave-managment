@@ -11,20 +11,19 @@
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  {{!-- ************************************************ --}}
+  {{!-- **************** --}}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <!-- ****************ADDING RIGHT CLICK CONTEXT******************** -->
+  <!-- *****ADDING RIGHT CLICK CONTEXT******* -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet"
-    href="css/contextmenu/contextMenu.css">
+  <link rel="stylesheet" href="css/contextmenu/contextMenu.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
-  <!-- ******************************************************** -->
+  <!-- ******************** -->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  {{!-- ************************************************************** --}}
+  {{!-- ********************** --}}
   {{!-- <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'> --}}
   <link rel="stylesheet" href="css/jquery.toast.css">
   <script>
@@ -34,60 +33,39 @@
     });
   </script>
   <style>
-    .legend
-    {
-          z-index: 1;
+    .legend {
+      z-index: 1;
     }
-   #mySidenav a {
-    position: absolute;
-    left: -99px;
-    transition: 0.3s;
-    padding: 10px;
-    width: 108px;
-    text-decoration: none;
-    font-size: 10px;
-    color: white;
-    border-radius: 0 5px 5px 0;
-}
-
-#mySidenav a:hover {
-  left: 0;
-}
+    #mySidenav
+    {
+      position: sticky;
+    }
+    #mySidenav a {
+      position: absolute;
+      left: -102px;
+      transition: 0.3s;
+      padding: 10px;
+      width: 108px;
+      text-decoration: none;
+      font-size: 10px;
+      color: white;
+      border-radius: 0 5px 5px 0;
+    }
+    #mySidenav a:hover {
+      left: 0;
+    }
     .outerDIV {
       display: flex;
     }
-    .commentIMG{
-      	background-image: url(http://localhost:3000/img/multi.png);
-    background-size: 10px 10px;
-	background-repeat: no-repeat;
-	background-position: right top;
+    .commentIMG {
+      background-image: url(http://localhost:3000/img/multi.png);
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      background-position: right top;
     }
-.verticalTableHeader{
-
- {{!-- //border : 1px solid black;
-  writing-mode: vertical-lr;
-  -webkit-writing-mode: vertical-lr;
-  -ms-writing-mode: vertical-lr; --}}
-}
-    {{!-- .verticalTableHeader {
-    text-align:center;
-    white-space:nowrap;
-    transform-origin:50% 50%;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    transform: rotate(90deg);
-    
-}
-.verticalTableHeader:before {
-    content:'';
-    padding-top:110%;/* takes width as reference, + 10% for faking some extra padding */
-    display:inline-block;
-    vertical-align:middle;
-} --}}
+   
     .table-header-rotated th.rotate {
-      height: 80px;
+      height: 100px;
       width: 40px;
       min-width: 40px;
       max-width: 40px;
@@ -97,75 +75,42 @@
       font-size: 12px;
       line-height: 0.8;
     }
-    {{!-- .table-header-rotated th.rotate>div {
-      position: relative;
-      top: 0px;
-      left: 40px;
-      /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
+    
+    .table-header-rotated th.rotate>div {
+
+      background: white;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.82);
       height: 100%;
       -ms-transform: skew(-45deg, 0deg);
       -moz-transform: skew(-45deg, 0deg);
       -webkit-transform: skew(-45deg, 0deg);
       -o-transform: skew(-45deg, 0deg);
-      transform: skew(-45deg, 0deg);
+      transform: skew(0deg, 0deg);
       overflow: hidden;
-      border-left: 1px solid black;
-      border-right: 1px solid black;
-      border-top: 1px solid black;
-    } --}}
-
-.table-header-rotated th.rotate>div {
-    position: relative;
-    top: 0px;
-    /* left: 40px; */
-    height: 100%;
-    -ms-transform: skew(-45deg, 0deg);
-    -moz-transform: skew(-45deg, 0deg);
-    -webkit-transform: skew(-45deg, 0deg);
-    -o-transform: skew(-45deg, 0deg);
-    transform: skew(0deg, 0deg);
-    overflow: hidden;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-top: 1px solid black;
-}
-
-.table-header-rotated th.rotate span {
-    -ms-transform: skew(45deg, 0deg) rotate(315deg);
-    -moz-transform: skew(45deg, 0deg) rotate(315deg);
-    -webkit-transform: skew(45deg, 0deg) rotate(315deg);
-    -o-transform: skew(45deg, 0deg) rotate(315deg);
-    transform: skew(13deg, 0deg) rotate(283deg);
-    position: absolute;
-    bottom: 42px;
-    left: -25px;
-    display: inline-block;
-    //: ;
-    width: 100%;
-    width: 85px;
-    text-align: left;
-    //: ;
-    white-space: nowrap;
-}
-    {{!-- .table-header-rotated th.rotate span {
-      -ms-transform: skew(45deg, 0deg) rotate(315deg);
-      -moz-transform: skew(45deg, 0deg) rotate(315deg);
-      -webkit-transform: skew(45deg, 0deg) rotate(315deg);
-      -o-transform: skew(45deg, 0deg) rotate(315deg);
-      transform: skew(45deg, 0deg) rotate(315deg);
+      border-left: 1px solid #E1F1FF;
+      border-right: 1px solid #E1F1FF;
+      border-top: 1px solid #E1F1FF;
+    }
+    .table-header-rotated th.rotate span {
+      -ms-transform:skew(14deg, -11deg) rotate(284deg);
+      -moz-transform:skew(14deg, -11deg) rotate(284deg);
+      -webkit-transform: skew(14deg, -11deg) rotate(284deg);
+      -o-transform: skew(14deg, -11deg) rotate(284deg);
+      transform: skew(14deg, -11deg) rotate(284deg);
       position: absolute;
-      bottom: 30px;
-      /* 40 cos(45) = 28 with an additional 2px margin*/
+      bottom: 42px;
       left: -25px;
-      /*Because it looked good, but there is probably a mathematical link here as well*/
       display: inline-block;
-      // width: 100%;
+   font-family: cursive;
+      width: 100%;
       width: 85px;
-      /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
       text-align: left;
-      // white-space: nowrap; /*whether to display in one line or not*/
-    }  --}}
-
+      //: ;
+      white-space: nowrap;
+    }
+     
     .dot {
       height: 10px;
       width: 10px;
@@ -205,24 +150,18 @@
       font-family: var(--docs-material-font-family, Arial, sans-serif, sans);
       padding: 10px;
       display: none;
-
     }
-    .c_img
-    {
-
-      border-radius : 100px;
+    .c_img {
+      border-radius: 100px;
       height: 43px;
       width: 43px;
-
     }
-    .c_div1
-    {
+    .c_div1 {
       display: flex;
       margin-bottom: 10px;
       font-size: 15px;
     }
-    .c_textarea
-    {
+    .c_textarea {
       width: -webkit-fill-available;
       border-radius: 6px;
       resize: none;
@@ -303,10 +242,15 @@
     .sun {
       background-color: #17a2b8;
     }
-    {{!-- .eName,
-    .pool {
-      background-color: #dbd951;
-    } --}}
+      {
+        {
+         !-- .eName,
+        .pool {
+          background-color: #dbd951;
+        }
+        --
+      }
+    }
     .eName {
       white-space: nowrap;
     }
@@ -363,157 +307,170 @@
     .main-block {
       display: flex;
     }
-    .nav-iteam {
-      margin-top: 9px
-    }
-    .form-inline label{
+    .form-inline label {
       display: inline;
     }
+    .applyLeave {
+      box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.5)
+    }
+
+thead > tr > th 
+{
+background: white !important;
+    position: sticky !important;
+    top: 0 !important;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.82) !important;
+}
+thead > tr > th.jan,th.mar,th.may,th.jul,th.sep,th.nov
+{
+/*background-color: #53A1FD !important; */
+ {{!-- color : #7C90A9 !important; --}}
+}
+
+
+
+
+    body
+      {
+background: blue; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(rgb(94,169,255) 50% , white 50%); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient( rgb(94,169,255) 50%, white 50%); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient( rgb(94,169,255) 50%, white 50%); /* For Firefox 3.6 to 15 */
+  background: linear-gradient( rgb(94,169,255)blue 50% , white 50%); /* Standard syntax */
+      }
+      {{!-- #div-1
+      {
+        background-color: white;
+        border-radius: 1%;
+        height: 576px;
+         overflow: hidden;
+         box-shadow: 0px 0px 11px 1px rgba(0, 6, 19, 0.5);
+      } --}}
+   
+  #div-1 {
+      background-color: white;
+        border-radius: 1%;
+        height: 576px;
+        /*overflow: hidden; */
+         outline: none;
+-webkit-box-shadow: 0px 0px 51px -6px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 0px 51px -6px rgba(0,0,0,0.75);
+box-shadow: 0px 0px 51px -6px rgba(0,0,0,0.75);
+
+}
+
+
+{{!-- google sheet example  --}}
+
+::-webkit-scrollbar {
+    height: 16px;
+    overflow: visible;
+    width: 16px;
+}
+::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+ ::-webkit-scrollbar-thumb {
+    border-style: solid;
+    border-color: transparent;
+    border-width: 4px;
+    background-color: #dadce0;
+    border-radius: 8px;
+    box-shadow: none;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.2);
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 1px 1px 1px 6px;
+    min-height: 28px;
+    padding: 100px 0 0;
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1), inset 0 -1px 0 rgba(0,0,0,.07);
+}
+ ::-webkit-scrollbar-track {
+    box-shadow: none;
+    margin: 0 4px;
+}
+::-webkit-scrollbar-track {
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 0 0 0 4px;
+}
+{{!--*****************************  --}}
+
+
   </style>
   <!-- <link href="table.css" rel="stylesheet"> -->
 </head>
-<body class="" style="background-color: #e9ecef;">
-  {{!-- *********************************Nav bar******************************************** --}}
-  <nav class="navbar navbar-expand-lg navbar-light bg-light nav-bar">
+<body class="container" style="background-color: #e9ecef;">
+  {{!-- ************Nav bar*************** --}}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark nav-bar" style="background-color: #2b2d37 !important;">
     <a class="navbar-brand" href="#">
       <img src="./img/bitwise.jpg" width="100" height="30" class="d-inline-block align-top" alt="">
     </a>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="collapse navbar-collapse mr-auto" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <li class="nav-item active">
-          <button onclick="reload()" class="nav-iteam btn btn-link reload nav-link">Reset</button>
+        <li class="nav-item">
+          <a class="nav-link" href="/report/report.html">Generate report</a>
         </li>
         <li class="nav-item">
-          <a class="btn  nav-link" href="/report/report.html">Generate report</a>
+           <a class="nav-link" href="javascript:Delete();">Delete Employee</a>
         </li>
         <li class="nav-item">
-          <button onclick="reject()" class="nav-iteam btn btn-link  nav-link reject_Leave">Reject Leave</button>
+            <a class="nav-link" href="javascript:createSCV();">export to CSV</a>
         </li>
-        <li class="nav-item">
-          <button onclick="createSCV()" class="nav-iteam btn btn-link createSCV nav-link">export to CSV</button>
+        <li> <!-- Button trigger modal -->
+        <a class="nav-link"  data-toggle="modal" data-target="#exampleModalCenter" >Add_Row</a>
         </li>
-        <li class="nav-item">
-          <button onclick="sortTable()" class="nav-iteam btn btn-link sortTable nav-link">Sort Table</button>
-        </li>
-        <li class="nav-item">
-          <button onclick="Delete()" class="nav-iteam btn btn btn-link sortTable nav-link">Delete Employee</button>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Dropdown link
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
+ 
+
+
       </ul>
     </div>
-    <div class="row">
- <button onclick="Save()" class="btn btn-danger mb-3">Save</button>
-    </div>
-    <div class="form-group" style=" margin-top: 19px">
-      <label class="switch ">
+    <div class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+      <button onclick="Save()" class="btn btn-danger mr-sm-2">Save</button>
+      <label class="switch  my-2 my-sm-0">
         <input type="checkbox" id="toggle_bt" onclick="myToggle()" class="default">
         <span class="slider round"></span>
       </label>
     </div>
   </nav>
   {{!-- Nav bar ended --}}
-  <div class="form-row form-inline mb-3">
-    <div class="form-group col-2">
-      <select id="emp_nm" class="form-control empCal">
-        <option value="0">select emp</option>
-      </select>
-    </div>
-    
-    <div class="form-group col-4">
-      <label for="start">Start date</label>
-      <input type="text" id="startdatepicker" id="start" class="form-control inputCal">
-    </div>
-    <div class="form-group col-4">
-      <label for="start">End date</label>
-      <input type="text" id="enddatepicker" id="start" class="form-control inputCal">
-    </div>
-  </div>
-  <form class="form-row form-inline mb-3">
-    <div class="form-group offset-2 col-4">
-      <label for="addEmp">Employee Name</label>
-      <input class="form-control" placeholder="Add Employee Name" type="text" id="addEmp">
-    </div>
-    <div class="form-group col-4">
-      <label for="addEmpTeam">Team name</label>
-      <input class="form-control" placeholder="Add Team name" type="text" id="addEmpTeam">
-    </div>
-    <button onclick="addEmployee()" class="btn btn-primary ademp">Add employee</button>
-  </form>
  
-  {{!-- *********************************************************************** --}}
-  {{!-- <div class="nav-bar">
-  <div class="nav-content">
-    <div class="nav-heading">  
-  </div>
-  </div>
-</div> --}}
-  <!-- select employee and add leave  -->
-  <!-- data save not save toggle -->
-  {{!-- color coding  --}}
-  {{!-- <div class="row">
-    <div class="col">
-      <button class="btn btn-primary"><span class="dot" id="PL_C" style="background-color: blue;"></span>
-        <span id="myspan">Planned Leave</span></button>
-    </div>
-    <div class="col">
-      <button class="btn btn-info"><span class="dot" id="UL_C" style="background-color: darkslateblue;"></span>
-        <span id="UL" >Un-Planned Leave</span></button>
-    </div>
-    <div class="col">
-      <button class="btn btn-warning"> <span class="dot" id="FL_C" style="background-color: darkorange;"></span>
-        <span id="FL">Floating Leave</span></button>
-    </div>
-    <div class="col">
-      <button class="btn btn-danger"><span class="dot" id="REJ_C" style="background-color: red;"></span>
-        <spaan id="REJ">Reject</span></button>
-    </div>
-    <div class="col">
-      <button class="btn btn-success"><span class="dot" id="ALT_C" style="background-color:dimgrey;"></span>
-        <span id="ALT">Alternate</span></button>
-    </div>
-  </div> --}}
-
-<div id="mySidenav" class="sidenav">
- <a id="PL_C" class="legend" style="background-color:#6BBBE8 ;top: 210px; ">Planned Leave"</a>
-  <a id="UL_C" class="legend" style="top: 250px;background-color: darkslateblue;">Un-Planned Leave"</a>
-   <a id="FL_C" class="legend" style="background-color: darkorange;top: 290px;">Floating Leave"</a>
-    <a id="REJ_C" class="legend" style="background-color: red;top: 329px;">"Reject"</a>
-	<a id="ALT_C" class="legend" style="background-color: dimgrey;top: 369px;">"Alternate"</a>
-	
- </div>
+ 
   {{!-- color coding ended --}}
-  <div class="panel-body">
-    <div class="row">
-      <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."
-        title="Type in a name">
-    </div>
-    <div class="table-wrapper my-3" tabindex="0" id="div-1">
-      <table style="margin-bottom: 0px;" class="table  table-sm  main_table table-header-rotated" id="tab1">
-        <thead class="
-             table_head" id="thead1"></thead>
-        <tbody id="tbody_1" class="table-bordered"></tbody>
-      </table>
-      <div class="commentdiv" id="cmtID">
-
-    <div class="c_div1"> <img class="c_img" src="./img/img_avatar.png" alt="Avatar">
-      <div style="margin: auto; margin-left: 5px;"><div style="    display: grid"><span id="c_name">Rahul Pancholi</span> <span id="c_date">( 2020-02-22 )</span></div></div></div>
-    <textarea id="lastname" class="c_textarea" autocomplete="input-area" x-webkit-speech="" speech=""
-      role="combobox" aria-autocomplete="list" aria-label="Comment draft" dir="ltr" style="height: 76px;"></textarea>
-    <div style="margin-top: 10px ;">
-      <input type="submit" value="Comment" onclick="formdata()" />
-      <input type="button" value="Cancle" onclick="cancelComment()" />
-    </div>
+  <div class="table-wrapper my-3" tabindex="0" id="div-1">
+     {{!-- ************************* --}}
+  
+<div id="mySidenav" class="sidenav">
+    <a id="PL_C" class="legend" style="background-color:#6BBBE8 ;top: 81px; ">Planned Leave"</a>
+    <a id="UL_C" class="legend" style="top: 121px;background-color: darkslateblue;">Un-Planned Leave"</a>
+    <a id="FL_C" class="legend" style="background-color: darkorange;top: 161px;">Floating Leave"</a>
+    <a id="REJ_C" class="legend" style="background-color: red;top: 199px;">"Reject"</a>
+    <a id="ALT_C" class="legend" style="background-color: dimgrey;top: 238px;">"Alternate"</a>
   </div>
+  {{!-- ************************* --}}
+    <table style="margin-bottom: 0px;" class="table  table-sm  main_table table-header-rotated table-hover" id="tab1">
+      <thead class="table_head" id="thead1"></thead>
+      <tbody id="tbody_1" class="table-bordered"></tbody>
+    </table>
+    <div class="commentdiv" id="cmtID">
+      <div class="c_div1"> <img class="c_img" src="./img/img_avatar.png" alt="Avatar">
+        <div style="margin: auto; margin-left: 5px;">
+          <div style="    display: grid"><span id="c_name"></span> <span id="c_date"></span></div>
+        </div>
+      </div>
+      <textarea id="lastname" class="c_textarea" autocomplete="input-area" x-webkit-speech="" speech="" role="combobox"
+        aria-autocomplete="list" aria-label="Comment draft" dir="ltr" style="height: 76px;"></textarea>
+      <div style="margin-top: 10px ;">
+        <input type="submit" value="Comment" onclick="formdata()" />
+        <input type="button" value="Cancle" onclick="cancelComment()" />
+      </div>
     </div>
   </div>
   <div id="hoverShow1" style="width: 25%;" class="my-3 divparent" tabindex="0" id="FL_main_table_div">
@@ -533,17 +490,93 @@
       </table>
     </div>
   </div>
-  <a class="eval-js" href="#">Run code</a>
-  <pre><code>$.toast({
+
+
+  <a class="eval-js"  href="#">Run code</a>
+  <pre style="display: none;"><code id="runTimeToast">$.toast({
     heading: 'Information',
     text: 'Now you can add icons to generate different kinds of toasts',
     showHideTransition: 'slide',
     icon: 'info'
 })</code></pre>
+  
+  
+  {{!-- ******************************* --}}
+
+  
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add New Employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="container-fluid my-2">
+    <div class="row my-2">
+      <label for="addEmp" class="col mx-2">Employee Name</label>
+      <input class="col form-control mx-5" placeholder="Add Employee Name" type="text" id="addEmp">
+    </div>
+       <div class="w-10"></div>
+    <div class="row my-2">
+      <label for="addEmpTeam" class="col mx-2">Team Name</label>
+      <input class="col mx-5 form-control" placeholder="Add Team name" type="text" id="addEmpTeam">
+    </div>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="addEmployee()" class="btn btn-primary">Add_Employee</button>
+      </div>
+    </div>
+  </div>
+</div>
+  {{!-- ******************************** --}}
+  
+  
+  
+   <div class="applyLeave my-5" style="display: none;">
+    <div class="form-inline p-4">
+      <div class="form-group">
+        <select id="emp_nm" class="form-control">
+          <option value="0">select emp</option>
+        </select>
+      </div>
+      <div class="form-group mx-auto">
+        <label for="start">Start date</label>
+        <input type="text" id="startdatepicker" id="start" class="form-control inputCal">
+      </div>
+      <div class="form-group mx-auto">
+        <label for="start">End date</label>
+        <input type="text" id="enddatepicker" id="start" class="form-control inputCal">
+      </div>
+      <button onclick="addEmployee()" class="btn btn-primary ademp">Apply Leave</button>
+    </div>
+  </div>
+  
+  
+  
+  
+
+    
+
+
+
+
+
+
+
+
+
   {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
   {{!-- <script type="module" src="./javascript/temp_test.js"></script> --}}
   <script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
-  <script>$("#dialog").dialog()
+  <script>
+    $('#myModal').modal(options)
+    $("#dialog").dialog()
     $("#startdatepicker").datepicker();
     $("#enddatepicker").datepicker();
   </script>
@@ -552,6 +585,7 @@
     $(document).ready(function () {
       $('.eval-js').on('click', function (e) {
         e.preventDefault();
+        console.log(this);  
         if (!$(this).hasClass('generate-toast')) {
           var code = $(this).siblings('pre').find('code').text();
           code.replace("<span class='hidden'>", '');
