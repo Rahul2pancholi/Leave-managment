@@ -1,8 +1,8 @@
 
 
 let selectEnabled = 0;
-let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-let day_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+// let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// let day_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 let year;
 let logfile = [];
 let isAvailable = 0;
@@ -13,7 +13,6 @@ let emp_nm = [];
 let leavetype_name = ["PL", "UL", "ALT"];
 let tempJson = [];
 let selectedObject = null; //use for leave rejection
-let isChanged = 0;
 let datestorage = [];
 let showAllEnabled = 1;
 let xhttp = new XMLHttpRequest();
@@ -30,9 +29,74 @@ let main_table;
 let csvText = "";
 let tableBody;
 
+/*********************CLASS NAME ***** */
+let classNameForCheckBox;
+let classNameForTeam;
+let classNameForEmployee;
+/***************class ****************** */
+
+let freezToDate="05-jan-2020";
+let freezFromDate="01-jan-2020";
+let freezArray = new Array();
+let freezSheetFunctionToggle;
+/**************createCalenderArray variable************* */
+let calenderArray = new Array();
+let calenderObject ={};
+let month_name = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+let day_name = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+/************************************************ */
 
 
+function freezSheetFunction(freezDateCheck)
+{
+    
+var d1 = freezFromDate.split("-");
+var d2 = freezToDate.split("-");
+var c = freezDateCheck.split("-");
 
+
+//console.log(d1[2],parseInt(month_name.indexOf(d1[1])), d1[0]);// year , month, date
+var from = new Date(d1[2], parseInt(month_name.indexOf(d1[1])), d1[0]);  // -1 because months are from 0 to 11
+var to   = new Date(d2[2], parseInt(month_name.indexOf(d2[1])), d2[0]);
+var check = new Date(c[2], parseInt(month_name.indexOf(c[1])), c[0]);
+
+return (check >= from && check <= to);
+
+}
+function createCalenderArray()
+{
+
+let tempArray=new Array();
+
+for (var i = 0; i < month_name.length; i++) {
+
+   // console.log("[called]");
+    let s_month = month_name[i].toLowerCase();
+    let mth_lst_day = new Date(2020, i + 1, 0).getDate().toString();
+    tempArray[s_month]
+    for (var j = 1; j <= mth_lst_day; j++) {
+
+        let dateWithSlashFormate = `${year}/${(i + 1)}/${j}`; // { yyyy/mm/dd } 
+        let finalDate = new Date(dateWithSlashFormate);
+
+        dateWithDashFormate = dateFormatter(finalDate.getFullYear(), s_month, finalDate.getDate()); // { dd-mmm-yyyy } 
+        day_nm_class = day_name[finalDate.getDay()].toLowerCase();
+        //console.log(dateWithDashFormate)
+        tempArray.push(dateWithDashFormate+","+day_nm_class);
+
+
+        
+      
+
+    }
+    calenderObject[s_month]=tempArray;
+    tempArray=[];
+   
+}
+
+} 
+
+/**************************  */
 
 
 function createSCV() {
@@ -85,7 +149,7 @@ let dataSaved = document.getElementById("isChanged");
 /**************************************CREATE DATE FORAMTE START***************** */
 function createDate(date_array) {
     let year = date_array[0];
-    let month = appendZero(Number(date_array[1]));
+    let month = appendZero(date_array[1]);
     let day = appendZero(date_array[2]);
     return `${year}/${month}/${day}`
 
@@ -104,7 +168,7 @@ function applyLeaveByDateRange() {
     var strUser = e.options[select.value].innerText;
 
     if (start.value == "" || end.value == "" || select.value == 0) {
-        alert("column should not be empty ");
+            alert("column should not be empty");
     } else {
 
         /////
@@ -136,9 +200,7 @@ function applyLeaveByDateRange() {
                 let name = tbody_1[i].childNodes[1].innerText;
                 //console.log(name);
                 if (name == strUser) {
-                    //console.log(name)
                     rowNO = i + 1;
-                    //console.log("rowwwwww === " + rowNO);
                     break;
                 }
 
@@ -158,6 +220,7 @@ function applyLeaveByDateRange() {
                 //console.log(`row${rowNO}_${colNO}`)
                 startElement = document.getElementById(`row${rowNO}_${colNO}`);
                 date1 = tomorrow.getFullYear() + "/" + appendZero((tomorrow.getMonth()) + 1) + "/" + appendZero(tomorrow.getDate());
+                
                 let satSun = (tomorrow.toString().slice(0, 3)).toUpperCase();
 
                 if (satSun != "SAT" && satSun != "SUN") {
@@ -211,9 +274,9 @@ function applyLeaveByDateRange() {
 
 
         if (Object.keys(narr).length != 0) {
-            isChanged = 1;
+            
             //console.log("change save button color or toggle button");
-            myToggle();
+            myToggle(1);
 
         }
 
@@ -229,10 +292,12 @@ function applyLeaveByDateRange() {
 /********************APPEND ZERO START***************** */
 function appendZero(temp) {
     if (temp.toString().length < 2) {
-        return "0" + temp;
+        return `0${temp}`;
+       
     } else {
         return temp;
     }
+
 }
 //***********************************APPEND ZERO END********************************************************* */
 
@@ -340,7 +405,8 @@ function createSelectEmp() {
 ///////////select emp list end /////////
 function dateFormatter(year,month,day)
 {
-return `${day}-${month}-${year}`;
+
+return `${appendZero(day)}-${appendZero(month)}-${year}`;
 }
 //////create all row //////
 
@@ -355,9 +421,11 @@ span.appendChild(insidele);
 }
 
 let date = [];
+let countInitRowfuntionCallCount=0;
 function createInitRow() {
-
+    countInitRowfuntionCallCount++;
     // //console.log("createInitRow ");
+
 
     let num = 1;  // this num  is used to make column no. ex row0_${num} row0_1,row0_2
 
@@ -375,7 +443,8 @@ function createInitRow() {
     checkBox.setAttribute("type", "checkbox");
     checkBox.setAttribute("id", `all_checkbox`);
     head.setAttribute("id", `checkbox_head`);
-    // head.setAttribute("class", `pool`);
+
+    head.setAttribute("class", `fixed`);
     head.setAttribute("onclick", "selectAllCheckBOX(this)");
     divspan=createDivSpan(checkBox);
     head.appendChild(divspan)
@@ -385,26 +454,25 @@ function createInitRow() {
     /*******************************COLUMN-2  ********** */
 
     head = document.createElement("th");
-    text = document.createTextNode("Team_Name");
+    text = document.createTextNode("Team");
     head.setAttribute("id", `team_name`);
-    head.setAttribute("class", ` rotate verticalTableHeader`);
+   head.setAttribute("class", ` fixed`);
     head.setAttribute("onclick", `sortTable(1)`);
-    divspan=createDivSpan(text);
-    head.appendChild(divspan)
+    head.appendChild(text)
     row.appendChild(head);
     // row.setAttribute("class", ` Team_Name`)
 
 
 /*******************************COLUMN-3  ********** */
     head = document.createElement("th");
-    text = document.createTextNode("Emp_Name");
+    text = document.createTextNode("Employee");
     head.append(text)
     head.setAttribute("id", `row0_0`);
-    head.setAttribute("class", ` rotate verticalTableHeader`);
+head.setAttribute("class", `fixed`);
     head.setAttribute("ROW_ID", rownum);
     head.setAttribute("COL_ID", colnum);
-    divspan=createDivSpan(text);
-    head.appendChild(divspan)
+   // divspan=createDivSpan(text);
+    head.appendChild(text)
     row.appendChild(head);
     row.setAttribute("class", `tab_row_0 Emp_Name`);
     row.setAttribute("id", "header_row");
@@ -416,52 +484,61 @@ function createInitRow() {
     let row_nm = 0;
     colnum += 1;
     let day_nm_class;
-    for (var i = 0; i < month_name.length; i++) {
-
-        let s_month = month_name[i].slice(0, 3).toLowerCase()
-        let mth_lst_day = new Date(year, i + 1, 0).getDate().toString();
-        for (var j = 1; j <= mth_lst_day; j++) {
-
-          //  let full_date = year + "/" + appendZero(i + 1) + "/" + appendZero(j); //year/moth/date
-          let full_date = year + "/" + appendZero(i + 1) + "/" + appendZero(j); //year/moth/date
-
-            let dayname = new Date(full_date);
-
-            full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
-            day_nm_class = day_name[dayname.getDay()].toLowerCase();
-
-            // //console.log(full_date) ////console
-            date.push(full_date);
-            head = document.createElement("th");
-            head.setAttribute("class", "tab_head");
-            text = document.createTextNode(full_date);
 
 
-            head.setAttribute("ROW_ID", rownum);
-            head.setAttribute("COL_ID", colnum);
-            head.setAttribute("id", `row0_${num}`);
-
-
-            head.setAttribute("class", `${s_month} ${full_date} rotate verticalTableHeader`);
-
-            divspan=createDivSpan(text);
-    head.appendChild(divspan)
-    row.appendChild(head);
-           
+    Object.keys(calenderObject).forEach(function ( value,index)
+    {   
+        calenderObject[value].forEach(function(value,index)
+        {
+              splittedValue=value.split(",");
+              date=splittedValue[0];
+              weekName=splittedValue[1];
 
 
 
+                 head = document.createElement("th");
+                    head.setAttribute("class", "tab_head");
+                    text = document.createTextNode(date);
+        
+        
+                    head.setAttribute("ROW_ID", rownum);
+                    head.setAttribute("COL_ID", colnum);
+                    head.setAttribute("id", `row0_${num}`);
+        
+        
+                    head.setAttribute("class", `${weekName} ${date} rotate verticalTableHeader`);
+        
+                    divspan=createDivSpan(text);
+            head.appendChild(divspan)
+            row.appendChild(head);
+                   
+        
+        
+        
+        
+                    num++;
+                    colnum += 1;
+        
+        
+            //    }
+        
+                // datestorage[month_name[i]] = date;
+                // date = [];
+        
+          //  }
 
-            num++;
-            colnum += 1;
 
 
-        }
+        })
 
-        datestorage[month_name[i]] = date;
-        date = [];
 
-    }
+      //  datestorage[month_name[i]] = date;
+      //  date = [];
+
+        
+
+    });
+    
     ///////////////////******************************************************* */
 
 
@@ -499,8 +576,6 @@ function getEmpJsonData() {
 
             if (this.responseText != "") {
 
-
-                console.log(this.responseText);
                 tempJson = JSON.parse(this.responseText)["leave_detail"];
                 emp_nm = JSON.parse(this.responseText)["employee_name"];
 
@@ -526,7 +601,7 @@ function getEmpJsonData() {
 
 
                         year = JSON.parse(this.responseText).year;
-                        console.log(year);
+                        createCalenderArray();
                         createSelectEmp();
                         createInitRow();
                         applyEventLitn();
@@ -549,6 +624,7 @@ function getEmpJsonData() {
                         year = JSON.parse(this.responseText).year;
                         tempJson = [];
                         emp_nm = [];
+                        createCalenderArray();
                         createSelectEmp(); //select list 
                         createInitRow(); // used to create the header row 
                         //  applyEventLitn();
@@ -562,6 +638,7 @@ function getEmpJsonData() {
 
             tempJson = [];
             emp_nm = [];
+            createCalenderArray();
             createSelectEmp(); //select list 
             createInitRow(); // used to create the header row 
             //  applyEventLitn();
@@ -594,7 +671,23 @@ function applyEventLitn() {
     let cells = document.getElementsByClassName('content');
     for (let cell of cells) {
 
-    ['click','focusout','dblclick'].forEach( evt => 
+     //   console.log(cell.getAttribute("date").trim());
+        if(freezSheetFunction(cell.getAttribute("date").trim()))
+        {
+            cell.classList.add("freez");
+            cell.addEventListener("dblclick", function()
+        {
+          //  console.log("freezed");
+            toastMeaasge("Information",`This cell are freezed by admin From :-  ${freezFromDate}  To :- ${freezToDate} you can not apply leave for these date`,"info");
+        });
+
+
+        }
+        else{
+            cell.classList.remove("freez");
+   
+   
+        ['click','focusout','dblclick'].forEach( evt => 
         cell.addEventListener(evt, function()
         {
          
@@ -602,49 +695,11 @@ function applyEventLitn() {
            {
 case "click" :
         
-        /********This code is added for diable double click event *******/
-                clickObject = this;
-                if (activeCell != null) {
-    
-                    activeCell.contentEditable = false;
-                }
-    /******************************************************** */
-    
-                if (cntrlIsPressed) {
-    
-                     if (this.classList.contains("click_select")) {
-                        clickObject.classList.remove("click_select");
-                        ctClickArr = arrayRemove(ctClickArr, this);
-    
-    
-                    } else {
-                        clickObject.classList.add("click_select");
-                        console.log(clickObject.classList)
-                        ctClickArr.push(this);
-                    }
-    
-                } else {
-    
-                    for (var i = 0; i < ctClickArr.length; i++) 
-                        {
-                        ctClickArr[i].classList.remove("click_select");
-                        }
-    
-                    if (!(this.classList.contains("click_select"))) {
-                        this.classList.add("click_select");
-                        ctClickArr.length = 0;
-                        ctClickArr.push(this);
-                    }
-                    else {
-                        this.classList.remove("click_select");
-                        ctClickArr = arrayRemove(ctClickArr, this);
-                    }
-                }
-            
+        clickSelection(this);
      break ;
     case "focusout" :
 
-            console.log("Cell focus out = " +activeCell);
+            // console.log("Cell focus out = " +activeCell);
             for (var i = 0; i < ctClickArr.length; i++) 
             {
             ctClickArr[i].classList.remove("click_select");
@@ -654,10 +709,7 @@ case "click" :
             if (activeCell != null) {
                 this.contentEditable = false;
                 back_Color(activeCell.innerText, activeCell);
-
-                // addToJson(activeCell);
-                // //console.log("old value from activeCell.innerText = "+oldval);
-                console.log("line 694 = "+activeCell, oldval);
+                // console.log("line 694 = "+activeCell, oldval);
                 addToJson1(activeCell, oldval);
                 activeCell = null;
                 oldval = null;
@@ -670,62 +722,13 @@ case "click" :
          break ;
     case "dblclick" :
 
-            console.log("db click called");
-            innerVal = this.innerText || this.innerHTML;
-
-
-
-            let headerColId = (this.id).replace(((this.id).split("_"))[0], "row0");
-            let headerDate = (document.getElementById(headerColId)).innerText;
-            let Fldate = 1;
-            [{
-                "date": "2019/01/10", "event": "fokatday1"
-            }, {
-                "date": "2019/02/10", "event": "fokatday2"
-            }].forEach((val, index) => {
-                if (val["date"] == headerDate) {
-                    Fldate = 0;
-
-                }
-            });
-
-
-
-            if (Fldate == 0) {
-                // //console.log("float")
-                if (found == undefined) {
-
-                    activeCell = this;
-                    oldval = this.innerText;
-                    oldcomment = this.getAttribute("title");
-                    this.style.backgroundColor = "";
-                    this.contentEditable = true;
-                   // this.focus();
-
-                }
-            }
-            else {
-
-                console.log("child element");
-                this.contentEditable = true;
-                this.style.backgroundColor = "";
-                oldval = this.innerText;
-                oldcomment = this.getAttribute("title");
-                this.focus();
-                activeCell = this;
-
-
-            }
-
-
-
-
-
-
-
-
+// this.preventDefault();
+// console.log(this);
+makeEditableCell(this);
+        
 
          break ;
+       
 
            } 
 
@@ -748,19 +751,103 @@ case "click" :
     }
 }
 
+function clickSelection(currObject){
+    /********This code is added for diable double click event *******/
+    clickObject = currObject;
+    if (activeCell != null) {
+
+        activeCell.contentEditable = false;
+    }
+/******************************************************** */
+
+    if (cntrlIsPressed) {
+
+         if (currObject.classList.contains("click_select")) {
+            clickObject.classList.remove("click_select");
+            ctClickArr = arrayRemove(ctClickArr, currObject);
+
+
+        } else {
+            clickObject.classList.add("click_select");
+            // console.log(clickObject.classList)
+            ctClickArr.push(currObject);
+        }
+
+    } else {
+
+        for (var i = 0; i < ctClickArr.length; i++) 
+            {
+            ctClickArr[i].classList.remove("click_select");
+            }
+
+        if (!(currObject.classList.contains("click_select"))) {
+            currObject.classList.add("click_select");
+            ctClickArr.length = 0;
+            ctClickArr.push(currObject);
+        }
+        else {
+            currObject.classList.remove("click_select");
+            ctClickArr = arrayRemove(ctClickArr, currObject);
+        }
+    }
+
+}}
+
+function makeEditableCell(currObject)
+{
+     
+    // console.log("db click called");
+    
+    innerVal = currObject.innerText || currObject.innerHTML;
+
+        // console.log("child element");
+        currObject.contentEditable = true;
+        currObject.style.backgroundColor = "";
+        oldval = currObject.innerText;
+        oldcomment = currObject.getAttribute("title");
+        currObject.focus();
+        activeCell = currObject;
+
+
+
+
+}
 
 /////// 
 /************************ONLOAD METHOD START*************** */
 
 
+function toastMeaasge(messageType,message,icon)
+{
+ 
+    Ficon =  icon || messageType.toLowerCase();
 
+    var code = `$.toast({
+        heading: '${messageType}',
+        text: '${message}',
+        showHideTransition: 'slide',
+        icon: '${Ficon}'
+    })`
+      eval(code);
+}
 
-
+// ``$.toast({
+//     heading: 'Information',
+//     text: 'Loaders are enabled by default. Use `loader`, `loaderBg` to change the default behavior',
+//     icon: 'info',
+//     loader: true,        // Change it to false to disable loader
+//     loaderBg: '#9EC600'  // To change the background
+// })
 let rightClickObject = null;
 var cntrlIsPressed = false;
 
 window.onload = () => {
    
+    
+   
+  
+
+    
 
     getEmpJsonData(); //this will fetch employee data from server and display 
     // defineFloating();
@@ -778,10 +865,13 @@ window.onload = () => {
         switch (event.which) {
             case 17: cntrlIsPressed = true;
                 break;
-            case 46: deleteElementValue(); console.log("delete");
+            case 46: deleteElementValue(); //console.log("delete");
+            break;
+            case 13 : 
+           // console.log("enter is pressed")
+    // 
+
         }
-        //     if(event.which=="17")
-        //         cntrlIsPressed = true;
     });
 
     $(document).keyup(function (event) {
@@ -795,23 +885,24 @@ window.onload = () => {
     /*********************************tooltip********** */
 var tempArrayForSortable=[];
    
+
 $(function() {
     $('#tbody_1').sortable({
        update: function(event, ui) {
           var productOrder = $(this).sortable('toArray').toString();
-         console.log(productOrder);
+        // console.log(productOrder);
 
          productOrder.split(",").forEach(function(ival,index)
          {
             employee_name=document.getElementById(`row${ival.split("_")[1]}_0`).innerText;
-            console.log(employee_name)
+            // console.log(employee_name)
             tempArrayForSortable[employee_name] =emp_nm[employee_name] ;
          })
           // $("#sortable-9").text (productOrder);
           emp_nm.length=0;
           emp_nm=tempArrayForSortable;
           tempArrayForSortable.length=0;
-        console.log(emp_nm);
+        // console.log(emp_nm);
        }
     });
  });
@@ -843,12 +934,17 @@ $(function() {
     });
 
     $(function () {
+        
+        
+   
+  
         $.contextMenu({
             selector: '.umeric',
             callback: function (key, options) {
                 var m = "clicked: " + key;
                 window.console && console.log(m);
 
+                console.log(options);
 
                 switch (key) {
                     case "Edit_Comment":
@@ -857,13 +953,13 @@ $(function() {
                         rightClickObject = this[0];
                         var rect = this[0].getBoundingClientRect();
                         let comment = this[0].getAttribute("title").trim();
-                        console.log(`${rightClickObject.getAttribute("ename")}`)
+                      //  console.log(`${rightClickObject.getAttribute("ename")}`)
                         c_name.innerText=rightClickObject.getAttribute("ename")
                         c_date.innerText=rightClickObject.getAttribute("date")
                         textarea.innerText = comment;
                         textarea.value = comment;
                         oldComment = comment;
-                        console.log(`oldcommenr = ${comment}`)
+                     //   console.log(`oldcommenr = ${options}`)
 
 
 
@@ -895,11 +991,11 @@ $(function() {
             },
             items: {
                 "Planned_Leave": { name: "PL - Planned Leave", icon: "edit" },
-                "UnPlanned_Leave": { name: "UnPlanned_Leave", icon: "edit" },
-                "Floating_Leave": { name: "Floating_Leave", icon: "edit" },
-                "Alternate_Leave": { name: "Alternate_Leave", icon: "edit" },
-                "Reject_Leave": { name: "Reject_Leave", icon: "cut" },
-                "Edit_Comment": { name: "Edit_Comment", icon: "paste" },
+                "UnPlanned_Leave": { name: "Un - Planned Leave", icon: "edit" },
+                "Floating_Leave": { name: "Floating Leave", icon: "edit" },
+                "Alternate_Leave": { name: "Alternate Leave", icon: "edit" },
+                "Reject_Leave": { name: "Reject Leave", icon: "cut" },
+                "Edit_Comment": { name: "Edit Comment", icon: "paste" },
                 "delete": { name: "Delete", icon: "delete" },
                 "sep1": "---------",
                 "quit": {
@@ -908,8 +1004,9 @@ $(function() {
                     }
                 }
             }
-        }
-        );
+        },undefined,function() {
+
+        });
 
     });
 
@@ -923,7 +1020,7 @@ $(function() {
     //     }
     // }, false);
 
-    document.onkeydown = getKeyAndMove;
+    //document.onkeydown = getKeyAndMove;
 
 
 
@@ -1005,7 +1102,7 @@ function addDataToRow() {
                             
                             if(leaveComment.length > 0)
                             {
-                                console.log("comment available", leaveComment);
+                              //  console.log("comment available", leaveComment);
                                 innerCell.classList.add("commentIMG");
 
                             }
@@ -1077,16 +1174,20 @@ function createTableRow(parent_element, name, index, pool) {
     checkBox.setAttribute("type", "checkbox");
     checkBox.setAttribute("onclick", "selectCheckBOX(this)");
     checkBox.setAttribute("id", "main_chkbox_" + index);
+    cell.setAttribute("class","fixed")
     cell.appendChild(checkBox);
     row.appendChild(cell);
 
+    /********************************************* */
 
     var cell = row.insertCell();
     text = document.createTextNode(pool);
     cell.setAttribute("id", `team_name`);
-    cell.setAttribute("class", `pool ${pool}`);
+    cell.setAttribute("class", `pool ${pool} fixed`);
     cell.appendChild(text);
     row.appendChild(cell);
+
+    /************************************************** */
 
     cell = row.insertCell();
     text = document.createTextNode(name);
@@ -1094,52 +1195,48 @@ function createTableRow(parent_element, name, index, pool) {
     cell.setAttribute("ROW_ID", rownum);
     cell.setAttribute("COL_ID", colnum);
     cell.setAttribute("id", `row${index + 1}_${num}`);
-    cell.setAttribute("class", "eName");
+    cell.setAttribute("class", "eName fixed");
 
     cell.appendChild(text);
     row.appendChild(cell);
     num++;
     colnum += 1;
+    /************************************************** */
 
-    for (var k = 0; k < month_name.length; k++) {
+    Object.keys(calenderObject).forEach(function ( value,index)
+    {   
+        calenderObject[value].forEach(function(iValue,iIndex)
+        {
+              splittedValue=iValue.split(",");
+              date=splittedValue[0];
+              weekName=splittedValue[1];
+        
+    
+                    cell = row.insertCell();
+        
+                    cell.setAttribute("ROW_ID", rownum);
+                    cell.setAttribute("COL_ID", colnum);
+                    cell.setAttribute("id", `row${index + 1}_${num}`);
+        
+                    // cell.setAttribute("tabindex", "0");
+                    // cell.appendChild(div1);
+                    cell.setAttribute("date", date);
+                    cell.setAttribute("ename", name);
+        
+                    cell.setAttribute("class", `content ellipsis ${value} ${weekName} non_sel umeric`)
+                    /*************************************TOOLTIP ADDED ****************** */
+                    cell.setAttribute("data-toggle", "tooltip");
+                    cell.setAttribute("title", ``);
+                    row.appendChild(cell);
+                    num++;
+                    colnum += 1;
+        
+          
+        
+        });
+    });
 
-        let s_month = month_name[k].slice(0, 3).toLowerCase()
-        let mth_lst_day = new Date(year, k + 1, 0).getDate().toString();
-
-        for (var m = 1; m <= mth_lst_day; m++) {
-            let full_date = year + "/" + appendZero(k + 1) + "/" + appendZero(m); //year/moth/date
-           
-            let dayname = new Date(full_date);
-            full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
-            let day_nm_class = day_name[dayname.getDay()].toLowerCase();
-
-            cell = row.insertCell();
-
-            cell.setAttribute("ROW_ID", rownum);
-            cell.setAttribute("COL_ID", colnum);
-            cell.setAttribute("id", `row${index + 1}_${num}`);
-
-            // cell.setAttribute("tabindex", "0");
-            // cell.appendChild(div1);
-            cell.setAttribute("date", full_date);
-            cell.setAttribute("ename", name);
-
-            cell.setAttribute("class", `content ellipsis ${s_month} ${day_nm_class} non_sel umeric ${s_month} ${day_nm_class}`)
-            /*************************************TOOLTIP ADDED ****************** */
-            cell.setAttribute("data-toggle", "tooltip");
-            cell.setAttribute("title", ``);
-            //  cell.appendChild(div1);
-            //cell.appendChild(span);
-
-            /************************************************************************ */
-            // cell.setAttribute("class", ``)
-            row.appendChild(cell);
-            num++;
-            colnum += 1;
-
-        }
-    }
-
+ 
     // //console.log("createTableRow() : RUNNING SUCESSFULLY ")
     return parent_element;
 
@@ -1161,6 +1258,7 @@ function addEmployee() {
     } else {
         name = Uname.toUpperCase();
         Tname = UTname.toUpperCase();
+    }
         if (employeeNameAvailablity(name) == false) {
 
             newEmp[name] = {
@@ -1184,10 +1282,6 @@ function addEmployee() {
     }
     /*
         createSelectEmp();
-        createInitRow();
-        addJson1();*/
-    //////////////////SEND DATA TO SSERVER //////////////////////
-
 
     xhttp.open("POST", "NEW_EMPLOYEE", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -1240,7 +1334,6 @@ function employeeNameAvailablity(name) {
 /**********************************************************************/
 function createDataArray(arrey, employe__name, applyDate, leave_typ, comment) {
 
-    console.log("comment :: ", comment);
 
     let leave = {};
     let dateFlag = 0;
@@ -1254,7 +1347,7 @@ console.log(`val of arr ${arr}`)
         //Updating existing one but not present in database 
         if (ival[empnm] != undefined || ival[empnm] != null) {
             let eval = ival[empnm];
-            console.log("prsent = " + eval);
+    
 
             if (eval[applyDate] != undefined) {
                 let edate = eval[applyDate];
@@ -1285,8 +1378,8 @@ console.log("dataflag ==  0")
         }
 
 
-        console.log(leave);
-        console.log(JSON.stringify(leave))
+        // console.log(leave);
+        // console.log(JSON.stringify(leave))
 
 
         arr.forEach(function (ival, iidx) {
@@ -1316,8 +1409,8 @@ console.log("dataflag ==  0")
     }
 
     // //console.log(arr);
-    console.log("leave pushed sucessfully",arr)
-    console.log(`formatted arr ${JSON.stringify(leave)}`);
+    // console.log("leave pushed sucessfully",arr)
+    // console.log(`formatted arr ${JSON.stringify(leave)}`);
 
     return arr;
 
@@ -1349,14 +1442,14 @@ function addToJson1(cell_object, oldVal, oldcomment) {
             console.log("First time applying leave");
 //console.log(uarr, empnm, applyDate, leave_typ, comment);
             // uarr = createDataArray(uarr, empnm, applyDate, leave_typ, comment);
-           console.log(uarr =createDataArray(uarr, empnm, applyDate, leave_typ, comment));
-            console.log(uarr instanceof Array);
-            console.log("createDataArray = " + uarr.length);
+           uarr =createDataArray(uarr, empnm, applyDate, leave_typ, comment);
+            // console.log(uarr instanceof Array);
+            // console.log("createDataArray = " + uarr.length);
 
         }
         else {
 
-            console.log("called naarr " + JSON.stringify(narr));
+            // console.log("called naarr " + JSON.stringify(narr));
             narr = createDataArray(narr, empnm, applyDate, leave_typ, comment);
 
         }
@@ -1372,14 +1465,12 @@ function addToJson1(cell_object, oldVal, oldcomment) {
     }
 
     if (Object.keys(narr).length != 0 || Object.keys(uarr).length != 0) {
-        isChanged = 1;
-        //console.log("change save button color or toggle button");
-        myToggle();
+        myToggle(1);
 
     }
-console.log(uarr)
-    console.log("createDataArray = " + ( uarr instanceof Array ) , uarr[0].toString());
-    console.log("createDataArray = " + narr);
+// console.log(uarr)
+//     console.log("createDataArray = " + ( uarr instanceof Array ) , uarr[0].toString());
+//     console.log("createDataArray = " + narr);
 }
 
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
@@ -1398,50 +1489,46 @@ function mySelection() {
 function Save() {
     xhttp.open("POST", "UPDATE", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      console.log("update=" + uarr + "&" + "newemp=" + narr);
+    //   console.log("update=" + uarr + "&" + "newemp=" + narr);
     if (!(uarr.length == 0 && narr.length == 0)) {
 
         console.log(uarr[0])
         console.log(JSON.stringify(uarr));
         xhttp.send("update=" + (JSON.stringify(uarr)) + "&" + "newemp=" + (JSON.stringify(narr)));
+        xhttp.onerror = function () {
+            // console.log(request.responseText);
+        };
         xhttp.onload = function () {
 
             if(this.readyState == 4 && this.status == 200 )
             {
                     if(this.responseText == "true")
                     {
-                        console.log("sucessfill")
-                        document.getElementById("runTimeToast").innerHTML=`$.toast({
-                            heading: 'Success',
-                            text: 'Sheet saved sucessfully into database',
-                            showHideTransition: 'slide',
-                            icon: 'success'
-                        })`
+                        // console.log("sucessfill")
+                       toastMeaasge("Success","Data Save SucessFully")
+                       uarr.length = 0;
+                       narr.length = 0;
+               
+                       myToggle(0);
+
+                       
                     }
+            }
+            else
+            {
+                toastMeaasge("Error","Report the issue");
+
             }
             
 
         }
 
-        uarr = [];
-        narr = [];
+  
     }
     else {
         //console.log("NO NEW UDATE");
     }
 
-    //console.log("update = " + JSON.stringify(uarr))  // for updating existing database leave 
-    //console.log("NEW = " + JSON.stringify(narr))  // for applying new leave 
-
-    if (Object.keys(narr).length == 0 && Object.keys(uarr).length == 0) {
-        isChanged = 0;
-        //console.log("Data saved sucessfully");
-        myToggle();
-
-    }
-
-    // dataSaved.innerText = isChanged;
-    // //console.log(isChanged);
 }
 
 
@@ -1517,9 +1604,11 @@ function myFunction() {
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[2];
+        td1 = tr[i].getElementsByTagName("td")[1];
         if (td) {
             txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            txtValue1 = td1.textContent || td1.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue1.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
             } else {
                 tr[i].style.display = "none";
@@ -1579,7 +1668,7 @@ function Delete() {
     }
 
 
-function myToggle() {
+function myToggle(isChanged = 0) {
     toggle_bt = document.getElementById("toggle_bt");
     //console.log(toggle_bt.checked);
     if (isChanged == 1) {
@@ -1606,6 +1695,10 @@ function createFloatingTab() {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send();
     xhttp.onload = function () {
+
+
+
+
         if (this.readyState == 4 && this.status == 200) {
 
 

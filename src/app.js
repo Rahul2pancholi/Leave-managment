@@ -140,10 +140,9 @@ app.post('/DELETE', urlencodedParser, (req, res) => {
        console.log(`data === ${data}`);
        data=checkDataLength(data);
 
-        // Invoke the next step here however you like
-        //   console.log(data);   // Put all of the code here (not the best solution)
-        delEmp(jsonFilePath,data, JSON.parse(req.body.emp_name));          // Or put the next step in a function and invoke it
-    });
+    delEmp(jsonFilePath,data, JSON.parse(req.body.emp_name));          // Or put the next step in a function and invoke it
+    
+});
     res.send();
 });
 /********************************************** ******************** */
@@ -166,18 +165,6 @@ app.post('/UPDATE', urlencodedParser, (req, res) => {
         
         updateEmpData(jsonFilePath,data, update, newemp);
     });
-
-
-
-
-
-    // fs.writeFile(jsonFilePath, `{ "leave_detail" :  ${req.body.emp_data} ,"employee_name" : ${req.body.emp_nm} } `, function (err) {
-    //     if (err) throw err;
-    //     console.log(err);
-    //   });
-
-
-
 
     res.send(true);
 
