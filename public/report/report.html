@@ -1,52 +1,89 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <style>
 
-        #main_tab {
-          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        
-        #main_tab td, #main_tab th {
-          border: 1px solid #ddd;
-          padding: 8px;
-        }
-        
-        #main_tab tr:nth-child(even){background-color: #f2f2f2;}
-        
-        #main_tab tr:hover {background-color: #ddd;}
-        
-        thead {
-          padding-top: 12px;
-          padding-bottom: 12px;
-          text-align: left;
-          background-color: #003f5c;
-          color: white;
-        }
-        
-        </style>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>     
-      
-<script src="//code.jquery.com/jquery.min.js"></script>
-    </head>
-    <body>
+<head>
+  <style>
+    #main_tab {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-<div><table style="border = 1px;" id="main_tab" >
-</div>    
-   <thead id="t_head" > </thead>
-  <tbody  id="t_body"></tbody>
-    
-</table>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-<script src="js_report.js"></script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    #main_tab td,
+    #main_tab th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
 
-    </body>
+    #main_tab tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #main_tab tr:hover {
+      background-color: #ddd;
+    }
+
+    thead {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #003f5c;
+      color: white;
+    }
+  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- <script src="//code.jquery.com/jquery.min.js"></script> -->
+</head>
+
+<body>
+
+  <div>
+    <table style="border = 1px;" id="main_tab">
+  </div>
+  <thead id="t_head"> </thead>
+  <tbody id="t_body"></tbody>
+
+  </table>
+  <div id="chartContainer" ></div>
+
+  <div class="container">
+    <h3>Bootstrap 3 Popover HTML Example</h3>
+    <ul class="list-unstyled">
+      <li><a data-placement="bottom" data-toggle="popover" data-container="body" data-placement="left" type="button"
+          data-html="true"i href="#" d="login"><span class="glyphicon glyphicon-search"
+            style="margin:3px 0 0 0"></span></a></li>
+      <div id="popover-content" class="hide">
+        
+      </div>
+    </ul>
+  </div>
+
+  <script src="js_report.js"></script>
+<script>
+  
+</script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+</body>
+
 </html>
+
+

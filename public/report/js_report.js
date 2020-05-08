@@ -14,6 +14,7 @@ let FL = 0;
 let PL = 0;
 let UL = 0;
 let ALT = 0;
+let NA = 0;
 let satsun = 0;
 let total_leave = 0;
 let total_wday = 0;
@@ -45,7 +46,9 @@ let mdt_flt = [{
 ////////////////////////////////////////
 
 /////
-function getEmpJsonData() {
+
+
+function getEmpJsonData(callback) {
     let xhttp = new XMLHttpRequest();
 
     xhttp.open("GET", '/test.json', true);
@@ -98,7 +101,9 @@ function getEmpJsonData() {
 
  
 
-
+    if (typeof callback == "function") 
+    {callback();}
+     
 
 
 }
@@ -139,7 +144,7 @@ function addDataTOUi(employee_name, header = 1) {
 
     let arr = [];
     if (header == 1) {
-        arr.push("Emp_name");
+        arr.push("Employee");
     }
     else {
         arr.push(employee_name);
@@ -153,7 +158,7 @@ function addDataTOUi(employee_name, header = 1) {
         count = 0;
         for (var j = 1; j <= mth_lst_day; j++) {
 
-            let full_date = year + "/" + appendZero(i + 1) + "/" + appendZero(j); //year/moth/date
+            let full_date = year + "/" + (i + 1) + "/" + j; //year/moth/date
             let dayname = new Date(full_date);
 
             let day_nm_class = day_name[dayname.getDay()].toLowerCase();
@@ -169,7 +174,7 @@ function addDataTOUi(employee_name, header = 1) {
                 if (day_nm_class == "sat" || day_nm_class == "sun") {
                     count++;
                 }
-                console.log(employee_name,emp_data)
+                // console.log(employee_name,emp_data)
                 let em = (emp_data[employee_name])[full_date];
                 if (em != undefined) {
                     let leavetype = em["leavetype"];
@@ -184,9 +189,8 @@ function addDataTOUi(employee_name, header = 1) {
                         case "PL":
                             PL++;
                             break
-                          case "FL(ALT)":  
-                        case "PL(ALT)":
-                            ALT++
+                          case "-1": 
+                             ALT++
                             break;
                         case "UL":
                             UL++;
@@ -194,7 +198,9 @@ function addDataTOUi(employee_name, header = 1) {
                         case "HL":
                             HL++;
                             break
-
+                        case "NA":
+                            NA++;
+                            break;
                         default:
                             // console.log("no leave need to check ");
                             break;
@@ -218,17 +224,18 @@ function addDataTOUi(employee_name, header = 1) {
 
 
 
-            total_leave_hours = (((PL + FL + UL + ALT) * 8) + (HL * 4));
+            total_leave_hours = (((PL + FL + UL ) * 8) + (HL * 4));
             total_hour_worked = (((mth_lst_day) - (count)) * 8);
             total = total_hour_worked - total_leave_hours;
             final = final + total;
             //   console.log("TOTAL = "+total);
-            tleave = PL + FL + UL + ALT + (HL * .5);
+            tleave = PL + FL + UL  + (HL * .5);
             totalleave = totalleave + tleave;
             console.log(totalleave)
             console.log(employee_name + "============" + tleave);
-            arr.push([{ "PL": PL, "FL": FL, "UL": UL, "ALT": ALT, "HL": HL, "WKG": WKG, "total": total }])
+//            arr.push([{ "PL": PL, "FL": FL, "UL": UL, "ALT": ALT, "HL": HL, "NA": NA, "total": total }])
 
+            arr.push([{ PL,  FL,  UL, ALT, HL,  NA, total }])
 
             count = 0;
             WKG = 0;
@@ -237,6 +244,7 @@ function addDataTOUi(employee_name, header = 1) {
             UL = 0;
             ALT = 0;
             HL = 0;
+            NA=0;
 
 
         }
@@ -247,8 +255,8 @@ function addDataTOUi(employee_name, header = 1) {
 
     //console.log(employee_name + " = " + JSON.stringify(emp_data[employee_name]));
     if (header == 1) {
-        arr.push("Working day");
-        arr.push("Total Leave");
+        arr.push("Total-Hours");
+        arr.push("Total-Leave");
         dataArray.push(arr);
         console.log(dataArray);
     }
@@ -265,6 +273,8 @@ function addDataTOUi(employee_name, header = 1) {
 
 
 function Init() {
+
+    console.log(dataArray);
 
     dataArray.forEach(function (val, ind) {
 
@@ -293,10 +303,21 @@ function Init() {
                 }
                 else {
 
-                    text = document.createTextNode(ival[0]["total"]);
-                    cell.appendChild(text);
+                    const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
+// console.log(JSON.stringify({ PL,  FL,  UL, ALT, HL,  NA, total } ))
+                    if( PL +FL+  UL+ ALT + HL == 0) 
+                    {
+                        finalText=`${total} `
+                }else {finalText=`${total}&nbsp;<span class="badge badge-light">${ PL +FL+  UL+ ALT+ HL}</span>`;}
+                   
+                    
+                   // text = document.create(finalText);
+                    cell.innerHTML=finalText;
                     cell.setAttribute("data-toggle", "tooltip");
-                    cell.setAttribute("title", `PL : ${ival[0]["PL"]}, FL : ${ival[0]["FL"]}, UL : ${ival[0]["UL"]}, ALT : ${ival[0]["ALT"]}, HL : ${ival[0]["HL"]}, WKG : ${ival[0]["WKG"]}`);
+
+                    setAttributes(cell, {"data-html":"true"});
+                  //  table = `<table><tbody><tr></tr></tbody></table>`
+                    cell.setAttribute("title", `PL  = ${PL} FL  = ${FL} UL  = ${UL} ALT = ${ALT} HL  =  ${HL}`);
                     row.appendChild(cell);
                 }
 
@@ -318,7 +339,11 @@ function Init() {
 
 window.onload = (() => {
 
-    getEmpJsonData();
+  
+    getEmpJsonData(function callFunction() { 
+        console.log("This is a callback function.") 
+        $('[data-toggle="tooltip"]').tooltip();
+    }); 
 
 
     // var chart = new CanvasJS.Chart("chartContainer", {
@@ -343,3 +368,8 @@ window.onload = (() => {
     // chart.render();
 
 });
+function setAttributes(el, attrs) {
+    for(var key in attrs) {
+      el.setAttribute(key, attrs[key]);
+    }
+  }
