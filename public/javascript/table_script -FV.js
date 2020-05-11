@@ -1,25 +1,30 @@
-
-const error = "ERROR";
-const success = "SUCCESS"
-const duplicateId = "DUPLICATE_EMPLOYEE_ID"
-
-
+  // let selectEnabled = 0;
+// let month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// let day_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+let year;
+let logfile = [];
+let isAvailable = 0;
+let select = null;
+let date1 = null;
+let emp_data = [];
+let emp_nm = [];
+// let leavetype_name = ["PL", "UL", "ALT"];
+let tempJson = [];
+let selectedObject = null; //use for leave rejection
+let datestorage = [];
+let showAllEnabled = 1;
+let xhttp = new XMLHttpRequest();
 let cmtElmt = document.getElementById("cmtID");
 let textarea = document.getElementById("lastname");
 let c_name = document.getElementById("c_name");
 let c_date = document.getElementById("c_date");
-toggle_bt = document.getElementById("toggle_bt");
-
-let emp_data = [];
-let emp_nm = [];
-let tempJson = [];
-
-let year;
-let isAvailable = 0;
-
-let xhttp = new XMLHttpRequest();
 let oldComment = null;
 let newComment = null;
+/************TOOL-----TIP*********** */
+
+let main_table;
+let csvText = "";
+let tableBody;
 
 /*********************CLASS NAME ***** */
 let classNameForCheckBox;
@@ -49,10 +54,12 @@ let day_name = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
 // let freezArray = new Array();
 let freezToDate; //=`01-jan-${year}`;
+// var d = new Date();
+// d.setDate(d.getDate() -1);
 let freezFromDate; //=dateFormatter(year,month_name[d.getMonth()+1],d.getDay());
 
 function freezSheetFunction(freezDateCheck) {
-
+  // let freezSheetFunctionToggle;
   var d1 = freezFromDate.split("-");
   var d2 = freezToDate.split("-");
   var c = freezDateCheck.split("-");
@@ -62,6 +69,12 @@ function freezSheetFunction(freezDateCheck) {
   var to = new Date(d2[2], parseInt(month_name.indexOf(d2[1])), d2[0]);
   var check = new Date(c[2], parseInt(month_name.indexOf(c[1])), c[0]);
 
+  console.log(
+    check >= from && check <= to,
+    freezDateCheck,
+    freezToDate,
+    freezFromDate
+  );
   return check >= from && check <= to;
 }
 
@@ -103,6 +116,10 @@ function titleCase(string) {
 
 /***********************TITLE FOR NAME END******************** */
 
+/*************************VARIABLE DECLEARIATION END********************** */
+
+let dataSaved = document.getElementById("isChanged");
+
 /**************************************CREATE DATE FORAMTE START***************** */
 function createDate(date_array) {
   let year = date_array[0];
@@ -134,9 +151,6 @@ function createDivSpan(insidele) {
 
 let date = [];
 let countInitRowfuntionCallCount = 0;
-
-
-
 function createInitRow() {
   countInitRowfuntionCallCount++;
   // //console.log("createInitRow ");
@@ -147,17 +161,19 @@ function createInitRow() {
   let row = thead.insertRow();
   let head, text;
   let rownum = 0,
-   colnum = 0;
+    colnum = 0;
 
   /*******************************COLUMN-1  ********** */
   head = document.createElement("th");
   // text = document.createTextNode("Team_Name");
   // head.append(text)
   let checkBox = document.createElement("input");
-  
-  setAttributes(checkBox,{"type": "checkbox","id": `all_checkbox`});
-  setAttributes(head,{"id": `checkbox_head`,"class": `fixed`,"onclick": "selectAllCheckBOX(this)"});
+  checkBox.setAttribute("type", "checkbox");
+  checkBox.setAttribute("id", `all_checkbox`);
+  head.setAttribute("id", `checkbox_head`);
 
+  head.setAttribute("class", `fixed`);
+  head.setAttribute("onclick", "selectAllCheckBOX(this)");
   divspan = createDivSpan(checkBox);
   head.appendChild(divspan);
   row.appendChild(head);
@@ -167,7 +183,9 @@ function createInitRow() {
 
   head = document.createElement("th");
   text = document.createTextNode("Team");
-  setAttributes(head,{"id": `team_name`,"class": ` fixed pool`,"onclick": `sortTable(1)`});
+  head.setAttribute("id", `team_name`);
+  head.setAttribute("class", ` fixed pool`);
+  head.setAttribute("onclick", `sortTable(1)`);
   head.appendChild(text);
   row.appendChild(head);
   // row.setAttribute("class", ` Team_Name`)
@@ -176,7 +194,11 @@ function createInitRow() {
   head = document.createElement("th");
   text = document.createTextNode("Employee");
   head.append(text);
-  setAttributes(head,{"id": `row0_0`,"class": `fixed ename`,"ROW_ID": rownum,"COL_ID" : colnum});
+  head.setAttribute("id", `row0_0`);
+  head.setAttribute("class", `fixed ename`);
+  head.setAttribute("ROW_ID", rownum);
+  head.setAttribute("COL_ID", colnum);
+  // divspan=createDivSpan(text);
   head.appendChild(text);
   row.appendChild(head);
   row.setAttribute("class", `tab_row_0 Emp_Name`);
@@ -213,7 +235,17 @@ function createInitRow() {
 
       num++;
       colnum += 1;
+
+      //    }
+
+      // datestorage[month_name[i]] = date;
+      // date = [];
+
+      //  }
     });
+
+    //  datestorage[month_name[i]] = date;
+    //  date = [];
   });
 
   ///////////////////******************************************************* */
@@ -227,9 +259,8 @@ function createInitRow() {
     // //console.log("emp_nm.length = " + Object.keys(emp_nm).length)
 
     let pool = emp_nm[employeeName[i]]["pool"];
-  //  console.log(emp_nm[employeeName[i]]);
 
-    table.appendChild(createTableRow(tbody, emp_nm[employeeName[i]].name,emp_nm[employeeName[i]].id, i, pool));
+    table.appendChild(createTableRow(tbody, employeeName[i], i, pool));
   }
   // initUI();  // hide month and show month
 }
@@ -248,9 +279,8 @@ function getEmpJsonData() {
   // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
   xhttp.send();
   xhttp.onload = function () {
- 
     if (this.readyState == 4 && this.status == 200) {
-      if (this.responseText.length != 0) {
+      if (this.responseText != "") {
         tempJson = JSON.parse(this.responseText)["leave_detail"];
         emp_nm = JSON.parse(this.responseText)["employee_name"];
 
@@ -349,11 +379,10 @@ let delObjCurr = null;
 let delObjPrev = null;
 let oldcomment = null;
 let ctClickArr = [];
-
 function applyEventLitn() {
   let cells = document.getElementsByClassName("content");
   for (let cell of cells) {
-     ["click", "focusout", "dblclick"].forEach((evt) =>
+    ["click", "focusout", "dblclick"].forEach((evt) =>
       cell.addEventListener(evt, function () {
         switch (evt) {
           case "click":
@@ -453,44 +482,26 @@ function makeEditableCell(currObject) {
 ///////
 /************************ONLOAD METHOD START*************** */
 
-function toastMeaasge( message,messageType, icon) {
-  try{
+function toastMeaasge(messageType, message, icon) {
   Ficon = icon || messageType.toLowerCase();
-}catch(e)
-{
-  Ficon=undefined;
-}
 
-  var code = `$.toast({`;
-        if(messageType != undefined)
-        {
-          code += `heading: '${messageType}',
-                   text: '${message}',
-                   showHideTransition: 'slide',
-                   icon: '${Ficon}'`
-        }
-        else{
-
-         
-          code +=`text: '${message}'`
-        }
-       
-        code += `});`;
-
+  var code = `$.toast({
+        heading: '${messageType}',
+        text: '${message}',
+        showHideTransition: 'slide',
+        icon: '${Ficon}'
+    })`;
   eval(code);
 }
-
-
 
 let rightClickObject = null;
 var cntrlIsPressed = false;
 
+window.onload = () => {
 
 
-  $(document).ready(function(){
 
-
-  
+  const data = { username: 'example' };
 
   getEmpJsonData();
   myToggle();
@@ -500,7 +511,6 @@ var cntrlIsPressed = false;
     switch (event.which) {
       case 17:
         cntrlIsPressed = true;
-        console.log("CNTRL")
         break;
       case 46:
         deleteElementValue();
@@ -525,21 +535,13 @@ var cntrlIsPressed = false;
         var productOrder = $(this).sortable("toArray").toString();
         // console.log(productOrder);
 
-        count=1;
         productOrder.split(",").forEach(function (ival, index) {
-          employee_name = document.getElementById(`row${ival.split("_")[1]}_0`);
-           
-          tempArrayForSortable.push({
-            id : employee_name.getAttribute("eid"),
-            order : count
-          });
-          count++;
-
-
-
+          employee_name = document.getElementById(`row${ival.split("_")[1]}_0`)
+            .innerText;
+          // console.log(employee_name)
+          tempArrayForSortable[employee_name] = emp_nm[employee_name];
         });
         // $("#sortable-9").text (productOrder);
-        chnageOrderRequest(tempArrayForSortable)
         emp_nm.length = 0;
         emp_nm = tempArrayForSortable;
         tempArrayForSortable.length = 0;
@@ -547,6 +549,26 @@ var cntrlIsPressed = false;
       },
     });
   });
+
+  // $("#tbody_1").sortable({
+  //     placeholder: "highlight",
+  //     start: function (event, ui) {
+  //         ui.item.toggleClass("highlight");
+  //         console.log("start");
+  //     },
+  //     stop: function (event, ui) {
+  //         ui.item.toggleClass("highlight");
+  //         this.childNodes.forEach( function(val ,index)
+  //         {
+  //             employee_name=document.getElementById(`row${val.getAttribute("class").split("_")[2]}_0`).innerText;
+  //             //console.log(emp_nm)
+  //             tempArrayForSortable[employee_name] =emp_nm[employee_name] ;
+  //         })
+
+  //     }
+  // });
+
+  /********************************* */
 
   $(function () {
     $.contextMenu(
@@ -617,6 +639,7 @@ var cntrlIsPressed = false;
           Alternate_Leave: { name: "Alternate Leave", icon: "edit" },
           Reject_Leave: { name: "Reject Leave", icon: "cut" },
           Edit_Comment: { name: "Edit Comment", icon: "paste" },
+          delete: { name: "Delete", icon: "delete" },
           sep1: "---------",
           quit: {
             name: "Quit",
@@ -629,19 +652,8 @@ var cntrlIsPressed = false;
     );
   });
 
-});
+};
 
-function chnageOrderRequest(tempArrayForSortable)
-{
-  console.log(JSON.stringify(tempArrayForSortable));
-  xhttp.open("POST", "CHNAGE_ORDER", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("emp_data=" + (JSON.stringify(tempArrayForSortable)));
-  xhttp.onload = function () 
-  {
-
-  }
-}
 
 async function fetchApiExample()
 {
@@ -691,23 +703,14 @@ function addDataToRow() {
   let tbody = document.getElementById("tbody_1").children;
   let tr = document.getElement;
 
-
-
-  /******************************************** */
-  /****    Need to chnage               ******* */ 
-  /****      empnm to another           ******* */ 
-  /****                                 ******* */ 
-  /******************************************** */
-      
   Object.keys(emp_nm).forEach(function (ovalue, oindex) {
-    let empnm = tempJson[emp_nm[ovalue].id];
-    // console.log({empnm,ovalue})
+    let empnm = tempJson[ovalue];
     //  //console.log("1 = " + JSON.stringify(empnm))
     //  //console.log("out = "+empnm != null && empnm != undefined);
     if (empnm != null && empnm != undefined) {
-      employeeName = emp_nm[ovalue].name;
+      employeeName = ovalue;
       //  //console.log("employee name print == " + employeeName)
-// console.log({employeeName})
+
       //console.log("table body length = " + tbody.length + " row index = " + rowindex);
       for (var rowCount = 0; rowCount < tbody.length; rowCount++) {
         var emp_name_tr = tbody[rowCount].childNodes[b].innerText;
@@ -719,7 +722,6 @@ function addDataToRow() {
             //        var leavedate = tempJson[empcount]["leave"][leave]["leavedate"];
 
             empleavedata = empnm[thdate];
-
             if (empleavedata != null && empleavedata != undefined) {
               //  console.log(empleavedata)
               let leavetype = empleavedata["leavetype"];
@@ -780,13 +782,11 @@ function setAttributes(el, attrs) {
 }
 
 
-function createTableRow(parent_element, name,eid, index, pool) {
+function createTableRow(parent_element, name, index, pool) {
+  let num = 0;
   let row, text;
-  let rowNum = (parent_element.childNodes.length) + 1;
-  let colNum = 0;
-
-console.log(parent_element.childNodes.length)
-
+  let rownum = index + 1;
+  let colnum = 0;
 
   if (parent_element == undefined) {
     tab = document.getElementById("tab1");
@@ -795,8 +795,8 @@ console.log(parent_element.childNodes.length)
     row = parent_element.insertRow(index);
   }
   // //console.log("index = "+ index);
-  row.setAttribute("class", `tab_row_${rowNum}`);
-  row.setAttribute("id", `row_${rowNum}`);
+  row.setAttribute("class", `tab_row_${index + 1}`);
+  row.setAttribute("id", `row_${index + 1}`);
 
   var cell = row.insertCell();
   let checkBox = document.createElement("input");
@@ -809,10 +809,8 @@ console.log(parent_element.childNodes.length)
 
   var cell = row.insertCell();
   text = document.createTextNode(pool);
-  setAttributes(cell,{"id" :`team_name`,"class" : `pool ${pool} fixed`,"ename": name,"eid" : eid });
-
-
-
+  cell.setAttribute("id", `team_name`);
+  cell.setAttribute("class", `pool ${pool} fixed`);
   cell.appendChild(text);
   row.appendChild(cell);
 
@@ -821,20 +819,15 @@ console.log(parent_element.childNodes.length)
   cell = row.insertCell();
   text = document.createTextNode(name);
 
-  setAttributes(cell,
-    {
-      "ROW_ID": rowNum,
-      "COL_ID": colNum,
-      "id": `row${rowNum}_${colNum}`,
-      "class": "eName fixed",
-      "ename": name,
-      "eid" : eid
-    });
+  cell.setAttribute("ROW_ID", rownum);
+  cell.setAttribute("COL_ID", colnum);
+  cell.setAttribute("id", `row${index + 1}_${num}`);
+  cell.setAttribute("class", "eName fixed");
 
   cell.appendChild(text);
   row.appendChild(cell);
-  colNum++;
-  colNum += 1;
+  num++;
+  colnum += 1;
   /************************************************** */
 
   Object.keys(calenderObject).forEach(function (value, index) {
@@ -844,15 +837,26 @@ console.log(parent_element.childNodes.length)
       weekName = splittedValue[1];
 
       cell = row.insertCell();
-      setAttributes(cell,{"date": date,"ename": name,"eid" : eid,"ROW_ID":rowNum,"COL_ID": colNum,"id": `row${rowNum}_${colNum}`, "class":
-      `content ellipsis ${value} ${weekName} non_sel umeric`})
-  
+
+      cell.setAttribute("ROW_ID", rownum);
+      cell.setAttribute("COL_ID", colnum);
+      cell.setAttribute("id", `row${index + 1}_${num}`);
+
+      // cell.setAttribute("tabindex", "0");
+      // cell.appendChild(div1);
+      cell.setAttribute("date", date);
+      cell.setAttribute("ename", name);
+
+      cell.setAttribute(
+        "class",
+        `content ellipsis ${value} ${weekName} non_sel umeric`
+      );
       /*************************************TOOLTIP ADDED ****************** */
       cell.setAttribute("data-toggle", "tooltip");
       cell.setAttribute("title", ``);
       row.appendChild(cell);
-      colNum++;
-      colNum += 1;
+      num++;
+      colnum += 1;
     });
   });
 
@@ -896,39 +900,28 @@ function exportToExcel(tableID, filename = ''){
 
 //*************************ADD NEW EMPLOYEE START ********************************************* */
 
-function addEmployee() 
-{
+function addEmployee() {
   let input1 = document.getElementById("addEmp");
   let input2 = document.getElementById("addEmpTeam");
-  let employeeIdElement = document.getElementById("addEmpID");
   let thead = document.getElementById("tbody_1");
   let Uname = input1.value.trim();
   let UTname = input2.value.trim();
-  let employeeId = Number(employeeIdElement.value.trim());
-  let newEmp = [];
-
-  orderNO=(emp_nm.length +1);
-
-  if (Uname == "" && UTname == "" && employeeIdElement.value.trim() == "") {
+  let newEmp = {};
+  if (Uname == "" && UTname == "") {
     alert("shold not be empty");
-  } 
-  else
-   {
+  } else {
     name = Uname.toUpperCase();
     Tname = UTname.toUpperCase();
   }
   if (employeeNameAvailablity(name) == false) {
-    newEmp.push({
-                            id : employeeId,
-                            name : name,
-                            pool: Tname,
-                            disable: "0",
-                            order : orderNO
- });
-  
+    newEmp[name] = {
+      pool: Tname,
+      disable: "0",
+    };
+    //console.log(newEmp);
+    // emp_nm.push(titleCase(name));
     input1.value = "";
     input2.value = "";
-    employeeIdElement="";
 
    
     xhttp.open("POST", "NEW_EMPLOYEE", true);
@@ -941,30 +934,11 @@ function addEmployee()
 
        if( this.readyState == 4 && this.status == 200)
        {
-
-console.log(this.responseText);
-
-switch(this.responseText)
-{
-  case error:  toastMeaasge("Somthing Went wrong","Error");break;
-  case duplicateId: toastMeaasge("DUPLICATE_EMPLOYEE_ID Found","Error");break;
-  default :   
-      if (this.responseText.length != 0) 
-          {
-                tempJson = JSON.parse(this.responseText)["leave_detail"];
-                emp_nm = JSON.parse(this.responseText)["employee_name"];
-
-                createTableRow(thead, name,employeeId, -1, Tname);
-                fixedColumn();
-                applyEventLitn();
-                newEmp.length= 0;
-                toastMeaasge("New Row Added","Success",)
-          }
-
-break;
-}
-
-      
+        createTableRow(thead, name, -1, Tname);
+        fixedColumn();
+        applyEventLitn();
+        newEmp.length= 0;
+        toastMeaasge("Success", "New Row Added");
        }
        
 
@@ -975,8 +949,6 @@ break;
   } else {
     alert("Employ is prsent");
   }
-
-
 }
 /*
 
@@ -1007,9 +979,7 @@ function employeeNameAvailablity(name) {
     return true;
   }
 }
-/******************************chnage****************************************/
-/*****************************employee name to employee id ************ */
-/********************************************************************** */
+/**********************************************************************/
 function createDataArray(
   arrey,
   employe__name,
@@ -1027,10 +997,8 @@ function createDataArray(
 
   console.log(`val of arr ${arr}`);
   //console.log("employe name " + empnm);
-
-
   arr.forEach(function (ival, iidx) {
-    //Updating existing one in current array {arr} but not present in to the database
+    //Updating existing one but not present in database
     if (ival[empnm] != undefined || ival[empnm] != null) {
       let eval = ival[empnm];
 
@@ -1048,7 +1016,7 @@ function createDataArray(
   });
 
   if (dateFlag == 0) {
-    //Add data into employee if present in database 
+    //Add data into employee if prsent
 
     console.log("dataflag ==  0");
 
@@ -1100,7 +1068,7 @@ function createDataArray(
 
 //let arr = []; // for first time applyring leave
 let uarr = []; // for updating existing database leave
-// let narr = []; // for applying new leave
+let narr = []; // for applying new leave
 //let darr =[]; // for deteting the leave
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
 function addToJson1(cell_object, oldVal, oldcomment) {
@@ -1142,7 +1110,6 @@ function addToJson1(cell_object, oldVal, oldcomment) {
   let flag = 0;
   leave_typ = cell_object.innerText.trim();
   let empnm = cell_object.getAttribute("ename");
-  let eid = cell_object.getAttribute("eid");
   let applyDate = cell_object.getAttribute("date");
   let comment = cell_object.getAttribute("title");
 
@@ -1158,32 +1125,14 @@ function addToJson1(cell_object, oldVal, oldcomment) {
     !(leave_typ == "" && (oldVal == "" || oldVal == undefined)) ||
     !(comment == "" && (oldcomment == "" || oldcomment == undefined))
   ) {
+    let employee_name = tempJson[empnm];
 
-    let employee_name;
-    let employeeID;
-    emp_nm.forEach((v,i) =>
-    { 
-
-    //  console.log(v,i,emp_nm.id)
-      if(v.id == eid) { 
-        employee_name=v.name;
-        employeeID=eid;
-       
-     }
-     } )
-
-   
-    console.log({employee_name})
-  
-    
-
-
-    if (employeeID != undefined && employeeID != null) {
+    if (employee_name != undefined && employee_name != null) {
       console.log("First time applying leave");
 
       uarr = createDataArray(
         uarr,
-        employeeID,
+        empnm,
         applyDate,
         leave_typ,
         comment,
@@ -1191,11 +1140,19 @@ function addToJson1(cell_object, oldVal, oldcomment) {
         approveStatus
       );
     } else {
-      console.log("SOMETHING WENT WRONG");
+      narr = createDataArray(
+        narr,
+        empnm,
+        applyDate,
+        leave_typ,
+        comment,
+        declear,
+        approveStatus
+      );
     }
   } 
 
-  if(uarr.length !=0 )
+  if(uarr.length !=0 || narr.length !=0)
   {
     toggle_bt.checked = false;
   }
@@ -1209,39 +1166,33 @@ function Save() {
   xhttp.open("POST", "UPDATE", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   //   console.log("update=" + uarr + "&" + "newemp=" + narr);
-  if (uarr.length != 0) {
+  if (!(uarr.length == 0 && narr.length == 0)) {
     console.log(uarr[0]);
     console.log(JSON.stringify(uarr));
-    xhttp.send("update=" + JSON.stringify(uarr));
+    xhttp.send(
+      "update=" + JSON.stringify(uarr) + "&" + "newemp=" + JSON.stringify(narr)
+    );
     xhttp.onerror = function () {
-         console.log(request,this.response);
+      // console.log(request.responseText);
     };
     xhttp.onload = function () {
       if (this.readyState == 4 && this.status == 200) {
-        switch(this.responseText)
-        {
-          case error:  toastMeaasge("Error", "Somthing Went wrong");break; 
-          default :   
-              if (this.responseText.length != 0) 
-                  {
-                        tempJson = JSON.parse(this.responseText)["leave_detail"];
-                        emp_nm = JSON.parse(this.responseText)["employee_name"];
-        
-                        toastMeaasge("Data Save SucessFully","Success");
-                        uarr.length = 0;
-                        myToggle();
+        if (this.responseText == "true") {
+          // console.log("sucessfill")
+          toastMeaasge("Success", "Data Save SucessFully");
+          uarr.length = 0;
+          narr.length = 0;
+          myToggle();
+        }
+      } else {
+        toastMeaasge("Error", "Please refresh page and apply agin or Report the issue");
+      }
+    };
+  } else {
+    //console.log("NO NEW UDATE");
+  }
+}
 
-                  }
-        
-        break;
-                }
-        
-    }else{
-      toastMeaasge("Please refresh page or Report the issue","Error");
-    }
-  } 
-}
-}
 function reload() {
   location.reload();
 }
@@ -1256,7 +1207,38 @@ function finalmove(a, b) {
     selCell.click();
   }
 }
+function getKeyAndMove(e) {
+  var key_code = e.which || e.keyCode;
+  if (clickObject != null && clickObject != undefined) {
+    let rowid = clickObject.getAttribute("row_id");
+    let colid = clickObject.getAttribute("col_id");
+    let id = clickObject.id;
+    // //console.log(`${rowid}${colid}`);
+    rowid++;
+    colid++;
+    let a = id.split("_")[0].replace("row", "");
+    let b = id.split("_")[1];
 
+    switch (key_code) {
+      case 37: //left arrow key
+        b--;
+        finalmove(a, b);
+        break;
+      case 38: //Up arrow key
+        a--;
+        finalmove(a, b);
+        break;
+      case 39: //right arrow key
+        b++;
+        finalmove(a, b);
+        break;
+      case 40: //down arrow key
+        a++;
+        finalmove(a, b);
+        break;
+    }
+  }
+}
 
 function sortTable() {
   emp_nm.sort();
@@ -1287,99 +1269,60 @@ function myFunction() {
   }
 }
 
-// document.onkeydown = function (t) {
-//   if (t.which == 9) {
-//     return false;
-//   }
-// };
+document.onkeydown = function (t) {
+  if (t.which == 9) {
+    return false;
+  }
+};
 
 function Delete() {
   var tempArray = [];
   let employename;
   let node;
   let id = [];
-
-
   if (checkbox_arr.length > 0) {
-
-    if(toggle_bt.checked){
     for (var i = 0; i < checkbox_arr.length; i++) {
       node = checkbox_arr[i];
-      console.log(checkbox_arr[i]);
       let emp_node = document.getElementById(`row${node.id.split("_")[1]}_0`);
       id.push(node.id);
-      //employename = emp_node.innerText;
-      employeeId=emp_node.getAttribute("eid");
-      tempArray.push(employeeId);
+      employename = emp_node.innerText;
+      console.log(employename);
+      tempArray.push(employename);
     }
 
-    console.log(id,tempArray);
+    console.log(tempArray);
 
     //console.log(id)
 
     xhttp.open("POST", "DELETE", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-   // console.log(JSON.stringify(employename));
+    console.log(JSON.stringify(employename));
     xhttp.send("emp_name=" + JSON.stringify(tempArray));
     xhttp.onload = function () {
       if (this.readyState == 4 && this.status == 200) {
         for (var j in id) {
           document.getElementById(id[j]).remove();
         }
-        toastMeaasge(`Deleted ${id.length} row SucessFully`,"Success");
+        toastMeaasge("Success", `Deleted ${id.length} row SucessFully`);
 
         delObjCurr = null;
         delObjPrev = null;
         checkbox_arr = [];
         tempArray = [];
         id.length = 0;
-        getRowOrder();
-        
       }
     };
-  } else
-  {
-    toastMeaasge(`Please save data before delete`,"Information", "info");
-  
+  } else {
+    toastMeaasge("Information", `Please select row before delete`, "info");
   }
 }
-else {
-    toastMeaasge(`Please select row before delete`);
-  
-}
-}
 
-function getRowOrder()
-{
-  let count=1;
-  let tempArrayForSortable=[];
-  t_body=document.getElementById("tbody_1");
- t_body.childNodes.forEach((val,ind) => {
- let employeeId=document.getElementById(`row${val.getAttribute("id").split("_")[1]}_0`).getAttribute("eid");
-
-  tempArrayForSortable.push({
-    id : employeeId,
-    order : count
-  });
- 
-  count++;
-
-
-
-})
-
-
-chnageOrderRequest(tempArrayForSortable);
-
-
-}
-
-
+toggle_bt = document.getElementById("toggle_bt");
 function myToggle() {
   
 
-  if (Object.keys(uarr).length != 0) {
+  if (Object.keys(narr).length != 0 || Object.keys(uarr).length != 0) {
     toggle_bt.checked = false;
     Save();
    
@@ -1389,6 +1332,39 @@ function myToggle() {
   }
 }
 
+/************************************************** */
+function createFloatingTab() {
+  let xhttp = new XMLHttpRequest();
+
+  xhttp.open("GET", "/FLOATING_FILE", true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send();
+  xhttp.onload = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText != "") {
+        floating_leave = JSON.parse(this.responseText);
+        let lBody = document.getElementById("FL_TBODY");
+        Object.keys(floating_leave).forEach(function (val, ind) {
+          t_row = lBody.insertRow();
+          t_cell = t_row.insertCell();
+          let checkBox = document.createElement("input");
+          checkBox.setAttribute("type", "checkbox");
+          checkBox.setAttribute("id", "chkbox" + ind);
+          t_cell.appendChild(checkBox);
+          t_cell = t_row.insertCell();
+          t_cell.innerHTML = val;
+          t_cell = t_row.insertCell();
+          t_cell.innerHTML = JSON.stringify(floating_leave[val]["FloatLeave"]);
+        });
+
+        // floatingTable();
+      } else {
+        floating_leave = {};
+        floatingTable();
+      }
+    }
+  };
+}
 function cancelComment() {
   cmtElmt.style.display = "none";
   textarea.disable;
@@ -1422,7 +1398,7 @@ function Cancledata() {
   textarea.value = "";
 }
 
-
+function changeOrder(a, b) {}
 
 let checkbox_arr = [];
 function selectCheckBOX(currnetObject) {
@@ -1448,13 +1424,11 @@ function arrayRemove(arr, value) {
 }
 
 function Applyleavebycolor(type, currentObject) {
- 
   if (!cntrlIsPressed) {
     for (var i in ctClickArr) {
       ctClickArr[i].classList.remove("click_select");
     }
     ctClickArr.length = 0;
-   
     ctClickArr.push(currentObject);
   }
 
@@ -1464,17 +1438,12 @@ function Applyleavebycolor(type, currentObject) {
   for (let i = 0; i < ctClickArr.length; i++) {
     if ((type == "NA" && ctClickArr[i].innerText.length > 0) || type != "NA") {
       applydate = ctClickArr[i].getAttribute("date");
-      if(!freezSheetFunction(applydate))
-  {
-    ename = ctClickArr[i].getAttribute("ename");
+      ename = ctClickArr[i].getAttribute("ename");
       ctClickArr[i].innerText = type;
       addToJson1(ctClickArr[i]);
-      ctClickArr[i].classList.remove("click_select");
       continue;
-  }
-      
     }
-    toastMeaasge("Please apply leave befor reject");
+    console.log("Please apply leave befor reject");
   }
 
   ctClickArr.length = 0;
@@ -1558,7 +1527,60 @@ function sort_table(table, col) {
 function sortTable(n) {
   /*sort_table(document.getElementById("tab1"), n);*/
 }
+// function createSCV() {
 
+//     main_table = document.getElementById("header_row").children;
+//     tableBody = document.getElementById("tbody_1").children;
+//     for (i in main_table) {
+//         if (main_table[i].innerText != undefined) {
+//             csvText = csvText + "," + main_table[i].innerText;
+//         }
+//         else {
+//             //   //console.log(main_table[i]);
+//         }
+//     }
+//     csvText = csvText + "\n";
+
+//     for (var i = 0; i < tableBody.length; i++) {
+//         var tabelRow = tableBody[i].childNodes;
+//         for (j in tabelRow) {
+//             if (tabelRow[j].innerText != undefined) {
+//                 csvText = csvText + "," + tabelRow[j].innerText;
+//             }
+//         }
+
+//         csvText = csvText + "\n";
+
+//     }
+//     //console.log(csvText)
+//     csvText = "";
+
+// }
+// function floatingTable() {
+//     letflBody = document.getElementById("FL_TBODY");
+//     let child = (letflBody.childNodes);
+//     for (var i = 0; i < child.length; i++) {
+//         let trChild = (child[i].childNodes);
+//        trChild.forEach((value, index) => { DoubleClickLitner(value); FocusOutListner(value) });
+
+//     }
+// }
+// function DoubleClickLitner(element) {
+//     element.addEventListener("dblclick", function () {
+
+//         element.contentEditable = true;
+//         element.focus();
+//         console.log(element);
+
+//     });
+// }
+// function FocusOutListner(element) {
+//     element.addEventListener('focusout', function (e) {
+//         element.contentEditable = false;
+
+//     }
+//     );
+// }
 
 /******************************ADD DATA TO EXISTING JSON FILE START ****************** */
 // function mySelection() {

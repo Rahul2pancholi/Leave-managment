@@ -80,7 +80,7 @@ function getEmpJsonData(callback) {
             }
             else {
 
-                addDataTOUi("", 1);
+                addDataTOUi("","", 1);
                 abc();
                 Init();
             }
@@ -88,7 +88,7 @@ function getEmpJsonData(callback) {
 
         }
 
-    }
+    }    
 
 
 
@@ -98,7 +98,7 @@ function getEmpJsonData(callback) {
 
 
 
-
+dz
  
 
     if (typeof callback == "function") 
@@ -131,23 +131,24 @@ function appendZero(temp) {
 let final = 0;
 
 function abc() {
-    Object.keys(emp_nm).forEach(function (iteam, index) {
+   emp_nm.forEach(function (iteam, index) {
 
-        addDataTOUi(iteam, 0)
+    console.log(iteam.id)
+        addDataTOUi(iteam.id,iteam.name, 0)
     })
 
 }
 
 
 
-function addDataTOUi(employee_name, header = 1) {
+function addDataTOUi(eId,eName, header = 1) {
 
     let arr = [];
     if (header == 1) {
         arr.push("Employee");
     }
     else {
-        arr.push(employee_name);
+        arr.push(eName);
     }
 
     for (var i = 0; i < month_name.length; i++) {
@@ -175,7 +176,8 @@ function addDataTOUi(employee_name, header = 1) {
                     count++;
                 }
                 // console.log(employee_name,emp_data)
-                let em = (emp_data[employee_name])[full_date];
+                let em = (emp_data[eId])[full_date];
+
                 if (em != undefined) {
                     let leavetype = em["leavetype"];
                     //    console.log(employee_name+"======"+JSON.stringify(em)+"======"+ leavetype);
@@ -232,7 +234,7 @@ function addDataTOUi(employee_name, header = 1) {
             tleave = PL + FL + UL  + (HL * .5);
             totalleave = totalleave + tleave;
             console.log(totalleave)
-            console.log(employee_name + "============" + tleave);
+            console.log(eName,eId + "============" + tleave);
 //            arr.push([{ "PL": PL, "FL": FL, "UL": UL, "ALT": ALT, "HL": HL, "NA": NA, "total": total }])
 
             arr.push([{ PL,  FL,  UL, ALT, HL,  NA, total }])

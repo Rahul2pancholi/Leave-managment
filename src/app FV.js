@@ -1,12 +1,4 @@
 var express = require("express");
-const error = "ERROR";
-const success = "SUCCESS"
-const duplicateId = "DUPLICATE_EMPLOYEE_ID"
-
-
-
-
-
 var bodyParser = require("body-parser");
 var path = require("path");
 var app = express();
@@ -45,25 +37,21 @@ app.get("", (req, res) => {
   res.render("index");
 });
 
-
-
-// type and length
-
 app.get("/auth", (req, res) => {
   project = req.query.team;
   year = req.query.year;
-  console.log( "RESULLT = ",typeof(project) == "string",project, typeof(Number(year)) == "number",year )
-  if ((project != undefined && year != undefined) && ( typeof(project) == "string" && typeof(Number(year)) == "number"  )) {
+  if (project != undefined && year != undefined) {
     jsonFilePath = path.join(
       __dirname,
       `../public/database/test_${project}_${year}.json`
     );
-
-    console.log("loggein");
+    jsonFreezFilePath = path.join(
+      __dirname,
+      `../public/database/freezData_${project}_${year}.json`
+    );
     loggedIn = true;
     res.redirect("/home");
   }
-  console.log("failed");
 });
 
 app.get("/home", (req, res) => {
@@ -81,14 +69,15 @@ app.get("/home", (req, res) => {
 
 app.get("/test.json", (req, res) => {
   console.log(req);
-  fs.readFile(jsonFilePath, "UTF8", function read(err, data) {
-    res.send(employeeOrderChnage(JSON.parse(data)));
-    
-  });
- 
+  res.sendFile(jsonFilePath);
   console.log("called");
 });
 
+app.get("/freez", (req, res) => {
+  console.log(req);
+  res.sendFile(jsonFreezFilePath);
+  console.log("called");
+});
 
 app.get("/getvar", function (req, res) {
   res.send({ year: year });
@@ -119,44 +108,25 @@ function checkDataLength(data) {
 }
 /********************************ADDING NEW EMPLOYEE****************************** */
 app.post("/NEW_EMPLOYEE", urlencodedParser, (req, res) => {
-  //console.log(req.body.emp_data);
+  console.log(req.body.emp_data);
   fs.readFile(jsonFilePath, "UTF8", function read(err, data) {
     data = checkDataLength(data);
 
     // Invoke the next step here however you like
     //   console.log(data);   // Put all of the code here (not the best solution)
-    status=addNewEmp(jsonFilePath, data, JSON.parse(req.body.emp_data)); // Or put the next step in a function and invoke it
-
-   res.send(status);
-  
+    addNewEmp(jsonFilePath, data, JSON.parse(req.body.emp_data)); // Or put the next step in a function and invoke it
   });
- 
-});
-
-/************************************************************ */
-app.post("/CHNAGE_ORDER", urlencodedParser, (req, res) => {
-  //console.log(req.body.emp_data);
-  fs.readFile(jsonFilePath, "UTF8", function read(err, data) {
-    data = checkDataLength(data);
-
-    // Invoke the next step here however you like
-    //   console.log(data);   // Put all of the code here (not the best solution)
-    status=chnageOrder(jsonFilePath, data, JSON.parse(req.body.emp_data)); // Or put the next step in a function and invoke it
-
-   res.send(status);
-  
-  });
- 
+  res.send();
 });
 
 /***************************************************************************** */
 app.post("/DELETE", urlencodedParser, (req, res) => {
-
+  console.log(req.body.emp_data);
   fs.readFile(jsonFilePath, "UTF8", function read(err, data) {
     if (err) {
       console.log(err);
     }
-   // console.log(`data === ${data}`);
+    console.log(`data === ${data}`);
     data = checkDataLength(data);
 
     delEmp(jsonFilePath, data, JSON.parse(req.body.emp_name)); // Or put the next step in a function and invoke it
@@ -170,16 +140,16 @@ app.post("/UPDATE", urlencodedParser, (req, res) => {
     if (err) {
       console.log(err);
     }
-  //  console.log(`data === ${data}`);
+    console.log(`data === ${data}`);
     update = JSON.parse(req.body.update);
-    // newemp = JSON.parse(req.body.newemp);
+    newemp = JSON.parse(req.body.newemp);
     data = checkDataLength(data);
-    // console.log("NEWEMP = ",newemp);
+    console.log(newemp);
 
-    res.send(updateEmpData(jsonFilePath, data, update));
+    updateEmpData(jsonFilePath, data, update, newemp);
   });
 
-
+  res.send(true);
 });
 
 var server = app.listen(port, function () {
@@ -188,79 +158,19 @@ var server = app.listen(port, function () {
   console.log(__dirname);
 });
 
-
-
-function chnageOrder(jsonFilePath, filedata, resData)
-{
-  employee = filedata.employee_name;
-  leave = filedata.leave_detail;
-  tempArray = new Array();
-
-  for(var j in resData)
-  {
-    for(var i in employee)
-    {
-      if( resData[j].id == employee[i].id)
-      {
-        console.log("BEFORE = ",resData[j].order,employee[i].name,employee[i].order)
-        employee[i].order=resData[j].order
-        console.log("AFTER = ",resData[j].order,employee[i].name,employee[i].order)
-      }
-    }
-  }
-
- 
-console.log(employee);
-  let finalData=`{ "leave_detail" :  ${JSON.stringify(leave)} ,"employee_name" : ${JSON.stringify(employee)} }`;
-  fs.writeFile(jsonFilePath,finalData,(err) =>  {if (err) status=error;} );
-  status=finalData;
-
-
-
-
-
-}
 function delEmp(jsonFilePath, filedata, resData) {
-  //console.log("DELETE = ",resData);
-  var deleted=false;
-
-
-
+  console.log(resData);
   demp = filedata.employee_name;
   dlev = filedata.leave_detail;
 
-
-
-   for (var i in resData) {
-
-      for (var j in demp) {
-
-        console.log(demp[j].id, resData[i])
-        if(demp[j].id == resData[i] )
-        {
-          demp.splice(j, 1);
-          deleted=true;
-        }
-        if(deleted == true) delete dlev[resData[i]] ; deleted=false;
-      }
-      
- }
-
-// console.log("delete = " ,demp);
-  // console.log(demp);
-  // console.log(dlev);
+  for (var i in resData) {
+    console.log(delete demp[resData[i]]);
+    console.log(delete dlev[resData[i]]);
+  }
+  console.log(demp);
+  console.log(dlev);
   // dlev[val] = {};
 
-let count=1;
-for(let i in dlev)
-{
-  dlev[i].order=count;
-  count++;
-}
-
-
-
-  console.log("LENGTH CHEKC = ",demp.length,Object.keys(dlev).length);
   fs.writeFile(
     jsonFilePath,
     `{ "leave_detail" :  ${JSON.stringify(
@@ -272,76 +182,87 @@ for(let i in dlev)
   );
 }
 
-function updateEmpData(jsonFilePath, filedata, update) {
+function updateEmpData(jsonFilePath, filedata, update, newemp) {
   demp = filedata.employee_name;
   dlev = filedata.leave_detail;
+  // console.log(newemp);
+  // console.log(update);
 
+  //For new leave
+  newemp.forEach(function (val, ind) {
+    // console.log(val)
+    Object.keys(val).forEach(function (ival, iind) {
+      Object.keys(val[ival]).forEach(function (innerval, innerindex) {
+        // console.log(innerval)
+        leave = val[ival][innerval];
+        // console.log(JSON.stringify(leave)+"=="+innerval)
+        if (leave["leavetype"] != "") {
+          dlev[ival][innerval] = leave;
+        }
+      });
+    });
+  });
+  /****************UPDATE******************** */
   update.forEach(function (val, ind) {
     // console.log(val)
     Object.keys(val).forEach(function (ival, iind) {
       Object.keys(val[ival]).forEach(function (innerval, innerindex) {
-
-    
-         leave = val[ival][innerval];
-        
-         if (leave.leavetype.length != 0 ) {
-                        dlev[ival][innerval] = leave;
-          } else {
-        //   //delete the object //that means user hase removed value from the exiting cell
-          delete dlev[ival][innerval];
-         }
-
-         console.log("output = ",leave,"OUTPUT2 = ",dlev[ival][innerval]);
+        leave = val[ival][innerval];
+        console.log(JSON.stringify(leave) + "==" + innerval);
+        if (leave["leavetype"] != "") {
+          dlev[ival][innerval] = leave;
+        } else {
+          //delete the object
+          console.log(delete dlev[ival][innerval]);
+        }
       });
     });
   });
 
+  /********************************* */
 
-let finalData=`{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${JSON.stringify(demp)} } `
-  fs.writeFile(jsonFilePath,finalData,function (err) {
+  // fs.writeFile(jsonFilePath, `{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${JSON.stringify(demp)} } `, function (err) {
+  //     if (err)
+  //     console.log(err);
+  //      throw err;
+  // });
+
+  fs.writeFile(
+    jsonFilePath,
+    `{ "leave_detail" :  ${JSON.stringify(
+      dlev
+    )} ,"employee_name" : ${JSON.stringify(demp)} } `,
+    function (err) {
       if (err) console.log(err);
     }
-  )
-
-  return(finalData);
+  );
 }
 
 function addNewEmp(jsonFilePath, filedata, resData) {
-
-
-
   demp = filedata.employee_name;
   dlev = filedata.leave_detail;
-  let status;
 
-  //console.log("DATA1 = ",resData)
+  Object.keys(resData).forEach(function (val, ind) {
+    console.log(val);
 
-  for(let i in resData)
-  {
-    if (dlev[resData[i].id] == undefined) {
-     
-      demp.push(resData[i]);
-      dlev[resData[i].id] = {};
-let finalData=`{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${JSON.stringify(demp)} }`;
-      fs.writeFile(jsonFilePath,finalData,(err) =>  {if (err) status=error;} );
-      status=finalData;
+    if (demp[resData[val]] == undefined) {
+      Object.keys(resData).forEach(function (val, ind) {
+        demp[val] = resData[val];
+        console.log(demp);
+        dlev[val] = {};
+      });
+
+      fs.writeFile(
+        jsonFilePath,
+        `{ "leave_detail" :  ${JSON.stringify(
+          dlev
+        )} ,"employee_name" : ${JSON.stringify(demp)} } `,
+        function (err) {
+          if (err) console.log(err);
+        }
+      );
     } else {
-      status=duplicateId;
+      console.log("already prsent employee");
     }
-  }
-
-  return status;
-}
-
-function employeeOrderChnage(filedata)
-{
-
-  employee_name = filedata.employee_name;
-  leave_detail = filedata.leave_detail;
-  console.log({ employee_name,leave_detail} )
-  employee_name.sort((a,b) => a.order - b.order);
-
-
-  return JSON.stringify({ employee_name,leave_detail});
-
+  });
 }
