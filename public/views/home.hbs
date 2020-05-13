@@ -21,8 +21,10 @@
   <script src="javascript/rightclick/jquery.contextMenu.js"></script>
   <script src="javascript/rightclick/jquery.ui.position.js"></script>
   <!-- ******************** -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
   {{!-- ********************** --}}
   {{!-- <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'> --}}
   <link rel="stylesheet" href="css/jquery.toast.css">
@@ -524,6 +526,45 @@ thead>tr>th>div{
   color: white; --}}
 }
 
+
+#main_tab 
+{
+      white-space: nowrap;
+      
+} 
+
+#main_tab > tbody > tr > td  ,#main_tab > thead> tr > td
+{
+      padding: 7px;
+      
+} 
+#model-body-id
+{
+overflow: scroll;
+}
+
+
+
+table#main_tab > thead >tr > td:nth-child(1)
+{
+  background-color: black;
+  color: white;
+   position: sticky;
+   left: 0px;
+   z-index: 1;
+}
+
+#main_tab tr:hover {
+     background-color: #ddd; 
+}
+table#main_tab > tbody >tr > td:nth-child(1)
+{
+  position: sticky;
+  left: 0px;
+  z-index: 1;
+   background-color: white;
+}
+
   </style>
   <!-- <link href="table.css" rel="stylesheet"> -->
 </head>
@@ -545,7 +586,7 @@ thead>tr>th>div{
             <a class="nav-link underline" href="javascript:exportToExcel('tab1', 'user-data');">ExportToExcel</a>
         </li>
         <li class="nav-item li">
-          <a class="nav-link underline" href="/report/report.html">Report</a>
+          <a class="nav-link underline" href="javascript:genrateReport()">Report</a>
         </li>
         
       <li class="nav-item" style="display: none;">
@@ -623,9 +664,6 @@ thead>tr>th>div{
     </div>
   </div> --}}
 
-
-  
-<!-- ****************************************Modal********************** -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -663,18 +701,38 @@ thead>tr>th>div{
     </div>
   </div>
 </div>
+  
+<!-- ****************************************Modal********************** -->
+
   {{!-- *****************MODAL END****************** --}}
   
   
 
   
   {{!-- **************************** --}}
+    <div id="classModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+          </button>
+        </div>
+        <div class="modal-body" id="model-body-id">
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   
   {{!-- ***************************** --}}
 
     
-
-
 
 
 
@@ -688,7 +746,8 @@ thead>tr>th>div{
   <script>
     //$('#myModal').modal(options)
   // $(".fixed").css("background-color"));
-    $("#dialog").dialog()
+   // $("#dialog").dialog()
+     $( "#dialog" ).dialog();
 
     {{!-- $("#startdatepicker").datepicker();
     $("#enddatepicker").datepicker(); --}}

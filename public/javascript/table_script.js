@@ -1555,222 +1555,323 @@ function sort_table(table, col) {
   }
 }
 
-function sortTable(n) {
-  /*sort_table(document.getElementById("tab1"), n);*/
+/****************REPORT GENRATE*************************** */
+
+
+let count = 0;
+let day = 8;
+let workinghours = 0;
+let flag = 0;
+let satSunw = 0;
+let FL = 0;
+let PL = 0;
+let UL = 0;
+let ALT = 0;
+let NA = 0;
+let satsun = 0;
+let total_leave = 0;
+let total_wday = 0;
+let WKG = 0;
+let HL = 0;
+let dataArray = [];
+let totalleave = 0;
+
+
+/////////////////////////////////////////
+ 
+
+
+ 
+               
+
+
+
+
+////////////////////////////////////////
+{/* <table id="classTable" class="table table-bordered">
+
+
+<table style="border = 1px;" id="main_tab" class="table table-bordered">
+  <thead id="t_head"> </thead>
+  <tbody id="t_body"></tbody> */}
+/************************************** */
+  /////
+  // let reportTableHeadElements= document.getElementById("t_head");
+
+
+
+ 
+  let reportDivBodyElements= document.getElementById("model-body-id");
+
+
+
+function genrateReport()
+{
+
+
+//   if ( reportTableHeadElements.childElementCount > 0)
+//   {
+//    for(let i=0;i<reportTableHeadElements.childElementCount;i++)
+//     {
+// console.log("INSIDE-HEAD",reportTableHeadElements.children[i].remove());
+//     }
+
+//   }
+//   if ( reportTableBodyElements.childElementCount > 0)
+//   {
+//     for(let i=0;i<reportTableBodyElements.childElementCount;i++)
+//     {
+// console.log("INSIDE-BODY",reportTableBodyElements.children[i].remove());
+//     }
+//   }
+  
+  if(toggle_bt.checked){
+
+
+  emp_data = tempJson;
+  // console.log(tempJson)
+  if((emp_data != undefined && emp_nm != undefined) )
+  {
+// console.log("called")
+// reportTableElement.remove();
+
+addDataTOUi("","", 1);
+    abc();
+    Init();
+    $("#classModal").modal('show');
+  }
+}else
+{
+  toastMeaasge("Please save sheet before genrate report")
 }
 
 
-/******************************ADD DATA TO EXISTING JSON FILE START ****************** */
-// function mySelection() {
-//     var checkBox = document.getElementById("myCheck");
-//     if (checkBox.checked == true) {
-//         selectEnabled = 1;
-//     } else {
-//         selectEnabled = 0;
-//     }
-// }
 
-/******************************CRETE SELECET START**************** */
-//function for create div with selector
-//a is leave type b is inner value
-// function createSelForDiv(a, b) {
+}
+let final = 0;
+function Init() {
 
-//     if (a == "") {
+  let tableElement= document.getElementById("main_tab");
 
-//         let select = document.createElement('input');
-//         select.setAttribute("type", "text");
-//         select.setAttribute("value", b);
-//         select.setAttribute("tabindex", "-1");
-//         // select.onchange();
-//         // select.setAttribute("onchange", "onChangeInput(this)");
-//         // <input type="text" value="" tabindex="-1" style="width: 100px; height: 40px;"></input>
+try{
+    tableElement.remove();
+}catch(e)
+{
+  console.log("error")
+}
 
-//         return select;
+  let reportTable = document.createElement("table");
+  setAttributes(reportTable,{"id":"main_tab", "class":"table-bordered"});
 
-//     } else {
+  let reportTableHead =document.createElement("thead");
+  setAttributes(reportTableHead,{"id":"t_head"})
+  
+  let reportTableBody =document.createElement("tbody");
+  setAttributes(reportTableBody,{"id":"t_body"})
+  reportTable.appendChild(reportTableHead);
+  reportTable.appendChild(reportTableBody);
+  reportDivBodyElements.appendChild(reportTable)
 
-//         let select = document.createElement('input');
-//         select.setAttribute("type", "text");
-//         select.setAttribute("value", "FL");
-//         select.setAttribute("tabindex", "-1");
-//         // select.setAttribute("onchange", "onChangeInput(this)");
-//         return select;
-//     }
+  // console.log(dataArray);
 
-// }
-//chk height width fun
-/****************************CRETE SELECET END************************************************* */
-/******************************step:1 INTITIAL_PHASE_START***************************************************/
+  dataArray.forEach(function (val, ind) {
 
-/*******************************INTITIAL_PHASE_END**************************************************/
-//////select emp list /////////
+      if (ind == 0) {
+          var tab = reportTableHead
+      }
+      else {
+          var tab = reportTableBody
+      }
+      row = tab.insertRow(-1);
 
-// function createSelectEmp() {
-//     select = document.getElementById("emp_nm");
-//     select.innerHTML = '<option value="0" >select emp</option>'
-//     Object.keys(emp_nm).forEach(function (value, index) {
-//         let createOption = document.createElement("option");
-//         let textNode = document.createTextNode(value);
-//         createOption.setAttribute("value", 1 + index);
-//         createOption.appendChild(textNode);
-//         select.appendChild(createOption);
+      val.forEach(function (ival, iind) {
+          if (ind == 0) {
 
-//     });
-// }
-//***********************************APPEND ZERO END********************************************************* */
+              tableHeader= document.createElement("th");
+              setAttributes(tableHeader,{"scope" :"col"})
+              text = document.createTextNode(ival);
+              tableHeader.appendChild(text);
 
-/**************************************APPLY LEAVE START******************************************************* */
-// function applyLeaveByDateRange() {
+              row.appendChild(tableHeader);
+          }
+          else {
 
-//     let start = document.getElementById("startdatepicker");
-//     let end = document.getElementById("enddatepicker");
-//     var i = 0;
-//     var e = document.getElementById("emp_nm");
+              cell = row.insertCell();
+              if (iind == 0 || iind == 13 || iind == 14) {
+                  text = document.createTextNode(ival);
+                  cell.appendChild(text);
+                  row.appendChild(cell);
+              }
+              else {
 
-//     var strUser = e.options[select.value].innerText;
+                  const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
 
-//     if (start.value == "" || end.value == "" || select.value == 0) {
-//             alert("column should not be empty");
-//     } else {
+                  if( PL +FL+  UL+ ALT + HL == 0) 
+                  {
+                      finalText=`${total} `
+              }else {finalText=`${total}&nbsp;<span class="badge badge-light">${ PL +FL+  UL+ ALT+ HL}</span>`;}
+                 
+                  
+                 // text = document.create(finalText);
+                  cell.innerHTML=finalText;
+                  cell.setAttribute("data-toggle", "tooltip");
 
-//         /////
-//         var date1 = new Date(start.value);
-//         var date2 = new Date(end.value);
+                  setAttributes(cell, {"data-html":"true"});
+                //  table = `<table><tbody><tr></tr></tbody></table>`
+                  cell.setAttribute("title", `PL  = ${PL} FL  = ${FL} UL  = ${UL} ALT = ${ALT} HL  =  ${HL}`);
+                  row.appendChild(cell);
+              }
 
-//         // To calculate the time difference of two dates
-//         var Difference_In_Time = date2.getTime() - date1.getTime();
+          }
+      })
 
-//         // To calculate the no. of days between two dates
-//         var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
-//         // //console.log(Difference_In_Days);
-//         /////
-//         if (Difference_In_Days > -1) {
+  })
 
-//             let sdate = createDate(start.value.split("-"));
-//             let edate = createDate(end.value.split("-"));
-//             let headerRow = document.getElementById("header_row").children;
-//             alert(` name :- ${strUser} \n start date : ${sdate} \n End date : ${edate}`);
-//             var tomorrow = new Date(sdate);
-//             let tbody_1 = document.getElementById("tbody_1").children;
-//             let rowNO;
-//             let colNO;
 
-//             for (let i = 0; i < tbody_1.length; i++) {
 
-//                 let name = tbody_1[i].childNodes[1].innerText;
-//                 //console.log(name);
-//                 if (name == strUser) {
-//                     rowNO = i + 1;
-//                     break;
-//                 }
 
-//             }
 
-//             for (let i = 0; i <= headerRow.length; i++) {
-//                 if (headerRow[i].innerText == sdate) {
+  // console.log(dataArray);
+  dataArray.length=0;
 
-//                     colNO = (headerRow[i].id).split("_")[1]
+}
 
-//                     break;
-//                 }
 
-//             }
+function addDataTOUi(eId,eName, header = 1) {
 
-//             while (true) {
-//                 //console.log(`row${rowNO}_${colNO}`)
-//                 startElement = document.getElementById(`row${rowNO}_${colNO}`);
-//                 date1 = tomorrow.getFullYear() + "/" + appendZero((tomorrow.getMonth()) + 1) + "/" + appendZero(tomorrow.getDate());
+  let arr = [];
+  if (header == 1) {
+      arr.push("Employee");
+  }
+  else {
+      arr.push(eName);
+  }
 
-//                 let satSun = (tomorrow.toString().slice(0, 3)).toUpperCase();
+  for (var i = 0; i < month_name.length; i++) {
 
-//                 if (satSun != "SAT" && satSun != "SUN") {
-//                     //console.log(satSun != "SAT" && satSun != "SUN")
-//                     ////////////////////////////////////////////////////////
-//                     //    //console.log("HEADER ROW + "+headerRow.length);
+      let s_month = month_name[i].slice(0, 3).toLowerCase()
 
-//                     if (startElement.innerText == "") {
-//                         //console.log(startElement);
-//                         startElement.innerText = "PL";
-//                         back_Color("PL", startElement);
-//                         createDataArray(narr, strUser, date1, "PL", "");
+      let mth_lst_day = new Date(year, i + 1, 0).getDate().toString();
+      count = 0;
+      for (var j = 1; j <= mth_lst_day; j++) {
 
-//                     }
-//                     else { alert("updating existing ") }
-//                     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                     // //console.log("outside")
-//                     if (edate == date1) {
-//                         // //console.log("beark ")
-//                         break;
-//                     }
+          let full_date = year + "/" + (i + 1) + "/" + j; //year/moth/date
+          let dayname = new Date(full_date);
 
-//                 }
-//                 else {
-//                     if (edate == date1) {
-//                         //console.log("beark ")
-//                         break;
-//                     }
+          let day_nm_class = day_name[dayname.getDay()].toLowerCase();
+          full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
+          // console.log(full_date);
 
-//                 }
-//                 tomorrow.setDate(tomorrow.getDate() + 1);
-//                 colNO++;
 
-//             }
-//             start.value = "";
-//             end.value = "";
-//             select.value = 0;
 
-//         }
-//         else {
-//             alert("date should not be negative");
-//             start.value = "";
-//             end.value = "";
-//             select.value = 0;
-//         }
+          if (header == 1) {
+              // console.log("kkkkkkk")
+          }
+          else {
+              if (day_nm_class == "sat" || day_nm_class == "sun") {
+                  count++;
+              }
+               //console.log((emp_data[eId]),full_date)
+              let em = (emp_data[eId])[full_date];
 
-//         if (Object.keys(narr).length != 0) {
+              if (em != undefined) {
+                  let leavetype = em["leavetype"];
+                    //  console.log(employee_name+"======"+JSON.stringify(em)+"======"+ leavetype);
 
-//             //console.log("change save button color or toggle button");
-//             myToggle(1);
 
-//         }
 
-//     }
+                  switch (leavetype) {
+                      case "FL":
+                          FL++;
+                          break;
+                      case "PL":
+                          PL++;
+                          break
+                        case "-1": 
+                           ALT++
+                          break;
+                      case "UL":
+                          UL++;
+                          break;
+                      case "HL":
+                          HL++;
+                          break
+                      case "NA":
+                          NA++;
+                          break;
+                      default:
+                          // console.log("no leave need to check ");
+                          break;
 
-//     //addJson1();
+                  }
 
-// }
-// /****************************************APPLY LEAVE END********************************************************* */
 
-/******************BACKGROUNG COLOR START ******************** */
-// function back_Color(clr, clrobj) {
 
-//     switch (clr.toUpperCase()) {
+              }
 
-//         case "FL":
+          }
 
-//             clrobj.style.backgroundColor = document.getElementById("FL_C").style.backgroundColor;
-//             clrobj.style.backgroundColor = "!important";
-//             break;
 
-//         case "PL":
-//             clrobj.style.backgroundColor = document.getElementById("PL_C").style.backgroundColor;
 
-//             break;
-//             case "UL" :   clrobj.style.backgroundColor = document.getElementById("UL_C").style.backgroundColor;
-//             break;
-// case "PL(R)" :
-//     case "FL(R)" :  clrobj.style.backgroundColor = document.getElementById("REJ_C").style.backgroundColor;
+      }
 
-//     break;
-//     case "PL(ALT)" :
-//     case "FL(ALT)" :  clrobj.style.backgroundColor = document.getElementById("ALT_C").style.backgroundColor;
-//     break;
+      if (header == 1) {
+          arr.push(s_month);
+      }
+      else {
 
-//         default:
-//             clrobj.style.backgroundColor = "";
-//     }
-// }
 
-/************************************BACKGROUND COLOR END**************************************************** */
 
+          total_leave_hours = (((PL + FL + UL ) * 8) + (HL * 4));
+          total_hour_worked = (((mth_lst_day) - (count)) * 8);
+          total = total_hour_worked - total_leave_hours;
+          final = final + total;
+          //   console.log("TOTAL = "+total);
+          tleave = PL + FL + UL  + (HL * .5);
+          totalleave = totalleave + tleave;
+          // console.log(totalleave)
+          // console.log(eName,eId + "============" + tleave);
+//            arr.push([{ "PL": PL, "FL": FL, "UL": UL, "ALT": ALT, "HL": HL, "NA": NA, "total": total }])
+
+          arr.push([{ PL,  FL,  UL, ALT, HL,  NA, total }])
+
+          count = 0;
+          WKG = 0;
+          FL = 0;
+          PL = 0;
+          UL = 0;
+          ALT = 0;
+          HL = 0;
+          NA=0;
+
+
+      }
+
+
+
+  }
+
+  //console.log(employee_name + " = " + JSON.stringify(emp_data[employee_name]));
+  if (header == 1) {
+      arr.push("Total-Hours");
+      arr.push("Total-Leave");
+      dataArray.push(arr);
+      // console.log(dataArray);
+  }
+  else {
+      arr.push(final);
+      arr.push(totalleave);
+      dataArray.push(arr);
+      // console.log(dataArray);
+      totalleave = 0;
+      final=0;
+  }
+}
+
+function abc() {
+  emp_nm.forEach(function (iteam, index) {
+       addDataTOUi(iteam.id,iteam.name, 0)
+   })
+}
+/*********************************************************** */
