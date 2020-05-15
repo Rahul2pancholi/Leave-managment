@@ -22,6 +22,7 @@ let WKG = 0;
 let HL = 0;
 let dataArray = [];
 let totalleave = 0;
+let reportDivBodyElements= document.getElementById("model-body-id");
 
 
 /////////////////////////////////////////
@@ -66,8 +67,8 @@ function getEmpJsonData(callback) {
                 emp_nm = JSON.parse(this.responseText)["employee_name"];
 
 
-                console.log(emp_data);
-                console.log(emp_nm);
+                // console.log(emp_data);
+                // console.log(emp_nm);
 
             }
             else {
@@ -80,9 +81,14 @@ function getEmpJsonData(callback) {
             }
             else {
 
-                addDataTOUi("","", 1);
+                addDataTOUi("","","", 1);
+                table();
+                tableHead();
+                dataArray.length=0
                 abc();
-                Init();
+               // Init();
+            //    console.log(finalArray);
+              
             }
 
 
@@ -98,7 +104,6 @@ function getEmpJsonData(callback) {
 
 
 
-dz
  
 
     if (typeof callback == "function") 
@@ -131,23 +136,65 @@ function appendZero(temp) {
 let final = 0;
 
 function abc() {
-   emp_nm.forEach(function (iteam, index) {
 
-    console.log(iteam.id)
-        addDataTOUi(iteam.id,iteam.name, 0)
+    var names= new Array();
+for( var i in emp_nm)
+{
+    names.push(emp_nm[i].pool);
+}
+uniqArray=getUnique(names)
+
+uniqArray.forEach(function (iteam, index) {
+
+    emp_nm.forEach(function (v, i) {
+        if(v.pool === iteam)
+        {
+            addDataTOUi(v.id,v.name,v.pool, 0)
+        }
+    })
+   
+    tableBody();
+    tableTotal();
+    dataArray.length=0
+   
+    
+    
+
     })
 
 }
 
+let leaveDetailArray= [];
+let leaveDetaildeDetail = [];
+let finalArray=[];
 
 
-function addDataTOUi(eId,eName, header = 1) {
+
+
+
+
+//var names = ["Mike","Matt","Nancy","Adam","Jenny","Nancy","Carl
+    function getUnique(array){
+        var uniqueArray = [];
+        
+        // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+function addDataTOUi(eId,eName,pool, header = 1) {
 
     let arr = [];
     if (header == 1) {
+        arr.push("Team")
         arr.push("Employee");
     }
     else {
+        arr.push(pool)
         arr.push(eName);
     }
 
@@ -169,7 +216,7 @@ function addDataTOUi(eId,eName, header = 1) {
 
 
             if (header == 1) {
-                console.log("kkkkkkk")
+                // console.log("kkkkkkk")
             }
             else {
                 if (day_nm_class == "sat" || day_nm_class == "sun") {
@@ -187,21 +234,58 @@ function addDataTOUi(eId,eName, header = 1) {
                     switch (leavetype) {
                         case "FL":
                             FL++;
+                            leaveDetaildeDetail.push({
+                                full_date : full_date,
+                                week : day_nm_class,
+                                leavetype : leavetype
+
+                            })
                             break;
                         case "PL":
+                            
                             PL++;
+                             leaveDetaildeDetail.push({
+                                full_date : full_date,
+                                week : day_nm_class,
+                                leavetype : leavetype
+
+                            })
                             break
                           case "-1": 
                              ALT++
+                             leaveDetaildeDetail.push({
+                                full_date : full_date,
+                                week : day_nm_class,
+                                leavetype : leavetype
+
+                            })
                             break;
                         case "UL":
                             UL++;
+                            leaveDetaildeDetail.push({
+                                full_date : full_date,
+                                week : day_nm_class,
+                                leavetype : leavetype
+
+                            })
                             break;
                         case "HL":
                             HL++;
+                            leaveDetaildeDetail.push({
+                                full_date : full_date,
+                                week : day_nm_class,
+                                leavetype : leavetype
+
+                            })
                             break
                         case "NA":
                             NA++;
+                            leaveDetaildeDetail.push({
+                                full_date : full_date,
+                                week : day_nm_class,
+                                leavetype : leavetype
+
+                            })
                             break;
                         default:
                             // console.log("no leave need to check ");
@@ -215,10 +299,16 @@ function addDataTOUi(eId,eName, header = 1) {
 
             }
 
-
+          
 
         }
-
+        // leaveDetailArray.push(leaveDetaildeDetail);
+        if(leaveDetaildeDetail.length > 0)
+        {
+        // console.log(JSON.stringify({eName,s_month,leaveDetaildeDetail}))
+        }
+        leaveDetaildeDetail.length=0;
+        // leaveDetaildeDetail=[];
         if (header == 1) {
             arr.push(s_month);
         }
@@ -233,8 +323,8 @@ function addDataTOUi(eId,eName, header = 1) {
             //   console.log("TOTAL = "+total);
             tleave = PL + FL + UL  + (HL * .5);
             totalleave = totalleave + tleave;
-            console.log(totalleave)
-            console.log(eName,eId + "============" + tleave);
+            // console.log(totalleave)
+            // console.log(eName,eId + "============" + tleave);
 //            arr.push([{ "PL": PL, "FL": FL, "UL": UL, "ALT": ALT, "HL": HL, "NA": NA, "total": total }])
 
             arr.push([{ PL,  FL,  UL, ALT, HL,  NA, total }])
@@ -251,7 +341,7 @@ function addDataTOUi(eId,eName, header = 1) {
 
         }
 
-
+// console.log(leaveDetailArray)
 
     }
 
@@ -260,7 +350,7 @@ function addDataTOUi(eId,eName, header = 1) {
         arr.push("Total-Hours");
         arr.push("Total-Leave");
         dataArray.push(arr);
-        console.log(dataArray);
+        // console.log(dataArray);
     }
     else {
         arr.push(final);
@@ -272,41 +362,154 @@ function addDataTOUi(eId,eName, header = 1) {
     }
 }
 
+let reportTable = document.createElement("table");
+let reportTableHead =document.createElement("thead");
+let reportTableBody =document.createElement("tbody");
+
+function table()
+{
+   
+    setAttributes(reportTable,{"id":"main_tab", "class":"table-bordered"});
+  
+    
+    setAttributes(reportTableHead,{"id":"t_head"})
+    
+  
+    setAttributes(reportTableBody,{"id":"t_body"})
+    reportTable.appendChild(reportTableHead);
+    reportTable.appendChild(reportTableBody);
+    reportDivBodyElements.appendChild(reportTable)
+
+}
+function tableHead()
+{
+    dataArray.forEach(function (val, ind) {
+  
+        var tab = reportTableHead
+
+     
+           row = tab.insertRow(-1);
+     
+           val.forEach(function (ival, iind) {
 
 
-function Init() {
+    tableHeader= document.createElement("th");
+    setAttributes(tableHeader,{"scope" :"col"})
+    text = document.createTextNode(ival);
+    tableHeader.appendChild(text);
 
-    console.log(dataArray);
+    row.appendChild(tableHeader);
+           });
+        });
+}
+function tableTotal()
+{
+    var tab = reportTableBody
+  
+    row = tab.insertRow(-1);
+    
+    cell = row.insertCell();
+    cell.appendChild(document.createTextNode("Total"));
+    setAttributes(cell,{"colspan":"2"});
+    setAttributes(row,{"class":"totalRow"});
+    row.appendChild(cell);
+    
+    let abc=new Array(14);
+
+    for(let i=0;i<abc.length;i++)
+    {
+        abc[i]=0;
+    }
 
     dataArray.forEach(function (val, ind) {
+  
+       
+        var i=0;
+           val.forEach(function (ival, iind) {
+          
+            console.log(ival, iind)
+            if (!(iind == 0 || iind == 1  || iind == 14 || iind == 15 )) 
+                {
 
-        if (ind == 0) {
-            var tab = document.getElementById("t_head");
+                   
+                            
+                try{ 
+                
+                   
+                    const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
+                    abc[i] += total;
+                    i++;
+                      //  console.log(total)
+                   // console.log({ PL,  FL,  UL, ALT, HL,  NA, total })
+                }catch(r)
+                {
+
+                }
+
+                // if(((iind == 13 || iind == 14)) )
+                // {
+                //     console.log();
+                // }
+
+
+               
+                }else if(iind == 14 || iind == 15)
+                {
+                    abc[i] += ival;
+                    i++;
+                }
+
+              
+
+
+           });
+        });
+        for(let i=0;i<abc.length;i++)
+        {
+            cell = row.insertCell();
+            cell.appendChild(document.createTextNode(abc[i]));
+            row.appendChild(cell);
+           
         }
-        else {
-            var tab = document.getElementById("t_body");
-        }
+    
+    finalArray.push(abc)
+    abc=[];
+   
+  
+
+
+
+
+
+
+
+
+}
+function tableBody()
+{
+
+    dataArray.forEach(function (val, ind) {
+  
+     var tab = reportTableBody
+  
         row = tab.insertRow(-1);
 
+        // cell.appendChild(text);
+        // row.appendChild(cell);
+  
         val.forEach(function (ival, iind) {
-            if (ind == 0) {
+        
+  
                 cell = row.insertCell();
-                text = document.createTextNode(ival);
-                cell.appendChild(text);
-                row.appendChild(cell);
-            }
-            else {
-
-                cell = row.insertCell();
-                if (iind == 0 || iind == 13 || iind == 14) {
+                if (iind == 0 || iind == 1|| iind == 14 || iind == 15) { 
                     text = document.createTextNode(ival);
                     cell.appendChild(text);
                     row.appendChild(cell);
                 }
                 else {
-
+  
                     const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
-// console.log(JSON.stringify({ PL,  FL,  UL, ALT, HL,  NA, total } ))
+  
                     if( PL +FL+  UL+ ALT + HL == 0) 
                     {
                         finalText=`${total} `
@@ -316,26 +519,177 @@ function Init() {
                    // text = document.create(finalText);
                     cell.innerHTML=finalText;
                     cell.setAttribute("data-toggle", "tooltip");
-
+  
                     setAttributes(cell, {"data-html":"true"});
                   //  table = `<table><tbody><tr></tr></tbody></table>`
                     cell.setAttribute("title", `PL  = ${PL} FL  = ${FL} UL  = ${UL} ALT = ${ALT} HL  =  ${HL}`);
                     row.appendChild(cell);
                 }
-
-            }
+  
+            
         })
-
-
+  
+  
     })
-
-
-
-
-
-    console.log(dataArray);
-
 }
+// function Init() {
+
+//     // let tableElement= document.getElementById("main_tab");
+  
+// //   try{
+// //       tableElement.remove();
+// //   }catch(e)
+// //   {
+// //     console.log("error")
+// //   }
+  
+
+  
+//     // console.log(dataArray);
+  
+//     dataArray.forEach(function (val, ind) {
+  
+//         if (ind == 0) {
+//             var tab = reportTableHead
+//         }
+//         else {
+//             var tab = reportTableBody
+//         }
+//         row = tab.insertRow(-1);
+  
+//         val.forEach(function (ival, iind) {
+//             if (ind == 0) {
+  
+//                 tableHeader= document.createElement("th");
+//                 setAttributes(tableHeader,{"scope" :"col"})
+//                 text = document.createTextNode(ival);
+//                 tableHeader.appendChild(text);
+  
+//                 row.appendChild(tableHeader);
+//             }
+//             else {
+  
+//                 cell = row.insertCell();
+//                 if (iind == 0 || iind == 1|| iind == 14 || iind == 15) { 
+//                     text = document.createTextNode(ival);
+//                     cell.appendChild(text);
+//                     row.appendChild(cell);
+//                 }
+//                 else {
+  
+//                     const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
+  
+//                     if( PL +FL+  UL+ ALT + HL == 0) 
+//                     {
+//                         finalText=`${total} `
+//                 }else {finalText=`${total}&nbsp;<span class="badge badge-light">${ PL +FL+  UL+ ALT+ HL}</span>`;}
+                   
+                    
+//                    // text = document.create(finalText);
+//                     cell.innerHTML=finalText;
+//                     cell.setAttribute("data-toggle", "tooltip");
+  
+//                     setAttributes(cell, {"data-html":"true"});
+//                   //  table = `<table><tbody><tr></tr></tbody></table>`
+//                     cell.setAttribute("title", `PL  = ${PL} FL  = ${FL} UL  = ${UL} ALT = ${ALT} HL  =  ${HL}`);
+//                     row.appendChild(cell);
+//                 }
+  
+//             }
+//         })
+  
+  
+//     })
+// }
+
+// function Init() {
+
+//     // console.log(dataArray);
+//    // let tableElement= document.getElementById("main_tab");
+
+//       let reportTable = document.createElement("table");
+//       setAttributes(reportTable,{"id":"main_tab", "class":"table-bordered"});
+    
+//       let reportTableHead =document.createElement("thead");
+//       setAttributes(reportTableHead,{"id":"t_head"})
+      
+//       let reportTableBody =document.createElement("tbody");
+//       setAttributes(reportTableBody,{"id":"t_body"})
+//       reportTable.appendChild(reportTableHead);
+//       reportTable.appendChild(reportTableBody);
+//       reportDivBodyElements.appendChild(reportTable)
+    
+//       // console.log(dataArray);
+
+
+
+
+
+
+
+//     dataArray.forEach(function (val, ind) {
+
+//         if (ind == 0) {
+//             var tab = document.getElementById("t_head");
+//         }
+//         else {
+//             var tab = document.getElementById("t_body");
+//         }
+//         row = tab.insertRow(-1);
+
+
+
+
+        
+
+//         val.forEach(function (ival, iind) {
+//             if (ind == 0) {
+//                 cell = row.insertCell();
+//                 text = document.createTextNode(ival);
+//                 cell.appendChild(text);
+//                 row.appendChild(cell);
+//             }
+//             else {
+
+//                 cell = row.insertCell();
+//                 if (iind == 0 || iind == 1|| iind == 14 || iind == 15) { 
+//                     text = document.createTextNode(ival);
+//                     cell.appendChild(text);
+//                     row.appendChild(cell);
+//                 }
+//                 else {
+
+//                     const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
+// // console.log(JSON.stringify({ PL,  FL,  UL, ALT, HL,  NA, total } ))
+//                     if( PL +FL+  UL+ ALT + HL == 0) 
+//                     {
+//                         finalText=`${total} `
+//                 }else {finalText=`${total}&nbsp;<span class="badge badge-light">${ PL +FL+  UL+ ALT+ HL}</span>`;}
+                   
+                    
+//                    // text = document.create(finalText);
+//                     cell.innerHTML=finalText;
+//                     cell.setAttribute("data-toggle", "tooltip");
+
+//                     setAttributes(cell, {"data-html":"true"});
+//                   //  table = `<table><tbody><tr></tr></tbody></table>`
+//                     cell.setAttribute("title", `PL  = ${PL} FL  = ${FL} UL  = ${UL} ALT = ${ALT} HL  =  ${HL}`);
+//                     row.appendChild(cell);
+//                 }
+
+//             }
+//         })
+
+
+//     })
+
+
+
+
+
+//     console.log(dataArray);
+
+// }
 
 
 
@@ -343,7 +697,7 @@ window.onload = (() => {
 
   
     getEmpJsonData(function callFunction() { 
-        console.log("This is a callback function.") 
+        // console.log("This is a callback function.") 
         $('[data-toggle="tooltip"]').tooltip();
     }); 
 
@@ -375,3 +729,37 @@ function setAttributes(el, attrs) {
       el.setAttribute(key, attrs[key]);
     }
   }
+
+
+  function exportToExcel(tableID, filename = ''){
+    var downloadurl;
+    var dataFileType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+    console.log(tableSelect.outerHTML);
+    console.log(tableSelect.outerHTML.replace(/ /g, '%20'))
+    // Specify file name
+    filename = filename?filename+'.xls':'export_excel_data.xls';
+    
+    // Create download link element
+    downloadurl = document.createElement("a");
+    
+    document.body.appendChild(downloadurl);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTMLData], {
+            type: dataFileType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+    
+        // Setting the file name
+        downloadurl.download = filename;
+        
+        //triggering the function
+        downloadurl.click();
+    }
+  }
+  

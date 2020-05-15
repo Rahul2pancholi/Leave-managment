@@ -21,10 +21,7 @@ const jsonLeaveColor = path.join(
   __dirname,
   "../public/database/leave_color.json"
 );
-const json_FloatLeave = path.join(
-  __dirname,
-  "../public/database/floating_leave.json"
-);
+
 const viewsPath = path.join(__dirname, "../public/views");
 
 const port = process.env.PORT || 3000;
@@ -53,12 +50,23 @@ app.get("/auth", (req, res) => {
   project = req.query.team;
   year = req.query.year;
   console.log( "RESULLT = ",typeof(project) == "string",project, typeof(Number(year)) == "number",year )
-  if ((project != undefined && year != undefined) && ( typeof(project) == "string" && typeof(Number(year)) == "number"  )) {
-    jsonFilePath = path.join(
-      __dirname,
-      `../public/database/test_${project}_${year}.json`
-    );
 
+  if ((project != undefined && year != undefined) && ( typeof(project) == "string" && typeof(Number(year)) == "number"  )) {
+    jsonFilePath = path.join(__dirname,`../public/database/test_${project}_${year}.json`);
+    try {
+      if (fs.existsSync(jsonFilePath)) {
+        //file exists
+        console.log(fileexist)
+      }else{
+
+        fs.writeFile(jsonFilePath,`{ "leave_detail" : {} ,"employee_name" :[]  }`, function (err) {
+          if (err) throw err;
+          console.log('File is created successfully.');
+        }); 
+      }
+    } catch(err) {
+      console.error(err)
+    }
     console.log("loggein");
     loggedIn = true;
     res.redirect("/home");
@@ -174,8 +182,7 @@ app.post("/UPDATE", urlencodedParser, (req, res) => {
     update = JSON.parse(req.body.update);
     // newemp = JSON.parse(req.body.newemp);
     data = checkDataLength(data);
-    // console.log("NEWEMP = ",newemp);
-
+  
     res.send(updateEmpData(jsonFilePath, data, update));
   });
 
@@ -318,6 +325,11 @@ function addNewEmp(jsonFilePath, filedata, resData) {
 
   for(let i in resData)
   {
+
+    console.log("output", dlev[resData[i].id])
+    if(resData[i].id.length > 0 )
+    {
+
     if (dlev[resData[i].id] == undefined) {
      
       demp.push(resData[i]);
@@ -326,8 +338,14 @@ let finalData=`{ "leave_detail" :  ${JSON.stringify(dlev)} ,"employee_name" : ${
       fs.writeFile(jsonFilePath,finalData,(err) =>  {if (err) status=error;} );
       status=finalData;
     } else {
+
       status=duplicateId;
     }
+  }
+    else{
+      status="INVALID_ID"
+    }
+
   }
 
   return status;
@@ -338,6 +356,7 @@ function employeeOrderChnage(filedata)
 
   employee_name = filedata.employee_name;
   leave_detail = filedata.leave_detail;
+
   console.log({ employee_name,leave_detail} )
   employee_name.sort((a,b) => a.order - b.order);
 

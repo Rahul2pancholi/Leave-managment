@@ -26,7 +26,6 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
   {{!-- ********************** --}}
-  {{!-- <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'> --}}
   <link rel="stylesheet" href="css/jquery.toast.css">
   <script>
     $(function () {
@@ -42,9 +41,6 @@
   font-size: 12px;
       padding: 6px;
 }
-    {{!-- .legend {
-      z-index: 1;
-    } --}}
     #mySidenav
     {
           top: 105px;
@@ -120,7 +116,6 @@
       width: 100%;
       width: 85px;
       text-align: left;
-      //: ;
       white-space: nowrap;
     }
      
@@ -156,7 +151,6 @@
       width: fit-content;
       height: fit-content;
       background-color: white;
-      /*  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);*/
       box-shadow: 0 2px 6px 2px rgba(60, 64, 67, .15);
       border: 1px solid rgba(60, 64, 67, .15);
       border-radius: 10px;
@@ -254,24 +248,11 @@
 tbody>tr>td.sat, tbody>tr>td.sun {
     background-color: #bfbfbf !important;
 }
-      {
-        {
-         !-- .eName,
-        .pool {
-          background-color: #dbd951;
-        }
-        --
-      }
-    }
     .eName {
       white-space: nowrap;
     }
     .click_select {
       border: 2px solid #5292f7 !important;
-    }
-    .poolSelect {
-      border: 2px solid rgba(230, 177, 116, 0.3);
-      background-color: rgba(230, 177, 116, 0.3);
     }
     .umeric:hover {
       cursor: pointer;
@@ -328,7 +309,7 @@ tbody>tr>td.sat, tbody>tr>td.sun {
     .content
     {
       background-color: #1b921bb0;
-      text-indent: -9999px ;  
+     color: transparent; 
     }
 
 thead > tr > th 
@@ -341,13 +322,6 @@ font-size: 15px;
     top: 0 !important;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.82) !important;
 }
-thead > tr > th.jan,th.mar,th.may,th.jul,th.sep,th.nov
-{
-/*background-color: #53A1FD !important; */
- {{!-- color : #7C90A9 !important; --}}
-}
-
-
 .pool,.content,.teamNameBox{
 text-transform:uppercase
 }
@@ -355,32 +329,17 @@ text-transform:uppercase
 
     body
       {
-{{!-- background: #da3832; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(#da3832 50% , white 50%); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient( #da3832 50%, white 50%); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient( #da3832 50%, white 50%); /* For Firefox 3.6 to 15 */
-  background: linear-gradient( #da3832 50% , white 50%); /* Standard syntax */ --}}
     background: -webkit-linear-gradient( white 50% , #da3832 50%); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient( white 50%, #da3832 50%); /* For Opera 11.1 to 12.0 */
   background: -moz-linear-gradient( white 50%, #da3832 50%); /* For Firefox 3.6 to 15 */
   background: linear-gradient( white 50% , #da3832 50%); /* Standard syntax */
       
     }
-      {{!-- #div-1
-      {
-        background-color: white;
-        border-radius: 1%;
-        height: 576px;
-         overflow: hidden;
-         box-shadow: 0px 0px 11px 1px rgba(0, 6, 19, 0.5);
-      } --}}
-   
   #div-1 {
       background-color: white;
         border-radius: 1%;
         height: 576px;
         margin: 30px;
-        /*overflow: hidden; */
          outline: none;
 -webkit-box-shadow: 0px 0px 51px -6px rgba(0,0,0,0.75);
 -moz-box-shadow: 0px 0px 51px -6px rgba(0,0,0,0.75);
@@ -521,11 +480,6 @@ z-index: 1;
 {{!-- ****************************** --}}
 
 
-thead>tr>th>div{
-   {{!-- background-color: #da3832;
-  color: white; --}}
-}
-
 
 #main_tab 
 {
@@ -544,8 +498,8 @@ overflow: scroll;
 }
 
 
-
-table#main_tab > thead >tr > td:nth-child(1)
+ 
+table#main_tab > thead >th > td:nth-child(1)
 {
   background-color: black;
   color: white;
@@ -586,7 +540,7 @@ table#main_tab > tbody >tr > td:nth-child(1)
             <a class="nav-link underline" href="javascript:exportToExcel('tab1', 'user-data');">ExportToExcel</a>
         </li>
         <li class="nav-item li">
-          <a class="nav-link underline" href="javascript:genrateReport()">Report</a>
+          <a class="nav-link underline" href="/report/report.html">Report</a>
         </li>
         
       <li class="nav-item" style="display: none;">
@@ -646,23 +600,6 @@ table#main_tab > tbody >tr > td:nth-child(1)
       </div>
     </div>
   </div>
-  {{!-- <div id="hoverShow1" style="width: 25%;" class="my-3 divparent" tabindex="0" id="FL_main_table_div">
-    <div class="divclass">
-      <button onclick="addFl()">add</button>
-      <button onclick="deleteFl()">remove</button>
-      <table style="margin-bottom: 0px;width: fit-content" class="table table-sm table-bordered legend_table "
-        id="FL_legend_tab1">
-        <thead class="table_head" id="legend_thead1">
-          <tr id="FL_ROW">
-            <td>&nbsp;</td>
-            <td>FLOATING_DATE</td>
-            <td>FLOATING</td>
-          </tr>
-        </thead>
-        <tbody id="FL_TBODY"></tbody>
-      </table>
-    </div>
-  </div> --}}
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -683,7 +620,7 @@ table#main_tab > tbody >tr > td:nth-child(1)
       <div class="w-10"></div>
       <div class="row my-2">
       <label for="addEmpID" class="col mx-2">Employee Id</label>
-      <input class="col form-control mx-5" placeholder="Add Employee Id" maxlength="40" type="text" id="addEmpID">
+      <input class="col form-control mx-5" placeholder="Add Employee Id" maxlength="40" type="number" id="addEmpID">
     
     </div>
     <div class="w-10"></div>
@@ -695,58 +632,18 @@ table#main_tab > tbody >tr > td:nth-child(1)
   </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" >Close</button>
-        <button type="button" onclick="addEmployee()"  data-dismiss="modal" class="btn btn-primary">AddRow</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal()" data-dismiss="modal" >Close</button>
+        <button type="button" onclick="addEmployee()"  class="btn btn-primary">AddRow</button>
       </div>
     </div>
   </div>
 </div>
   
 <!-- ****************************************Modal********************** -->
-
-  {{!-- *****************MODAL END****************** --}}
-  
-  
-
-  
-  {{!-- **************************** --}}
-    <div id="classModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="classInfo" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-            ×
-          </button>
-        </div>
-        <div class="modal-body" id="model-body-id">
-        
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  {{!-- ***************************** --}}
-
     
-
-
-
-
-
-
-
-  {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
-  {{!-- <script type="module" src="./javascript/temp_test.js"></script> --}}
-  <script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
+<script type="text/javascript" src="./javascript/jquery.toast.js">  </script>
   <script>
-    //$('#myModal').modal(options)
-  // $(".fixed").css("background-color"));
-   // $("#dialog").dialog()
+
      $( "#dialog" ).dialog();
 
     {{!-- $("#startdatepicker").datepicker();

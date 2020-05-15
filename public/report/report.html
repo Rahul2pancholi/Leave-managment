@@ -30,6 +30,36 @@
       background-color: #003f5c;
       color: white;
     }
+.totalRow{
+    background-color: burlywood !important;
+}
+
+.totalRow >  tr> td:nth-child(1){
+  text-align: center;
+}
+
+#mySidenav
+    {
+          top: 39px;
+    position: absolute;
+    left: 0px;
+    z-index: 2;
+    }
+    #mySidenav a {
+      position: absolute;
+      left: -102px;
+      transition: 0.3s;
+      padding: 10px;
+      width: 108px;
+      text-decoration: none;
+      font-size: 10px;
+      color: white;
+      border-radius: 0 5px 5px 0;
+    }
+    #mySidenav a:hover {
+      left: 0;
+    }
+
   </style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,19 +80,24 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+  
+
   <!-- <script src="//code.jquery.com/jquery.min.js"></script> -->
 </head>
 
 <body>
 
-  <div>
-    <table style="border = 1px;" id="main_tab">
-  </div>
-  <thead id="t_head"> </thead>
-  <tbody id="t_body"></tbody>
 
-  </table>
+   <div id="model-body-id"></div>
+
+   <div id="mySidenav" class="sidenav" >
+    <a id="PL_C" style="background-color: black"  href="javascript:exportToExcel('main_tab', 'user-data');" class="legend PL" >download as excel</a>
+  </div>
+   <!-- <button onclick="exportToExcel('main_tab', 'user-data');">download as excel </button> -->
+
   
+
+
   <script src="js_report.js"></script>
 <script>
   

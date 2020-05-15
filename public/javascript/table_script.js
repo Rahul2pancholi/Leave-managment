@@ -8,8 +8,7 @@ let cmtElmt = document.getElementById("cmtID");
 let textarea = document.getElementById("lastname");
 let c_name = document.getElementById("c_name");
 let c_date = document.getElementById("c_date");
-toggle_bt = document.getElementById("toggle_bt");
-
+let toggle_bt = document.getElementById("toggle_bt");
 let emp_data = [];
 let emp_nm = [];
 let tempJson = [];
@@ -53,6 +52,7 @@ let freezFromDate; //=dateFormatter(year,month_name[d.getMonth()+1],d.getDay());
 
 function freezSheetFunction(freezDateCheck) {
 
+  
   var d1 = freezFromDate.split("-");
   var d2 = freezToDate.split("-");
   var c = freezDateCheck.split("-");
@@ -80,9 +80,10 @@ function createCalenderArray() {
         finalDate.getFullYear(),
         s_month,
         finalDate.getDate()
+
       ); // { dd-mmm-yyyy }
       day_nm_class = day_name[finalDate.getDay()].toLowerCase();
-      //console.log(dateWithDashFormate)
+      //console.log(dateWithDashFormate)9
       tempArray.push(dateWithDashFormate + "," + day_nm_class);
     }
     calenderObject[s_month] = tempArray;
@@ -155,8 +156,8 @@ function createInitRow() {
   // head.append(text)
   let checkBox = document.createElement("input");
   
-  setAttributes(checkBox,{"type": "checkbox","id": `all_checkbox`});
-  setAttributes(head,{"id": `checkbox_head`,"class": `fixed`,"onclick": "selectAllCheckBOX(this)"});
+  setAttributes(checkBox,{"type": "checkbox","id": `all_checkbox`,"onclick": "selectAllCheckBOX(this)"});
+  setAttributes(head,{"id": `checkbox_head`,"class": `fixed`});
 
   divspan = createDivSpan(checkBox);
   head.appendChild(divspan);
@@ -167,7 +168,7 @@ function createInitRow() {
 
   head = document.createElement("th");
   text = document.createTextNode("Team");
-  setAttributes(head,{"id": `team_name`,"class": ` fixed pool`,"onclick": `sortTable(1)`});
+  setAttributes(head,{"id": `team_name`,"class": ` fixed pool`});
   head.appendChild(text);
   row.appendChild(head);
   // row.setAttribute("class", ` Team_Name`)
@@ -184,10 +185,6 @@ function createInitRow() {
 
   /*******************************All remaining COLUMN********** */
 
-  let row_nm = 0;
-  colnum += 1;
-  let day_nm_class;
-
   Object.keys(calenderObject).forEach(function (value, index) {
     calenderObject[value].forEach(function (value, index) {
       splittedValue = value.split(",");
@@ -200,6 +197,7 @@ function createInitRow() {
 
       head.setAttribute("ROW_ID", rownum);
       head.setAttribute("COL_ID", colnum);
+      // console.log(colnum)
       head.setAttribute("id", `row0_${num}`);
 
       head.setAttribute(
@@ -253,9 +251,6 @@ function getEmpJsonData() {
       if (this.responseText.length != 0) {
         tempJson = JSON.parse(this.responseText)["leave_detail"];
         emp_nm = JSON.parse(this.responseText)["employee_name"];
-
-        //console.log(tempJson)
-        //console.log(emp_nm)
       } else {
         tempJson.length = 0;
         emp_nm.length = 0;
@@ -271,7 +266,9 @@ function getEmpJsonData() {
           "Content-Type",
           "application/x-www-form-urlencoded"
         );
-        // xhttp.setRequestHeader("Content-length",`data=2020&project=NPD`.length);
+     
+     
+     
         xhttp.send();
         xhttp.onload = function () {
           if (this.readyState == 4 && this.status == 200) {
@@ -312,8 +309,8 @@ fixedColumn();
             tempJson = [];
             emp_nm = [];
             createCalenderArray();
-            createSelectEmp(); //select list
-            createInitRow(); // used to create the header row
+              // createSelectEmp(); //select list
+              createInitRow(); // used to create the header row
             //  applyEventLitn();
           }
         };
@@ -322,7 +319,7 @@ fixedColumn();
       tempJson = [];
       emp_nm = [];
       createCalenderArray();
-      createSelectEmp(); //select list
+     // createSelectEmp(); //select list
       createInitRow(); // used to create the header row
       //  applyEventLitn();
     }
@@ -380,8 +377,7 @@ function applyEventLitn() {
 
             break;
           case "dblclick":
-            // this.preventDefault();
-            // console.log(this);
+    
             makeEditableCell(this);
 
             break;
@@ -440,7 +436,7 @@ function makeEditableCell(currObject) {
     innerVal = currObject.innerText || currObject.innerHTML;
 
     // console.log("child element");
-    $(currObject).css("text-indent", "0px");
+    $(currObject).css("color", "black");
     currObject.contentEditable = true;
     currObject.style.backgroundColor = "";
     oldval = currObject.innerText;
@@ -494,7 +490,7 @@ var cntrlIsPressed = false;
 
   getEmpJsonData();
   myToggle();
-  fetchApiExample();
+  // fetchApiExample();
 
   $(document).keydown(function (event) {
     switch (event.which) {
@@ -540,10 +536,16 @@ var cntrlIsPressed = false;
         });
         // $("#sortable-9").text (productOrder);
         chnageOrderRequest(tempArrayForSortable)
+      console.log(JSON.stringify(emp_nm))
         emp_nm.length = 0;
+
+      
         emp_nm = tempArrayForSortable;
-        tempArrayForSortable.length = 0;
-        // console.log(emp_nm);
+        tempArrayForSortable= [];
+
+
+
+         console.log(emp_nm);
       },
     });
   });
@@ -639,25 +641,28 @@ function chnageOrderRequest(tempArrayForSortable)
   xhttp.send("emp_data=" + (JSON.stringify(tempArrayForSortable)));
   xhttp.onload = function () 
   {
-
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText.length != 0) {
+        tempJson = JSON.parse(this.responseText)["leave_detail"];
+        emp_nm = JSON.parse(this.responseText)["employee_name"];}}
   }
 }
 
-async function fetchApiExample()
-{
+// async function fetchApiExample()
+// {
   
-let response = await fetch('/test.json', {
-  headers: {  'Content-Type': 'application/json' }
-})
+// let response = await fetch('/test.json', {
+//   headers: {  'Content-Type': 'application/json' }
+// })
 
-let response1 = await fetch('/getvar', {
-  headers: {  'Content-Type': 'application/json' }
-})
+// let response1 = await fetch('/getvar', {
+//   headers: {  'Content-Type': 'application/json' }
+// })
 
 
-console.log(response.json(),response1.json());
+// console.log(response.json(),response1.json());
 
-}
+// }
 
 function getOffset(el) {
   const rect = el.getBoundingClientRect();
@@ -785,7 +790,7 @@ function createTableRow(parent_element, name,eid, index, pool) {
   let rowNum = (parent_element.childNodes.length) + 1;
   let colNum = 0;
 
-console.log(parent_element.childNodes.length)
+// console.log(parent_element.childNodes.length)
 
 
   if (parent_element == undefined) {
@@ -800,7 +805,8 @@ console.log(parent_element.childNodes.length)
 
   var cell = row.insertCell();
   let checkBox = document.createElement("input");
-  setAttributes(checkBox,{ "type": "checkbox", "onclick": "selectCheckBOX(this)", "id": "main_chkbox_" + index })
+
+  setAttributes(checkBox,{ "type": "checkbox", "name":"check","onclick": "selectCheckBOX(this)", "id": "main_chkbox_" + index })
   setAttributes(cell,{"class": "fixed"});
   cell.appendChild(checkBox);
   row.appendChild(cell);
@@ -833,8 +839,8 @@ console.log(parent_element.childNodes.length)
 
   cell.appendChild(text);
   row.appendChild(cell);
-  colNum++;
-  colNum += 1;
+//  colNum += 1;  colNum++;
+ 
   /************************************************** */
 
   Object.keys(calenderObject).forEach(function (value, index) {
@@ -851,7 +857,7 @@ console.log(parent_element.childNodes.length)
       cell.setAttribute("data-toggle", "tooltip");
       cell.setAttribute("title", ``);
       row.appendChild(cell);
-      colNum++;
+      // colNum++;
       colNum += 1;
     });
   });
@@ -894,30 +900,47 @@ function exportToExcel(tableID, filename = ''){
   }
 }
 
+let input1 = document.getElementById("addEmp");
+let input2 = document.getElementById("addEmpTeam");
+let employeeIdElement = document.getElementById("addEmpID");
 //*************************ADD NEW EMPLOYEE START ********************************************* */
+function closeModal()
+{
+  input1.value = "";
+  input2.value = "";
+  employeeIdElement.value="";
+  console.log("called")
+}
 
 function addEmployee() 
 {
-  let input1 = document.getElementById("addEmp");
-  let input2 = document.getElementById("addEmpTeam");
-  let employeeIdElement = document.getElementById("addEmpID");
+
+
   let thead = document.getElementById("tbody_1");
   let Uname = input1.value.trim();
   let UTname = input2.value.trim();
-  let employeeId = Number(employeeIdElement.value.trim());
+  let employeeId = employeeIdElement.value.trim();
   let newEmp = [];
 
   orderNO=(emp_nm.length +1);
 
-  if (Uname == "" && UTname == "" && employeeIdElement.value.trim() == "") {
+  input1.value = "";
+  input2.value = "";
+  employeeIdElement.value="";
+  console.log(Uname,UTname,  (employeeIdElement.value).length, employeeIdElement.value)
+
+  if (!(Uname.length >  0 && UTname.length > 0 &&  (employeeId).length > 0)) {
+   
     alert("shold not be empty");
   } 
   else
    {
     name = Uname.toUpperCase();
     Tname = UTname.toUpperCase();
-  }
-  if (employeeNameAvailablity(name) == false) {
+   
+    
+    console.log(employeeNameAvailablity(employeeId))
+  if (employeeNameAvailablity(employeeId) == false) {
     newEmp.push({
                             id : employeeId,
                             name : name,
@@ -925,10 +948,6 @@ function addEmployee()
                             disable: "0",
                             order : orderNO
  });
-  
-    input1.value = "";
-    input2.value = "";
-    employeeIdElement="";
 
    
     xhttp.open("POST", "NEW_EMPLOYEE", true);
@@ -953,11 +972,12 @@ switch(this.responseText)
           {
                 tempJson = JSON.parse(this.responseText)["leave_detail"];
                 emp_nm = JSON.parse(this.responseText)["employee_name"];
-
+                $("#exampleModalCenter").modal("hide")
                 createTableRow(thead, name,employeeId, -1, Tname);
                 fixedColumn();
                 applyEventLitn();
                 newEmp.length= 0;
+               
                 toastMeaasge("New Row Added","Success",)
           }
 
@@ -973,11 +993,11 @@ break;
  
     
   } else {
-    alert("Employ is prsent");
+    alert("Tow Employe can not have same ID");
   }
 
 
-}
+}}
 /*
 
 
@@ -991,12 +1011,18 @@ break;
 
 
 //*************************ADD NEW EMPLOYEE START ********************************************* */
-function employeeNameAvailablity(name) {
+function employeeNameAvailablity(eID) {
   let flag = 0;
-  Object.keys(emp_nm).forEach(function (val, ind) {
-    // //console.log(`${val.toUpperCase() == name.toUpperCase()} and val ${val} and name ${name}`)
 
-    if (val.toUpperCase() == name.toUpperCase()) {
+
+
+
+
+
+  emp_nm.forEach(function (val, ind) {
+   
+console.log(val.id,eID)
+    if (val.id == eID) {
       flag = 1;
     }
   });
@@ -1062,8 +1088,7 @@ function createDataArray(
       },
     };
 
-    // console.log(leave);
-    // console.log(JSON.stringify(leave))
+
 
     arr.forEach(function (ival, iidx) {
       if (ival[empnm] != undefined || ival[empnm] != null) {
@@ -1089,10 +1114,6 @@ function createDataArray(
     dateFlag = 0;
   }
 
-  // //console.log(arr);
-  // console.log("leave pushed sucessfully",arr)
-  // console.log(`formatted arr ${JSON.stringify(leave)}`);
-
   return arr;
 }
 
@@ -1113,14 +1134,14 @@ function addToJson1(cell_object, oldVal, oldcomment) {
       declear = false;
       approveStatus = true;
       cell_object.setAttribute("data-color", "NOT-D");
-      $(cell_object).css("text-indent", "-9999px");
+      $(cell_object).css("color", "transparent");
       break;
     case "NA":
       cell_object.innerText = "NA";
       declear = false;
       approveStatus = false;
       cell_object.setAttribute("data-color", "NOT-A");
-      $(cell_object).css("text-indent", "-9999px");
+      $(cell_object).css("color", "transparent");
       break;
     case "":
     case undefined:
@@ -1130,11 +1151,11 @@ function addToJson1(cell_object, oldVal, oldcomment) {
     case "FL":
     case "UL":
       cell_object.setAttribute("data-color", cell_object.innerText.trim());
-      $(cell_object).css("text-indent", "-9999px");
+      $(cell_object).css("color", "transparent");
       break;
 
     default:
-      $(cell_object).css("text-indent", "0px");
+      $(cell_object).css("color", "black");
       return "INVALID";
   }
 
@@ -1242,26 +1263,13 @@ function Save() {
   } 
 }
 }
-function reload() {
-  location.reload();
-}
 
 ////////////////////////////////////////////////////////////
 
-function finalmove(a, b) {
-  nextid = `row${a}_${b}`;
-
-  let selCell = document.getElementById(nextid);
-  if (selCell != null) {
-    selCell.click();
-  }
-}
 
 
-function sortTable() {
-  emp_nm.sort();
-  // //console.log(emp_nm);
-}
+
+
 
 function myFunction() {
   var input, filter, table, tr, td, i, txtValue;
@@ -1287,11 +1295,6 @@ function myFunction() {
   }
 }
 
-// document.onkeydown = function (t) {
-//   if (t.which == 9) {
-//     return false;
-//   }
-// };
 
 function Delete() {
   var tempArray = [];
@@ -1428,17 +1431,29 @@ let checkbox_arr = [];
 function selectCheckBOX(currnetObject) {
   var parentNode = currnetObject.parentNode.parentNode;
   if (currnetObject.checked) {
-    console.log(parentNode.classList.add("poolSelect"));
+    // console.log(parentNode.classList.add("poolSelect"));
     checkbox_arr.push(parentNode);
   } else {
-    console.log(parentNode.classList.remove("poolSelect"));
+    // console.log(parentNode.classList.remove("poolSelect"));
     checkbox_arr = arrayRemove(checkbox_arr, parentNode);
   }
 
   console.log(checkbox_arr);
 }
+
+
 function selectAllCheckBOX(currnetObject) {
-  console.log(this);
+      
+  checkbox_arr.length=0;
+  checkboxes = document.getElementsByName('check');
+  
+    for(var checkbox=0;checkbox<checkboxes.length;checkbox++)
+    {
+      checkboxes[checkbox].checked=currnetObject.checked;
+      selectCheckBOX( checkboxes[checkbox]);
+     
+    }
+
 }
 
 function arrayRemove(arr, value) {
@@ -1472,6 +1487,12 @@ function Applyleavebycolor(type, currentObject) {
       ctClickArr[i].classList.remove("click_select");
       continue;
   }
+  toastMeaasge(
+    "Information",
+    `This cell are freezed From :-  ${freezFromDate}  To :- ${freezToDate} you can not apply leave for these date`,
+    "info"
+  );
+  continue;
       
     }
     toastMeaasge("Please apply leave befor reject");
@@ -1479,6 +1500,8 @@ function Applyleavebycolor(type, currentObject) {
 
   ctClickArr.length = 0;
 }
+
+
 function deleteElementValue() {
   if (ctClickArr.length > 0) {
     for (let i = 0; i < ctClickArr.length; i++) {
@@ -1492,386 +1515,10 @@ function deleteElementValue() {
   }
 }
 
-var asc = 0;
-function sort_table(table, col) {
-  $(".sortorder").remove();
-  if (asc == 2) {
-    asc = -1;
-  } else {
-    asc = 2;
-  }
-  var rows = table.tBodies[0].rows;
-  var rlen = rows.length - 1;
-  var arr = new Array();
-  var i, j, cells, clen;
-  // fill the array with values from the table
-  for (i = 0; i < rlen; i++) {
-    cells = rows[i].cells;
-    clen = cells.length;
-    arr[i] = new Array();
-    for (j = 0; j < clen; j++) {
-      arr[i][j] = cells[j].innerHTML;
-    }
-  }
-  // sort the array by the specified column number (col) and order (asc)
-  arr.sort(function (a, b) {
-    console.log("val of a b = " + a, b);
-    var retval = 0;
-    var col1 = a[col]
-      .toLowerCase()
-      .replace(",", "")
-      .replace("$", "")
-      .replace(" usd", "");
-    var col2 = b[col]
-      .toLowerCase()
-      .replace(",", "")
-      .replace("$", "")
-      .replace(" usd", "");
-    console.log("val of col = " + col1, col2);
-    var fA = parseFloat(col1);
-    var fB = parseFloat(col2);
-    if (col1 != col2) {
-      if (fA == col1 && fB == col2) {
-        retval = fA > fB ? asc : -1 * asc;
-      } //numerical
-      else {
-        retval = col1 > col2 ? asc : -1 * asc;
-      }
-    }
-    return retval;
-  });
-  for (var rowidx = 0; rowidx < rlen; rowidx++) {
-    for (var colidx = 0; colidx < arr[rowidx].length; colidx++) {
-      table.tBodies[0].rows[rowidx].cells[colidx].innerHTML =
-        arr[rowidx][colidx];
-    }
-  }
-
-  hdr = table.rows[0].cells[col];
-  if (asc == -1) {
-    $(hdr).html($(hdr).html() + '<span class="sortorder">▲</span>');
-  } else {
-    $(hdr).html($(hdr).html() + '<span class="sortorder">▼</span>');
-  }
-}
-
-/****************REPORT GENRATE*************************** */
 
 
-let count = 0;
-let day = 8;
-let workinghours = 0;
-let flag = 0;
-let satSunw = 0;
-let FL = 0;
-let PL = 0;
-let UL = 0;
-let ALT = 0;
-let NA = 0;
-let satsun = 0;
-let total_leave = 0;
-let total_wday = 0;
-let WKG = 0;
-let HL = 0;
-let dataArray = [];
-let totalleave = 0;
-
-
-/////////////////////////////////////////
  
 
 
  
-               
-
-
-
-
-////////////////////////////////////////
-{/* <table id="classTable" class="table table-bordered">
-
-
-<table style="border = 1px;" id="main_tab" class="table table-bordered">
-  <thead id="t_head"> </thead>
-  <tbody id="t_body"></tbody> */}
-/************************************** */
-  /////
-  // let reportTableHeadElements= document.getElementById("t_head");
-
-
-
- 
-  let reportDivBodyElements= document.getElementById("model-body-id");
-
-
-
-function genrateReport()
-{
-
-
-//   if ( reportTableHeadElements.childElementCount > 0)
-//   {
-//    for(let i=0;i<reportTableHeadElements.childElementCount;i++)
-//     {
-// console.log("INSIDE-HEAD",reportTableHeadElements.children[i].remove());
-//     }
-
-//   }
-//   if ( reportTableBodyElements.childElementCount > 0)
-//   {
-//     for(let i=0;i<reportTableBodyElements.childElementCount;i++)
-//     {
-// console.log("INSIDE-BODY",reportTableBodyElements.children[i].remove());
-//     }
-//   }
-  
-  if(toggle_bt.checked){
-
-
-  emp_data = tempJson;
-  // console.log(tempJson)
-  if((emp_data != undefined && emp_nm != undefined) )
-  {
-// console.log("called")
-// reportTableElement.remove();
-
-addDataTOUi("","", 1);
-    abc();
-    Init();
-    $("#classModal").modal('show');
-  }
-}else
-{
-  toastMeaasge("Please save sheet before genrate report")
-}
-
-
-
-}
-let final = 0;
-function Init() {
-
-  let tableElement= document.getElementById("main_tab");
-
-try{
-    tableElement.remove();
-}catch(e)
-{
-  console.log("error")
-}
-
-  let reportTable = document.createElement("table");
-  setAttributes(reportTable,{"id":"main_tab", "class":"table-bordered"});
-
-  let reportTableHead =document.createElement("thead");
-  setAttributes(reportTableHead,{"id":"t_head"})
-  
-  let reportTableBody =document.createElement("tbody");
-  setAttributes(reportTableBody,{"id":"t_body"})
-  reportTable.appendChild(reportTableHead);
-  reportTable.appendChild(reportTableBody);
-  reportDivBodyElements.appendChild(reportTable)
-
-  // console.log(dataArray);
-
-  dataArray.forEach(function (val, ind) {
-
-      if (ind == 0) {
-          var tab = reportTableHead
-      }
-      else {
-          var tab = reportTableBody
-      }
-      row = tab.insertRow(-1);
-
-      val.forEach(function (ival, iind) {
-          if (ind == 0) {
-
-              tableHeader= document.createElement("th");
-              setAttributes(tableHeader,{"scope" :"col"})
-              text = document.createTextNode(ival);
-              tableHeader.appendChild(text);
-
-              row.appendChild(tableHeader);
-          }
-          else {
-
-              cell = row.insertCell();
-              if (iind == 0 || iind == 13 || iind == 14) {
-                  text = document.createTextNode(ival);
-                  cell.appendChild(text);
-                  row.appendChild(cell);
-              }
-              else {
-
-                  const { PL,  FL,  UL, ALT, HL,  NA, total } =  ival[0];
-
-                  if( PL +FL+  UL+ ALT + HL == 0) 
-                  {
-                      finalText=`${total} `
-              }else {finalText=`${total}&nbsp;<span class="badge badge-light">${ PL +FL+  UL+ ALT+ HL}</span>`;}
-                 
-                  
-                 // text = document.create(finalText);
-                  cell.innerHTML=finalText;
-                  cell.setAttribute("data-toggle", "tooltip");
-
-                  setAttributes(cell, {"data-html":"true"});
-                //  table = `<table><tbody><tr></tr></tbody></table>`
-                  cell.setAttribute("title", `PL  = ${PL} FL  = ${FL} UL  = ${UL} ALT = ${ALT} HL  =  ${HL}`);
-                  row.appendChild(cell);
-              }
-
-          }
-      })
-
-
-  })
-
-
-
-
-
-  // console.log(dataArray);
-  dataArray.length=0;
-
-}
-
-
-function addDataTOUi(eId,eName, header = 1) {
-
-  let arr = [];
-  if (header == 1) {
-      arr.push("Employee");
-  }
-  else {
-      arr.push(eName);
-  }
-
-  for (var i = 0; i < month_name.length; i++) {
-
-      let s_month = month_name[i].slice(0, 3).toLowerCase()
-
-      let mth_lst_day = new Date(year, i + 1, 0).getDate().toString();
-      count = 0;
-      for (var j = 1; j <= mth_lst_day; j++) {
-
-          let full_date = year + "/" + (i + 1) + "/" + j; //year/moth/date
-          let dayname = new Date(full_date);
-
-          let day_nm_class = day_name[dayname.getDay()].toLowerCase();
-          full_date=dateFormatter(dayname.getFullYear(),s_month,dayname.getDate());
-          // console.log(full_date);
-
-
-
-          if (header == 1) {
-              // console.log("kkkkkkk")
-          }
-          else {
-              if (day_nm_class == "sat" || day_nm_class == "sun") {
-                  count++;
-              }
-               //console.log((emp_data[eId]),full_date)
-              let em = (emp_data[eId])[full_date];
-
-              if (em != undefined) {
-                  let leavetype = em["leavetype"];
-                    //  console.log(employee_name+"======"+JSON.stringify(em)+"======"+ leavetype);
-
-
-
-                  switch (leavetype) {
-                      case "FL":
-                          FL++;
-                          break;
-                      case "PL":
-                          PL++;
-                          break
-                        case "-1": 
-                           ALT++
-                          break;
-                      case "UL":
-                          UL++;
-                          break;
-                      case "HL":
-                          HL++;
-                          break
-                      case "NA":
-                          NA++;
-                          break;
-                      default:
-                          // console.log("no leave need to check ");
-                          break;
-
-                  }
-
-
-
-              }
-
-          }
-
-
-
-      }
-
-      if (header == 1) {
-          arr.push(s_month);
-      }
-      else {
-
-
-
-          total_leave_hours = (((PL + FL + UL ) * 8) + (HL * 4));
-          total_hour_worked = (((mth_lst_day) - (count)) * 8);
-          total = total_hour_worked - total_leave_hours;
-          final = final + total;
-          //   console.log("TOTAL = "+total);
-          tleave = PL + FL + UL  + (HL * .5);
-          totalleave = totalleave + tleave;
-          // console.log(totalleave)
-          // console.log(eName,eId + "============" + tleave);
-//            arr.push([{ "PL": PL, "FL": FL, "UL": UL, "ALT": ALT, "HL": HL, "NA": NA, "total": total }])
-
-          arr.push([{ PL,  FL,  UL, ALT, HL,  NA, total }])
-
-          count = 0;
-          WKG = 0;
-          FL = 0;
-          PL = 0;
-          UL = 0;
-          ALT = 0;
-          HL = 0;
-          NA=0;
-
-
-      }
-
-
-
-  }
-
-  //console.log(employee_name + " = " + JSON.stringify(emp_data[employee_name]));
-  if (header == 1) {
-      arr.push("Total-Hours");
-      arr.push("Total-Leave");
-      dataArray.push(arr);
-      // console.log(dataArray);
-  }
-  else {
-      arr.push(final);
-      arr.push(totalleave);
-      dataArray.push(arr);
-      // console.log(dataArray);
-      totalleave = 0;
-      final=0;
-  }
-}
-
-function abc() {
-  emp_nm.forEach(function (iteam, index) {
-       addDataTOUi(iteam.id,iteam.name, 0)
-   })
-}
-/*********************************************************** */
+      
