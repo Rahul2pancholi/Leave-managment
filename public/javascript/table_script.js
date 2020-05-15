@@ -1340,6 +1340,9 @@ function Delete() {
         getRowOrder();
         
       }
+      else{
+        toastMeaasge("Please reload the page","Error")
+      }
     };
   } else
   {
